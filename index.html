@@ -1773,7 +1773,7 @@ async function init() {
   if (!binaryData) {
     $('dbStatus').textContent = 'Скачивание базы...';
     try {
-      const res = await fetch('./laws.db');
+      const res = await fetch('https://github.com/saidhoffman142-sketch/my-laws-app/releases/download/v1.0/laws.db');
       if (!res.ok) throw new Error('HTTP ' + res.status);
       binaryData = new Uint8Array(await res.arrayBuffer());
       
