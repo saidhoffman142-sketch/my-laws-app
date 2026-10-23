@@ -1598,11 +1598,13 @@ function recordHistory(doc, art, number) {
     slug: doc.slug, 
     docCode: titleOf(doc), 
     number: String(number || ''), 
-    title: number ? artTitle(art, number) : titleOf(doc), 
+    title: number && number !== 'doc' ? artTitle(art, number) : titleOf(doc),
+    snippet: number && number !== 'doc' ? (art.text || '').replace(/\s+/g,' ').slice(0, 120) : (doc.act_kind || doc.type || ''),
     ts: Date.now() 
   };
   state.history = state.history.filter(h => !(h.slug === entry.slug && String(h.number) === entry.number));
-  state.history.unshift(entry); state.history = state.history.slice(0, 100);
+  state.history.unshift(entry);
+  state.history = state.history.slice(0, 100);
   writeStore('pravo-history', state.history);
 }
 
@@ -1630,17 +1632,14 @@ function saveNote() {
 function renderCollection(type) {
   const body = $('workspaceBody');
   let records = [];
-  
+
   if (type === 'favorites') {
     records = state.favorites.map(getRecord).filter(Boolean);
   } else if (type === 'history') {
+    // Берём данные прямо из записей истории — не зависим от загруженных articles
     records = state.history.map(h => {
       const doc = state.docs.find(d => d.slug === h.slug);
-      if (!doc) return null;
-      if (h.number && h.number !== 'doc' && doc.articles && doc.articles[h.number]) {
-        return { doc, art: doc.articles[h.number], number: h.number };
-      }
-      return { doc, art: { heading: doc.code, text: 'Документ' }, number: '' };
+      return doc ? { ...h, doc } : null;
     }).filter(Boolean);
   } else {
     records = Object.entries(state.notes).map(([key, note]) => { 
@@ -1649,25 +1648,73 @@ function renderCollection(type) {
     }).filter(Boolean);
   }
 
-  const title = type === 'favorites' ? 'Избранное' : type === 'history' ? 'История' : 'Мои заметки';
-  const desc = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'Журнал просмотренных документов.' : 'Заметки к статьям.';
+  const title = type === 'favorites' ? 'Избранное' : type === 'history' ? 'История просмотров' : 'Мои заметки';
+  const desc  = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'Журнал просмотренных документов и статей.' : 'Заметки к статьям.';
+
+  const historyActions = type === 'history' && records.length ? `
+    <button class="btn" onclick="clearHistory()" style="color:var(--danger);border-color:var(--danger)">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      Очистить журнал
+    </button>` : '';
+
+  const renderHistoryCard = h => {
+    const dateStr = h.ts ? new Intl.DateTimeFormat('ru-RU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }).format(new Date(h.ts)) : '';
+    const isArticle = h.number && h.number !== 'doc' && h.number !== '';
+    const onclick = isArticle
+      ? `openDocBySlug('${h.slug}','${h.number}')`
+      : `openDocBySlug('${h.slug}')`;
+    return `<div class="result-card" onclick="${onclick}" style="cursor:pointer">
+      <div class="result-doc" style="display:flex;justify-content:space-between;align-items:center">
+        <span>${esc(h.docCode || '')}</span>
+        <span style="font-size:10px;color:var(--muted)">${dateStr}</span>
+      </div>
+      <h3 style="color:var(--accent)">${esc(h.title || h.docCode || '')}</h3>
+      ${h.snippet ? `<p style="color:var(--muted);font-size:13px;line-height:1.5;margin:0">${esc(h.snippet)}…</p>` : ''}
+    </div>`;
+  };
+
+  const renderFavCard = r => `
+    <div class="result-card" onclick="openDocBySlug('${r.doc.slug}','${r.number}')" style="cursor:pointer">
+      <div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div>
+      <h3 style="color:var(--accent)">${esc(artTitle(r.art, r.number))}</h3>
+      <p style="color:var(--muted);font-size:13px;margin:0">${esc((r.art.text||'').slice(0,200))}${(r.art.text||'').length>200?'…':''}</p>
+    </div>`;
+
+  const renderNoteCard = r => `
+    <div class="result-card" onclick="openDocBySlug('${r.doc.slug}','${r.number}')" style="cursor:pointer">
+      <div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div>
+      <h3 style="color:var(--accent)">${esc(artTitle(r.art, r.number))}</h3>
+      <p style="color:var(--muted);font-size:13px;margin:0">${esc(r.note)}</p>
+    </div>`;
 
   body.innerHTML = `<section class="result-page">
     <div class="result-heading">
       <div><div class="eyebrow">Библиотека</div><h1>${title}</h1><p>${desc}</p></div>
-      <span class="date-chip">${records.length} ${plural(records.length, ['запись','записи','записей'])}</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="date-chip">${records.length} ${plural(records.length, ['запись','записи','записей'])}</span>
+        ${historyActions}
+      </div>
     </div>
     <div class="results">
-      ${records.length ? records.map(r => `
-        <div class="result-card" onclick="openDocBySlug('${r.doc.slug}'${r.number ? `, '${r.number}'` : ''})">
-          <div class="result-doc">${esc(titleOf(r.doc))} ${r.number ? `· Статья ${esc(r.number)}` : ''}</div>
-          <h3>${esc(r.number ? artTitle(r.art, r.number) : titleOf(r.doc))}</h3>
-          <p>${esc(type==='notes' ? r.note : (r.art.text || '').slice(0, 260))}${type!=='notes' && r.art.text?.length > 260 ? '…' : ''}</p>
-        </div>
-      `).join('') : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`}
+      ${records.length
+        ? type === 'history'
+          ? records.map(renderHistoryCard).join('')
+          : type === 'favorites'
+            ? records.map(renderFavCard).join('')
+            : records.map(renderNoteCard).join('')
+        : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`
+      }
     </div>
-    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Раманович.</p></footer>
+    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
   </section>`;
+}
+
+function clearHistory() {
+  if (!confirm('Очистить всю историю просмотров?')) return;
+  state.history = [];
+  writeStore('pravo-history', []);
+  renderCollection('history');
+  toast('История очищена');
 }
 
 function plural(n, forms) { const x = n % 100, y = n % 10; return forms[x > 10 && x < 20 ? 2 : y === 1 ? 0 : y >= 2 && y <= 4 ? 1 : 2]; }
@@ -1802,6 +1849,8 @@ async function init() {
   });
 
   window.addEventListener('hashchange', () => {
+    // Не реагируем если база ещё не загружена или это навигация внутри приложения
+    if (!db || state._suppressHashChange) return;
     if (window.location.hash) {
       restoreFromHash();
     } else {
