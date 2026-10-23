@@ -1,0 +1,1837 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#173b35">
+<meta name="author" content="Абдулмаликов Саид Рамазанович">
+<meta name="copyright" content="© Абдулмаликов Саид Рамазанович, 2026">
+<title>АИПС «РПА» — Информационно-правовая система</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<script src="./sql-wasm.js"></script>
+<style>
+:root{color-scheme:light;--bg:#f4f6f5;--surface:#fff;--surface-2:#f8faf9;--ink:#172522;--muted:#687873;--line:#dfe7e3;--accent:#176b55;--accent-2:#105340;--accent-soft:#e4f3ed;--gold:#b58a45;--danger:#b42318;--shadow:0 8px 28px rgba(22,45,37,.07);--reader-size:17px;--sidebar:320px}
+[data-theme=dark]{color-scheme:dark;--bg:#111a18;--surface:#192522;--surface-2:#202e29;--ink:#e8f0ec;--muted:#a3b4ac;--line:#34453e;--accent:#77c9a9;--accent-2:#9adbbf;--accent-soft:#243f35;--gold:#e1bd7d;--danger:#ff8c83;--shadow:0 8px 28px rgba(0,0,0,.2)}
+*{box-sizing:border-box}[hidden]{display:none!important}html,body{margin:0;height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}body{overflow:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+.app{height:100dvh;display:grid;grid-template-rows:64px 1fr;min-height:0}.topbar{display:flex;align-items:center;gap:22px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--line);z-index:5}.brand{display:flex;align-items:center;gap:11px;min-width:225px;font-weight:750;letter-spacing:-.4px;font-size:18px;cursor:pointer}.brand-mark{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:20px;overflow:hidden}.brand-mark img{width:100%;height:100%;object-fit:cover;transform:scale(1.1)}.brand small{display:block;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:1.2px;text-transform:uppercase;margin-top:2px}.top-actions{display:flex;align-items:center;gap:8px;margin-left:auto}.icon-btn,.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;white-space:nowrap;transition:all .2s}.icon-btn{width:38px;height:38px;padding:0}.btn:hover,.icon-btn:hover{border-color:var(--accent);background:var(--surface-2);color:var(--accent)}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.primary:hover{background:var(--accent-2);color:#fff}.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}.btn.ghost:hover{background:var(--surface-2);color:var(--ink)}
+.layout{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);min-height:0;overflow:hidden}
+.sidebar{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.side-top{padding:20px 20px 12px}
+.eyebrow{font-size:10px;font-weight:750;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+.side-heading{display:flex;align-items:center;justify-content:space-between;margin:8px 0 16px;font-size:16px;font-weight:750}
+.side-nav{display:grid;gap:2px}
+.nav-item{display:flex;align-items:center;gap:12px;border:0;background:transparent;color:var(--muted);padding:10px 12px;border-radius:8px;text-align:left;font-size:13px;font-weight:600;width:100%;transition:all .2s}
+.nav-item:hover{background:var(--surface-2);color:var(--ink)}
+.nav-item.active{background:var(--accent-soft);color:var(--accent)}
+.nav-item .count{margin-left:auto;font-size:11px;background:var(--surface);border:1px solid var(--line);padding:2px 6px;border-radius:10px;color:var(--muted)}
+.side-divider{height:1px;background:var(--line);margin:12px 20px 16px}
+.library-head{display:flex;align-items:center;justify-content:space-between;padding:0 20px 10px}
+.library-head span{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:750}
+.library-search{padding:0 16px 12px}
+.library-search input{width:100%;padding:10px 14px;border:2px solid var(--line);border-radius:8px;background:var(--surface-2);font-size:13px;outline:none;transition:all .2s}
+.library-search input:focus{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px var(--accent-soft)}
+.library-list{overflow-y:auto;padding:0 12px 18px;flex:1}
+/* Дерево библиотеки */
+.lib-group{margin-bottom:4px}
+.lib-group-header{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;border-radius:8px;font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:0.5px}
+.lib-group-header:hover{background:var(--surface-2)}
+.lib-group-header svg{width:14px;height:14px;transition:transform .2s;color:var(--muted)}
+.lib-group-header.open svg{transform:rotate(90deg)}
+.lib-group-content{display:none;padding-left:8px}
+.lib-group-content.open{display:block}
+.lib-doc{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all .2s}
+.lib-doc:hover{background:var(--surface-2)}
+.lib-doc.active{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 20%,transparent)}
+.doc-symbol{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:8.5px;font-weight:800;flex-shrink:0;letter-spacing:-.3px;text-transform:uppercase}
+.lib-doc.active .doc-symbol{outline:2px solid rgba(255,255,255,.4);outline-offset:1px}
+.doc-info{min-width:0;flex:1}
+.doc-info strong{font-size:12px;line-height:1.4;display:block;font-weight:650}
+.doc-info small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.pin-btn{opacity:0;background:none;border:none;padding:4px;cursor:pointer;border-radius:4px;transition:all .15s;flex-shrink:0;color:var(--muted);line-height:0}
+.lib-doc:hover .pin-btn{opacity:1}
+.pin-btn.pinned{opacity:1;color:#e8b84b}
+.pin-btn svg{width:14px;height:14px}
+.side-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:10px;display:flex;justify-content:space-between;gap:8px}
+
+.workspace{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.workspace-toolbar{min-height:60px;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 24px;flex-wrap:wrap;z-index:4}
+.breadcrumbs{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:200px}
+.breadcrumbs strong{color:var(--ink);font-weight:600}
+.toolbar-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.workspace-body{flex:1;overflow-y:auto;min-height:0;scroll-behavior:smooth;background:var(--bg)}
+
+/* Дашборд */
+.home{max-width:1160px;margin:0 auto;padding:40px 32px 60px}
+.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:32px}
+.welcome h1{font-size:28px;letter-spacing:-.5px;margin:0 0 12px;line-height:1.25;font-weight:800}
+.welcome p{color:var(--muted);font-size:14px;line-height:1.65;margin:0;max-width:680px}
+.date-chip{border:1px solid var(--line);background:var(--surface);padding:10px 14px;border-radius:10px;font-size:12px;color:var(--muted);white-space:nowrap;box-shadow:var(--shadow)}
+
+/* Категории */
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
+.cat-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.cat-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 16px 32px rgba(22,45,37,.1)}
+.cat-icon{width:56px;height:56px;border-radius:14px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:0 auto 16px}
+.cat-icon svg{width:28px;height:28px}
+.cat-card h3{font-size:16px;margin:0 0 6px;font-weight:750;color:var(--ink)}
+.cat-card p{font-size:12px;color:var(--muted);margin:0}
+.cat-badge{position:absolute;top:16px;right:16px;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:700;padding:4px 8px;border-radius:10px}
+
+/* Карточки на главной */
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.section-heading h2{font-size:16px;margin:0;font-weight:750;letter-spacing:-.2px;display:flex;align-items:center;gap:8px}
+.section-heading span{font-size:12px;color:var(--muted)}
+.doc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.doc-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;text-align:left;color:var(--ink);min-width:0;transition:all .2s;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
+.doc-card:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 12px 24px rgba(22,45,37,.1)}
+.card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-type{font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);font-weight:750;background:var(--accent-soft);border-radius:4px;padding:4px 8px}
+.card-arrow{color:var(--muted);transition:transform .2s}
+.doc-card:hover .card-arrow{transform:translateX(4px);color:var(--accent)}
+.doc-card h3{font-size:14px;line-height:1.45;margin:0 0 8px;font-weight:700}
+.doc-card p{font-size:12px;line-height:1.55;color:var(--muted);margin:0 0 16px}
+.card-meta{border-top:1px solid var(--line);margin-top:auto;padding-top:12px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+/* Кнопка закрепления на карточке */
+.card-pin-abs{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:6px;background:var(--surface);border:1px solid var(--line);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:all .2s;z-index:2}
+.doc-card:hover .card-pin-abs{opacity:1}
+.card-pin-abs:hover{background:var(--surface-2);color:var(--ink);border-color:var(--ink)}
+.card-pin-abs.pinned{opacity:1;color:var(--ink);border-color:var(--ink)}
+.card-pin-abs svg{width:14px;height:14px}
+
+/* Таблица документов */
+.docs-page{max-width:1000px;margin:0 auto;padding:32px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;margin-bottom:20px;cursor:pointer}
+.back-link:hover{color:var(--accent)}
+.docs-page h1{font-size:28px;margin:0 0 12px;font-weight:800}
+.cat-description{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px;max-width:800px;}
+.doc-list-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.doc-list-table th{background:var(--surface-2);text-align:left;padding:14px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);border-bottom:1px solid var(--line)}
+.doc-list-table td{padding:16px 20px;border-bottom:1px solid var(--line);font-size:13px;position:relative}
+.doc-list-table tr:last-child td{border-bottom:none}
+.doc-list-table tr:hover td{background:var(--surface-2)}
+.doc-row-title{font-weight:650;color:var(--accent);cursor:pointer;display:block;margin-bottom:4px}
+.doc-row-title:hover{text-decoration:underline}
+.doc-row-meta{font-size:11px;color:var(--muted)}
+/* Кнопка закрепления в таблице */
+.row-pin-btn{opacity:0;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px;border-radius:4px;transition:all .2s}
+.doc-list-table tr:hover .row-pin-btn{opacity:1}
+.row-pin-btn:hover{color:var(--ink);background:var(--surface)}
+.row-pin-btn.pinned{opacity:1;color:var(--ink)}
+.row-pin-btn svg{width:16px;height:16px;vertical-align:middle}
+
+/* Читалка */
+.reader-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:40px;max-width:1200px;margin:0 auto;padding:32px 40px 80px}
+.article{min-width:0;max-width:820px}
+.article-kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1.2px;font-weight:750;margin-bottom:12px}
+.status-pill{color:var(--danger);background:color-mix(in srgb,var(--danger) 10%,transparent);padding:4px 8px;border-radius:4px;letter-spacing:.5px;font-size:10px;font-weight:700}
+.status-pill.ok{color:var(--accent);background:var(--accent-soft)}
+.article h1{font-size:30px;line-height:1.25;letter-spacing:-.8px;margin:0 0 16px;font-weight:800}
+.article-meta{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:12px;padding-bottom:24px;border-bottom:1px solid var(--line);margin-bottom:32px}
+.article-body{font-family:Georgia,"Times New Roman",serif;font-size:var(--reader-size);line-height:1.8;overflow-wrap:anywhere;color:#2a3a35}
+.article-body p{margin:0 0 18px}
+.article-body .empty{font-family:inherit;color:var(--muted);font-size:14px;font-style:italic}
+.article-body mark{background:#f5e6b8;color:#382d14;border-radius:3px;padding:0 2px}
+.article-body mark.active-match{background:#ffd54f;box-shadow:0 0 0 2px #ffb300;font-weight:bold}
+
+/* ПАСПОРТ ДОКУМЕНТА */
+.doc-passport{background:linear-gradient(135deg, var(--accent-soft) 0%, var(--surface) 100%);border:1px solid color-mix(in srgb,var(--accent) 20%,transparent);border-radius:14px;padding:24px 28px;margin-bottom:32px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.doc-passport:after{content:"§";position:absolute;right:20px;bottom:-30px;font-family:Georgia,serif;font-size:140px;opacity:.04;pointer-events:none;color:var(--accent)}
+.doc-passport h2{font-size:22px;margin:0 0 14px;line-height:1.3;letter-spacing:-.5px;font-weight:800;position:relative;z-index:1}
+.doc-passport-meta{display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted);margin-bottom:20px;position:relative;z-index:1}
+.doc-passport-meta span b{color:var(--ink);font-weight:650;display:inline-block;min-width:110px}
+.doc-passport-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+
+.preamble-box{background:var(--surface-2);border-left:3px solid var(--gold);padding:16px 20px;border-radius:0 8px 8px 0;margin-bottom:24px;font-size:14px;line-height:1.6;color:var(--text-2);font-style:italic;font-family:var(--font-doc)}
+.preamble-box p{margin:0 0 8px}
+.preamble-box p:last-child{margin-bottom:0}
+
+.passport-norm{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin-bottom:28px}
+.passport-norm .article-kicker{margin-bottom:10px;color:var(--accent)}
+.passport-norm h3{font-size:18px;margin:0 0 12px;font-weight:750}
+.passport-norm .meta-grid{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
+.passport-norm .meta-grid b{color:var(--ink);font-weight:600;display:inline-block;min-width:110px}
+
+/* Дерево в читалке */
+.doc-toc-container{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:var(--shadow)}
+.doc-toc-container h2{font-size:20px;margin:0 0 20px;font-weight:750;border-bottom:1px solid var(--line);padding-bottom:12px}
+.toc-tree{font-size:14px;line-height:1.5}
+.toc-node{margin-bottom:2px}
+.toc-node-header{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;cursor:pointer;border-radius:8px;color:var(--ink);transition:background .2s}
+.toc-node-header:hover{background:var(--surface-2)}
+.toc-node-header svg{width:16px;height:16px;color:var(--muted);margin-top:2px;transition:transform .2s;flex-shrink:0}
+.toc-node-header.open svg{transform:rotate(90deg)}
+.toc-node-header .toc-num{font-weight:700;color:var(--accent);min-width:60px}
+.toc-children{display:none;padding-left:24px;margin-left:14px;border-left:1px solid var(--line)}
+.toc-children.open{display:block}
+.toc-article{padding:8px 12px;cursor:pointer;border-radius:8px;color:var(--accent);font-size:13px;display:block}
+.toc-article:hover{background:var(--surface-2);text-decoration:underline}
+
+.article-aside{position:sticky;top:24px;align-self:start}
+.aside-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
+.aside-card h3{font-size:11px;margin:0 0 12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:750}
+.aside-link{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;padding:8px 0;text-decoration:none;cursor:pointer;border-radius:4px;transition:color .2s}
+.aside-link:hover{color:var(--accent)}
+.aside-link svg{width:14px;height:14px;opacity:.7}
+.note-area{width:100%;min-height:120px;resize:vertical;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:8px;padding:12px;font-size:12px;line-height:1.6}
+.note-area:focus{outline:none;border-color:var(--accent);background:var(--surface)}
+
+/* Поиск и списки */
+.result-page{max-width:1040px;margin:0 auto;padding:32px 32px 60px}
+.result-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin-bottom:24px}
+.result-heading h1{font-size:24px;margin:8px 0;font-weight:800}
+.result-heading p{font-size:13px;color:var(--muted);margin:0}
+.filter-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.filter-row input,.filter-row select{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 14px;border-radius:8px;font-size:12px;box-shadow:var(--shadow)}
+.filter-row input{flex:1;min-width:200px}
+.results{display:grid;gap:12px}
+.result-card{padding:18px 20px;border:1px solid var(--line);background:var(--surface);border-radius:12px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.result-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.result-card .result-doc{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.result-card h3{font-size:15px;color:var(--accent);margin:0 0 8px;font-weight:700}
+.result-card p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
+.result-card mark{background:#f5e6b8;color:#382d14;border-radius:3px;padding:0 2px}
+
+/* О системе */
+.about-page{max-width:800px;margin:0 auto;padding:48px 32px}
+.about-hero{text-align:center;margin-bottom:40px}
+.about-hero .brand-mark{width:80px;height:80px;font-size:36px;margin:0 auto 24px;border-radius:20px;box-shadow:0 8px 24px rgba(23,107,85,.2);background:#fff;padding:8px;}
+.about-hero .brand-mark img{transform:scale(1);border-radius:12px}
+.about-hero h1{font-size:36px;letter-spacing:-1.2px;margin:0 0 16px;font-weight:800}
+.about-hero p{font-size:15px;color:var(--muted);line-height:1.7;max-width:540px;margin:0 auto}
+.about-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px;margin-bottom:24px;box-shadow:var(--shadow)}
+.about-card h2{font-size:18px;margin:0 0 16px;letter-spacing:-.3px;font-weight:750;border-bottom:1px solid var(--line);padding-bottom:12px}
+.about-card p{font-size:14px;color:var(--muted);line-height:1.8;margin:0 0 12px}
+.about-card p:last-child{margin-bottom:0}
+.about-card ul{padding-left:20px;margin:12px 0 0;font-size:14px;color:var(--muted);line-height:1.8}
+.about-card .author{font-weight:700;color:var(--accent);font-size:16px}
+.copyright-big{text-align:center;padding:40px 20px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:40px}
+.copyright-big strong{color:var(--ink);font-weight:700}
+
+/* Поиск в тексте */
+.doc-search-panel{display:none;align-items:center;gap:4px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:4px 6px 4px 12px;box-shadow:inset 0 1px 2px rgba(0,0,0,0.02)}
+.doc-search-panel.active{display:flex}
+.doc-search-panel input{height:28px;width:180px;border:none;background:transparent;outline:none;font-size:12px;color:var(--ink)}
+.doc-search-panel .search-count{font-size:11px;color:var(--muted);padding:0 6px;white-space:nowrap;font-weight:600}
+.doc-search-panel button{width:26px;height:26px;padding:0;border:none;background:transparent;color:var(--muted);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.doc-search-panel button:hover{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.doc-search-panel svg{width:14px;height:14px}
+
+/* Модалки и тосты */
+.modal-backdrop{position:fixed;inset:0;background:rgba(6,20,15,.45);display:none;align-items:center;justify-content:center;z-index:30;padding:20px;backdrop-filter:blur(2px)}
+.modal-backdrop.show{display:flex}
+.modal{width:min(470px,100%);background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 48px rgba(0,0,0,0.2);padding:24px}
+.modal h2{font-size:18px;margin:0 0 8px;font-weight:750}
+.modal p{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 20px}
+.modal input{width:100%;padding:14px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:9px;margin-bottom:20px;font-size:14px}
+.modal input:focus{outline:none;border-color:var(--accent);background:var(--surface)}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px}
+.toast{position:fixed;right:24px;bottom:24px;background:var(--ink);color:var(--surface);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:50;animation:fadein .2s ease}@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}#backToTop{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:20px;box-shadow:var(--shadow);cursor:pointer;display:none;z-index:40;align-items:center;justify-content:center;transition:all .3s}#backToTop:hover{background:var(--accent-2);transform:translateY(-2px)}#backToTop.show{display:flex}
+.app-footer{text-align:center;padding:24px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:auto}
+
+/* БЛОК НЕДАВНИХ */
+.recent-list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.recent-row{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:all .2s}
+.recent-row:hover{border-color:var(--accent);background:var(--surface-2);transform:translateX(4px)}
+.recent-row .doc-symbol{width:36px;height:36px;font-size:14px;background:var(--accent-soft);border:none;color:var(--accent)}
+.recent-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.recent-main strong{font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.recent-main small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-open{font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:4px;white-space:nowrap}
+/* Панель поиска */
+.search-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.search-tabs {
+  display: flex;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+}
+.search-tab {
+  padding: 14px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.search-tab:hover {
+  color: var(--ink);
+}
+.search-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--surface);
+}
+
+.search-content {
+  padding: 24px;
+}
+
+.search-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.search-row input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+.search-row input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.search-row .btn {
+  padding: 0 24px;
+  font-size: 14px;
+}
+
+/* Фильтры (радиокнопки) */
+.search-filters {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.search-filters label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.search-filters label:hover {
+  color: var(--ink);
+}
+.search-filters input[type="radio"] {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Форма расширенного поиска */
+.adv-search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.adv-field {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.adv-field label {
+  width: 160px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: right;
+  flex-shrink: 0;
+}
+.adv-field input,
+.adv-field select {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+}
+.adv-field input:focus,
+.adv-field select:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+.adv-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.legal-info {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.legal-info strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+.legal-info ul {
+  padding-left: 20px;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+.legal-info li {
+  margin-bottom: 8px;
+}
+.legal-info li b {
+  color: var(--ink);
+}
+/* Адаптив */
+.mobile-menu{display:none}.mobile-backdrop{display:none}
+@media(max-width:1100px){:root{--sidebar:280px}.doc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.reader-layout{grid-template-columns:minmax(0,1fr) 240px;padding:24px 24px 60px;gap:30px}.brand{min-width:190px}.topbar{gap:14px;padding:0 16px}.categories{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.app{grid-template-rows:56px 1fr}.topbar{padding:0 12px;gap:10px}.brand{min-width:0;font-size:15px}.brand small{display:none}.brand-mark{width:32px;height:32px}.top-actions .desktop-only{display:none}.layout{grid-template-columns:minmax(0,1fr)}.sidebar{position:fixed;left:0;top:56px;bottom:0;width:min(310px,88vw);z-index:21;transform:translateX(-105%);transition:transform .25s cubic-bezier(0.4,0,0.2,1);box-shadow:var(--shadow)}.sidebar.open{transform:translateX(0)}.mobile-backdrop.show{display:block;position:fixed;inset:56px 0 0;background:rgba(0,0,0,.35);z-index:20;backdrop-filter:blur(2px)}.mobile-menu{display:inline-flex}.workspace-toolbar{padding:0 12px;min-height:54px;gap:8px}.toolbar-actions-label{display:none}.workspace-toolbar .btn{padding:8px 10px;font-size:12px}.home{padding:24px 16px 40px}.welcome{align-items:flex-start;flex-direction:column;gap:16px}.welcome h1{font-size:28px}.date-chip{display:none}.categories{grid-template-columns:1fr;gap:12px}.cat-card{padding:20px}.doc-grid{grid-template-columns:1fr;max-height:none}.reader-layout{display:block;padding:20px 16px 60px}.article-aside{position:static;margin-top:32px;display:grid;grid-template-columns:1fr;gap:12px}.article h1{font-size:24px}.doc-passport{padding:20px}.doc-passport h2{font-size:19px}.doc-passport-meta{grid-template-columns:1fr}.doc-search-panel input{width:120px}.about-features{grid-template-columns:1fr}.result-page{padding:24px 16px 60px}.doc-list-table{display:block;overflow-x:auto}.search-tabs{flex-wrap:wrap}.search-tab{padding:10px 16px;flex:1;text-align:center;border-bottom:none;border-right:none;border-left:none;border-top:2px solid transparent}.search-tab.active{border-top-color:var(--accent)}.adv-field{flex-direction:column;align-items:flex-start;gap:4px}.adv-field label{text-align:left;width:auto}.adv-field input,.adv-field select{width:100%;max-width:none}.adv-actions{margin-left:0;justify-content:flex-end}}
+@media print{body{height:auto;overflow:visible;background:#fff;color:#000}.app{height:auto;display:block}.topbar,.sidebar,.workspace-toolbar,.article-aside,.mobile-backdrop,#backToTop,.app-footer,.doc-passport-actions,.doc-search-panel{display:none!important}.layout,.workspace,.workspace-body{display:block;overflow:visible;height:auto}.reader-layout{display:block;padding:0;max-width:none}.article{max-width:none}.article-body{font-size:12pt;color:#000}.article h1{font-size:20pt}.doc-passport{border:none;background:none;padding:0;margin-bottom:20px;box-shadow:none}.passport-norm{background:none;border:none;border-bottom:1px solid #ccc;border-radius:0;padding:0 0 20px;margin-bottom:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Открыть меню">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="brand" role="button" tabindex="0" id="brandHome">
+    <span class="brand-mark">
+      <img src="logo.png" alt="АИПС «РПА»" onerror="this.style.display='none'; this.parentElement.innerText='§';">
+    </span>
+    <span class="brand-name">АИПС «РПА»<small>Информационно-правовая система</small></span>
+  </div>
+  <div class="top-actions">
+    <button class="icon-btn desktop-only" id="gotoBtn" title="Перейти к статье · Ctrl+G">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    </button>
+    <button class="icon-btn" id="themeBtn" title="Сменить тему">
+      <svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="mobile-backdrop" id="mobileBackdrop"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="side-top">
+      <div class="eyebrow">Навигация</div>
+      <div class="side-heading">Официальная база <span style="font-size:10px;color:var(--muted);font-weight:500;letter-spacing:1px">Редакция 2026</span></div>
+      <nav class="side-nav" aria-label="Основная навигация">
+        <button class="nav-item active" data-view="home">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Главная
+        </button>
+        <button class="nav-item" data-view="search-home">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          Система поиска
+        </button>
+        <button class="nav-item" data-view="favorites">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Избранное <span class="count" id="favCount">0</span>
+        </button>
+        <button class="nav-item" data-view="history">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Недавние документы
+        </button>
+        <button class="nav-item" data-view="notes">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Мои заметки
+        </button>
+        <button class="nav-item" data-view="about">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          О системе
+        </button>
+      </nav>
+    </div>
+    <div class="side-divider"></div>
+    
+    <div class="library-head"><span>Правовая библиотека</span><span id="docCount">—</span></div>
+    <div class="library-search">
+      <input type="text" id="libSearchInput" placeholder="Фильтр библиотеки..." autocomplete="off">
+    </div>
+    <div class="library-list" id="libraryList"></div>
+    
+    <div class="side-footer"><span id="dbStatus">Источник: pravo.gov.ru</span><span>© АИПС «РПА»</span></div>
+  </aside>
+
+  <main class="workspace">
+    <div class="workspace-toolbar" id="workspaceToolbar">
+      <div class="breadcrumbs" id="breadcrumbs">Главная <span> / </span> <strong>Обзор</strong></div>
+      
+      <div class="toolbar-group" id="readerTools" hidden>
+        <button class="btn" id="backBtn" title="Вернуться назад" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Назад
+        </button>
+
+        <div class="doc-search-panel" id="docSearchPanel">
+          <input type="search" id="docSearchInput" placeholder="Найти в тексте..." title="Поиск по тексту документа">
+          <span class="search-count" id="searchCount"></span>
+          <button id="searchPrev" title="Предыдущее совпадение">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <button id="searchNext" title="Следующее совпадение">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <button id="searchClose" title="Закрыть поиск">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        
+        <button class="btn" id="docSearchBtn" title="Поиск по тексту">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          Поиск в тексте
+        </button>
+        <button class="btn" id="backToDocBtn" title="Вернуться к документу" onclick="state.readMode='passport';renderReader()" style="display:none">← К паспорту</button>
+        
+        <button class="icon-btn" id="favoriteBtn" title="В избранное">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </button>
+        <button class="icon-btn" id="noteBtn" title="Заметка">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="icon-btn" id="printBtn" title="Печать / PDF">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="workspace-body" id="workspaceBody"></div>
+  </main>
+</div>
+</div>
+
+<div class="modal-backdrop" id="gotoModal">
+  <div class="modal">
+    <h2>Переход к норме</h2>
+    <p>Укажите номер статьи в текущем документе. Быстрый вызов — Ctrl + G.</p>
+    <input id="gotoInput" placeholder="Например: 15.1" autocomplete="off">
+    <div class="modal-actions">
+      <button class="btn" id="cancelGoto">Отмена</button>
+      <button class="btn primary" id="confirmGoto">Перейти</button>
+    </div>
+  </div>
+</div>
+<button id="backToTop" title="Наверх">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+<div id="toastRoot" aria-live="polite"></div>
+
+<script>
+// ГЛОБАЛЬНЫЕ ФУНКЦИИ (без обертки IIFE)
+const $ = id => document.getElementById(id);
+
+// --- НОРМАЛИЗАЦИЯ ---
+function normalizeText(text) {
+  if (!text) return '';
+  if (Array.isArray(text)) {
+    return text.map(item => {
+      if (typeof item === 'string') return item;
+      if (item && typeof item === 'object') {
+        let s = '';
+        if (item.text) s += item.text + '\n';
+        if (item.content) s += normalizeText(item.content);
+        return s;
+      }
+      return '';
+    }).join('').trim();
+  }
+  if (typeof text === 'object') {
+    let s = '';
+    if (text.text) s += text.text + '\n';
+    if (text.content) s += normalizeText(text.content);
+    return s.trim();
+  }
+  return String(text);
+}
+function fixHeading(heading, number) {
+  if (!heading) return `Статья ${number}`;
+  let h = heading.trim();
+  const prefix = `Статья ${number}.`;
+  if (h.startsWith(prefix)) h = h.slice(prefix.length).trim();
+  else if (h.startsWith(`Статья ${number}`)) h = h.slice(`Статья ${number}`.length).trim();
+  return h ? `Статья ${number}. ${h}` : `Статья ${number}`;
+}
+
+const state = {
+  docs:[], view:'home', doc:null, article:null, category:'',
+  favorites:readStore('pravo-favs',[]), history:readStore('pravo-history',[]),
+  notes:readStore('pravo-notes',{}), pinned:readStore('pravo-pinned',[]),
+  query:'', font:Number(localStorage.getItem('pravo-font')||17),
+  readMode: 'single', docSearch: { query:'', matches:[], current:0 },
+  libSearch: '', openGroups: { 'konst': false, 'codex': false, 'fkz': false, 'fz': false, 'zakon': false },
+  prevView: 'home'
+};
+
+let SQL = null;
+let db = null;
+
+function readStore(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch{return fallback}}
+function writeStore(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(message){const el=document.createElement('div');el.className='toast';el.textContent=message;$('toastRoot').replaceChildren(el);setTimeout(()=>el.remove(),2400)}
+function docsCount(doc){return doc.articles_total || 0}
+function titleOf(doc){return doc.code||doc.title||doc.name||'Документ без названия'}
+function dateOf(s){if(!s)return 'Дата не указана';const a=String(s).split('-');return a.length===3?`${a[2]}.${a[1]}.${a[0]}`:String(s)}
+function recordKey(doc,number){return `${doc.slug}::${number}`}
+function getRecord(key){const [slug,...rest]=String(key).split('::');const number=rest.join('::');const doc=state.docs.find(d=>d.slug===slug);if(!doc)return null;if(!doc.articles)return null;const art=doc.articles[number];return art?{doc,art,number}:null}
+function artTitle(art,number){return fixHeading(art.heading || art.title, number)}
+function setActiveNav(view){document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===view));}
+function setBreadcrumb(parts){$('breadcrumbs').innerHTML=parts.map((p,i)=>i===parts.length-1?`<strong>${esc(p)}</strong>`:esc(p)).join(' <span> / </span> ')}
+
+const icons = {
+  book: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  search: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+  star: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+  starFill: `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+  edit: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  clock: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  file: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
+  arrowRight: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+  arrowLeft: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`,
+  target: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  layers: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`,
+  pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
+  pinFill: `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
+  pinBoard: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>`, 
+  shield: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, 
+  chevronRight: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`,
+  home: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+  sun: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+};
+
+// --- РЕНДЕР ---
+function showView(view, category = '') {
+  if (view !== state.view || category !== state.category) {
+    state.prevView = state.view;
+    state.prevCategory = state.category;
+  }
+  state.view=view; state.category=category; setActiveNav(view); closeMobile();
+  $('readerTools').hidden = true;
+  
+  if(view==='home'){renderHome();setBreadcrumb(['Главная','Обзор'])}
+  else if(view==='category'){renderCategory(category);setBreadcrumb(['Главная',category])}
+  else if(view==='favorites'){renderCollection('favorites');setBreadcrumb(['Библиотека','Избранное'])}
+  else if(view==='history'){renderCollection('history');setBreadcrumb(['Библиотека','Недавние'])}
+  else if(view==='notes'){renderCollection('notes');setBreadcrumb(['Библиотека','Заметки'])}
+  else if(view==='about'){renderAbout();setBreadcrumb(['О системе'])}
+  else if(view==='search-home'){renderSearchHome();setBreadcrumb(['Поиск','Панель поиска'])}
+  else if(view==='search-results'){renderSearchResults();setBreadcrumb(['Поиск','Результаты'])}
+  else if(view==='reader'){renderReader()}
+}
+
+function goBack() {
+  if (state.readMode === 'single' && state.article) {
+    state.readMode = 'passport';
+    state.article = null;
+    renderReader();
+  } else if (state.view === 'reader') {
+    if (state.prevView && state.prevView !== 'reader') {
+      if (state.prevView === 'category') showView('category', state.prevCategory);
+      else showView(state.prevView, state.prevCategory);
+    } else showView('home');
+  } else if (state.prevView && state.prevView !== state.view) {
+    if (state.prevView === 'category') showView('category', state.prevCategory);
+    else showView(state.prevView, state.prevCategory);
+  } else showView('home');
+}
+
+function getDocBadge(doc) {
+  const slug = doc.slug || '';
+  const type = doc.type || '';
+  if (type === 'Конституция' || slug === 'konstituciya-rf') return { bg: '#b58a45', fg: '#fff', label: 'КРФ' };
+  if (slug === 'uk-rf')  return { bg: '#c0392b', fg: '#fff', label: 'УК' };
+  if (slug === 'upk-rf') return { bg: '#e74c3c', fg: '#fff', label: 'УПК' };
+  if (slug === 'uik-rf') return { bg: '#d35400', fg: '#fff', label: 'УИК' };
+  if (slug === 'koap-rf') return { bg: '#e67e22', fg: '#fff', label: 'КоАП' };
+  if (slug.startsWith('gk-rf')) return { bg: '#2980b9', fg: '#fff', label: 'ГК' };
+  if (slug === 'gpk-rf')  return { bg: '#1a6fa8', fg: '#fff', label: 'ГПК' };
+  if (slug === 'apk-rf')  return { bg: '#1a6fa8', fg: '#fff', label: 'АПК' };
+  if (slug === 'kas-rf')  return { bg: '#1a6fa8', fg: '#fff', label: 'КАС' };
+  if (slug === 'tk-rf')   return { bg: '#27ae60', fg: '#fff', label: 'ТК' };
+  if (slug.startsWith('nk-rf')) return { bg: '#8e44ad', fg: '#fff', label: 'НК' };
+  if (slug === 'bk-rf')   return { bg: '#6c3483', fg: '#fff', label: 'БК' };
+  if (slug === 'sk-rf')   return { bg: '#d63384', fg: '#fff', label: 'СК' };
+  if (slug === 'zhk-rf')  return { bg: '#0d6efd', fg: '#fff', label: 'ЖК' };
+  if (slug === 'zk-rf')   return { bg: '#5d8a2c', fg: '#fff', label: 'ЗК' };
+  if (slug === 'vdk-rf')  return { bg: '#0984e3', fg: '#fff', label: 'ВдК' };
+  if (slug === 'lk-rf')   return { bg: '#00b894', fg: '#fff', label: 'ЛК' };
+  if (slug === 'grk-rf')  return { bg: '#636e72', fg: '#fff', label: 'ГрК' };
+  if (slug === 'vzk-rf')  return { bg: '#74b9ff', fg: '#1a1a2e', label: 'ВзК' };
+  if (slug === 'ktm-rf')  return { bg: '#0652DD', fg: '#fff', label: 'КТМ' };
+  if (slug === 'kvvt-rf') return { bg: '#1289A7', fg: '#fff', label: 'КВВТ' };
+  if (type === 'ФКЗ')     return { bg: '#2c3e50', fg: '#fff', label: 'ФКЗ' };
+  if (type === 'Закон')   return { bg: '#4a6741', fg: '#fff', label: 'ЗРФ' };
+  if (type === 'Кодекс' || doc.kind === 'codex') return { bg: '#176b55', fg: '#fff', label: 'КОД' };
+  return { bg: '#176b55', fg: '#fff', label: 'ФЗ' };
+}
+
+function renderLibrary() {
+  const root = $('libraryList');
+  const search = state.libSearch.toLowerCase().trim();
+  const total = state.docs.length;
+  $('docCount').textContent = total;
+  root.replaceChildren();
+
+  if (!total) {
+    root.innerHTML = '<div class="empty-state" style="padding:20px">Документы не найдены</div>';
+    return;
+  }
+
+  const cats = {
+    'konst': { name: 'Конституция', match: d => d.type === 'Конституция' },
+    'codex': { name: 'Кодексы', match: d => d.kind === 'codex' || d.type === 'Кодекс' },
+    'fkz': { name: 'ФКЗ', match: d => d.type === 'ФКЗ' },
+    'fz': { name: 'ФЗ', match: d => d.type === 'ФЗ' || (!d.type && d.kind !== 'codex' && d.type !== 'Конституция') },
+    'zakon': { name: 'Законы', match: d => d.type === 'Закон' }
+  };
+
+  const pinnedDocs = state.pinned.map(slug => state.docs.find(d => d.slug === slug)).filter(Boolean);
+  const pinnedToShow = search ? pinnedDocs.filter(d => titleOf(d).toLowerCase().includes(search)) : pinnedDocs;
+
+  if (pinnedToShow.length) {
+    const pinGroup = document.createElement('div');
+    pinGroup.className = 'lib-group';
+    const pinHeader = document.createElement('div');
+    pinHeader.className = 'lib-group-header open';
+    pinHeader.style.cssText = 'color:var(--gold);gap:6px;';
+    pinHeader.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Закреплённые`;
+    const pinContent = document.createElement('div');
+    pinContent.className = 'lib-group-content open';
+    pinContent.style.paddingLeft = '0';
+    pinnedToShow.forEach(doc => pinContent.appendChild(createDocItem(doc)));
+    pinGroup.appendChild(pinHeader);
+    pinGroup.appendChild(pinContent);
+    root.appendChild(pinGroup);
+  }
+
+  for (const [key, cat] of Object.entries(cats)) {
+    const docs = search
+      ? state.docs.filter(d => cat.match(d) && titleOf(d).toLowerCase().includes(search) && !state.pinned.includes(d.slug))
+      : state.docs.filter(d => cat.match(d) && !state.pinned.includes(d.slug));
+    if (!docs.length) continue;
+
+    docs.sort((a, b) => titleOf(a).localeCompare(titleOf(b), 'ru'));
+
+    const group = document.createElement('div');
+    group.className = 'lib-group';
+    const isOpen = state.openGroups[key] || search;
+    
+    const header = document.createElement('div');
+    header.className = 'lib-group-header' + (isOpen ? ' open' : '');
+    header.innerHTML = `${icons.chevronRight} ${cat.name} <span style="margin-left:auto;font-size:10px;font-weight:500;color:var(--muted)">${docs.length}</span>`;
+    header.onclick = () => {
+      state.openGroups[key] = !state.openGroups[key];
+      renderLibrary();
+    };
+
+    const content = document.createElement('div');
+    content.className = 'lib-group-content' + (isOpen ? ' open' : '');
+    docs.forEach(doc => {
+      content.appendChild(createDocItem(doc, false));
+    });
+
+    group.appendChild(header);
+    group.appendChild(content);
+    root.appendChild(group);
+  }
+
+  if (search && !root.children.length) {
+    root.innerHTML = '<div class="empty-state" style="padding:20px">Ничего не найдено</div>';
+  }
+}
+
+function createDocItem(doc) {
+  const el = document.createElement('div');
+  el.className = 'lib-doc' + (state.doc?.slug === doc.slug ? ' active' : '');
+  el.tabIndex = 0;
+
+  const isPin = state.pinned.includes(doc.slug);
+  const badge = getDocBadge(doc);
+
+  el.innerHTML = `
+    <div class="doc-symbol" style="background:${badge.bg};color:${badge.fg}">${badge.label}</div>
+    <div class="doc-info">
+      <strong>${esc(titleOf(doc))}</strong>
+      <small>${esc(doc.act_kind || doc.type || 'Документ')}</small>
+    </div>
+    <button class="pin-btn ${isPin ? 'pinned' : ''}" title="${isPin ? 'Открепить' : 'Закрепить'}">
+      ${isPin ? icons.pinFill : icons.pin}
+    </button>
+  `;
+
+  el.querySelector('.pin-btn').onclick = (e) => { e.stopPropagation(); togglePin(doc.slug); };
+  el.onclick = () => openDocBySlug(doc.slug);
+  el.onkeydown = (e) => { if (e.key === 'Enter') openDocBySlug(doc.slug); };
+  return el;
+}
+
+function togglePin(slug) {
+  if (state.pinned.includes(slug)) {
+    state.pinned = state.pinned.filter(s => s !== slug);
+    toast('Документ откреплён');
+  } else {
+    state.pinned.unshift(slug);
+    toast('Документ закреплён');
+  }
+  writeStore('pravo-pinned', state.pinned);
+  renderLibrary();
+  if(state.view === 'home') renderHome();
+  if(state.view === 'reader' && state.doc?.slug === slug) renderReader();
+}
+
+// --- ДАШБОРД ---
+function renderHome() {
+  const body = $('workspaceBody');
+  const recent = state.history.slice(0, 5).map(h => {
+    const r = getRecord(recordKey({slug:h.slug}, h.number));
+    return r ? { ...r, ts: h.ts } : null;
+  }).filter(Boolean);
+
+  const pinnedDocs = state.pinned.map(slug => state.docs.find(d => d.slug === slug)).filter(Boolean);
+  const codes = state.docs.filter(d => (d.kind === 'codex' || d.type === 'Кодекс') && d.type !== 'Конституция');
+  const fkz = state.docs.filter(d => d.type === 'ФКЗ');
+  const fz = state.docs.filter(d => (d.type === 'ФЗ' || (!d.type && d.kind !== 'codex' && d.type !== 'Конституция')));
+
+  body.innerHTML = `<section class="home">
+    <div class="welcome">
+      <div>
+        <div class="eyebrow">АИПС «РПА»</div>
+        <h1>Информационно-правовая система</h1>
+        <p>База данных законодательства Российской Федерации. Обеспечивает поиск нормативных актов, доступ к редакциям документов и сохранение избранных материалов в локальном хранилище.</p>
+      </div>
+      <div class="date-chip">${new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(new Date())}</div>
+    </div>
+
+    <div class="categories">
+      <div class="cat-card" onclick="showView('category', 'Конституция')">
+        <div class="cat-icon" style="background:var(--gold);color:#fff">${icons.shield}</div>
+        <h3>Конституция</h3>
+        <p>Принята 12.12.1993. Высшая юридическая сила.</p>
+      </div>
+      <div class="cat-card" onclick="showView('category', 'Кодексы')">
+        <div class="cat-icon">${icons.book}</div>
+        <h3>Кодексы</h3>
+        <p>Основа отраслей права. ГК, УК, НК и др.</p>
+        <div class="cat-badge">${codes.length}</div>
+      </div>
+      <div class="cat-card" onclick="showView('category', 'ФКЗ')">
+        <div class="cat-icon">${icons.layers}</div>
+        <h3>ФКЗ</h3>
+        <p>Особый статус. Принимаются по вопросам Конституции.</p>
+        <div class="cat-badge">${fkz.length}</div>
+      </div>
+      <div class="cat-card" onclick="showView('category', 'ФЗ')">
+        <div class="cat-icon">${icons.file}</div>
+        <h3>Федеральные законы</h3>
+        <p>Текущее право. Регулируют все сферы жизни.</p>
+        <div class="cat-badge">${fz.length}</div>
+      </div>
+    </div>
+
+    ${pinnedDocs.length > 0 ? `
+    <div class="section-heading"><h2>Закреплённые документы</h2><span>Быстрый доступ</span></div>
+    <div class="doc-grid" style="margin-bottom:32px;">
+      ${pinnedDocs.map(d => docCard(d)).join('')}
+    </div>
+    ` : ''}
+    
+    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
+  </section>`;
+}
+
+function docCard(d) {
+  const isPin = state.pinned.includes(d.slug) || d.type === 'Конституция'; 
+  return `<button class="doc-card" onclick="openDocBySlug('${d.slug}')">
+    <div class="card-top">
+      <span class="card-type">${esc(d.type || 'Документ')}</span>
+      <span class="card-arrow">${icons.arrowRight}</span>
+    </div>
+    <h3>${esc(titleOf(d))}</h3>
+    <p>Редакция от ${esc(dateOf(d.redaction_date || d.redaction))}</p>
+    <div class="card-meta">
+      <span>${docsCount(d)} статей</span>
+    </div>
+    <button class="card-pin-abs ${isPin ? 'pinned' : ''}" onclick="event.stopPropagation();togglePin('${d.slug}')" title="${isPin ? 'Открепить' : 'Закрепить'}">
+      ${isPin ? icons.pinFill : icons.pin}
+    </button>
+  </button>`;
+}
+
+// --- О СИСТЕМЕ ---
+function renderAbout() {
+  const body = $('workspaceBody');
+  const total = state.docs.length;
+  const arts = state.docs.reduce((s, d) => s + (d.articles_total || 0), 0);
+
+  body.innerHTML = `<section class="about-page">
+    <div class="about-hero">
+      <div class="brand-mark" style="width:88px;height:88px;border-radius:22px;margin:0 auto 24px;background:var(--accent);display:grid;place-items:center;box-shadow:0 12px 32px rgba(23,107,85,.25);">
+        <img src="logo.png" alt="АИПС «РПА»" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'font-size:40px;color:#fff\\'>§</span>'">
+      </div>
+      <h1 style="font-size:34px;letter-spacing:-1px;margin:0 0 12px;font-weight:800">АИПС «РПА»</h1>
+      <p style="font-size:15px;color:var(--muted);line-height:1.7;max-width:540px;margin:0 auto">Автоматизированная информационно-правовая система, предназначенная для поиска, изучения и систематизации нормативных правовых актов Российской Федерации.</p>
+    </div>
+
+    <div class="about-card">
+      <h2>Источники и состав базы</h2>
+      <p>В основе системы — законодательство Российской Федерации: Конституция РФ, федеральные конституционные законы, кодексы и федеральные законы, а также законы РФ и РСФСР, сохраняющие юридическую силу. По состоянию на <strong>октябрь 2026 года</strong> база включает <strong>${total} нормативных правовых актов</strong> и <strong>${arts.toLocaleString('ru')} статей</strong>.</p>
+      <p>Тексты актов приведены с учётом официальных изменений и дополнений. Источник данных — официальный интернет-портал правовой информации <a href="https://pravo.gov.ru" target="_blank" style="color:var(--accent)">pravo.gov.ru</a>.</p>
+    </div>
+
+    <div class="about-card">
+      <h2>Правовой статус и назначение</h2>
+      <p>Система носит <strong>справочный и информационный характер</strong>. Она предназначена для оперативного доступа к текстам нормативных актов, изучения структуры законодательства и подготовки документов. При этом система <strong>не является официальным источником опубликования</strong> нормативных правовых актов.</p>
+      <p>В случаях, требующих юридической точности (например, при подготовке процессуальных документов), рекомендуется сверять тексты с официальными изданиями или официальным порталом правовой информации.</p>
+    </div>
+
+    <div class="about-card">
+      <h2>Конфиденциальность и локальное хранение</h2>
+      <p>Все данные (закладки, заметки, история просмотров) сохраняются <strong>локально на вашем устройстве</strong>. База нормативных актов также хранится локально и не требует постоянного подключения к интернету после первой загрузки. Передача какой-либо информации на сторонние серверы <strong>не осуществляется</strong>.</p>
+      <p>Вы можете в любой момент удалить сохранённые данные, воспользовавшись кнопкой ниже.</p>
+    </div>
+
+    <div class="about-card">
+      <h2>Разработчик</h2>
+      <p class="author">Абдулмаликов Саид Рамазанович</p>
+      <p style="margin-top:8px">© 2026. Все права защищены.</p>
+    </div>
+
+    <div class="about-card">
+      <h2>Сброс данных</h2>
+      <p>Если база данных устарела или в работе приложения возникли ошибки, вы можете очистить локальный кэш. После этого потребуется повторная загрузка нормативных актов при наличии подключения к интернету.</p>
+      <button class="btn" style="margin-top:12px; color:var(--danger); border-color:var(--danger);" onclick="clearAllData()">Очистить кэш и перезагрузить</button>
+    </div>
+  </section>`;
+}
+
+function clearAllData() {
+  if (confirm('Вы уверены? Это удалит сохраненную базу данных и потребует повторной загрузки из интернета.')) {
+    localStorage.clear();
+    if ('serviceWorker' in navigator) {
+      caches.keys().then(names => Promise.all(names.map(name => caches.delete(name)))).then(() => {
+        location.reload();
+      });
+    } else {
+      location.reload();
+    }
+  }
+}
+
+// --- ПОИСК (Панель и Результаты) ---
+function renderSearchHome() {
+  const body = $('workspaceBody');
+  body.innerHTML = `<section class="home" style="padding-top:20px;">
+    <div class="welcome" style="margin-bottom:20px;">
+      <div>
+        <h1 style="font-size:24px; margin-bottom:0;">Система поиска</h1>
+      </div>
+    </div>
+    
+    <div class="search-panel">
+      <div class="search-tabs">
+        <div class="search-tab active" onclick="switchSearchTab('quick', this)">Быстрый поиск</div>
+        <div class="search-tab" onclick="switchSearchTab('adv', this)">Поиск по реквизитам</div>
+      </div>
+      
+      <div class="search-content" id="tabQuick">
+        <div class="search-row">
+          <input type="text" id="quickSearchInput" placeholder="Введите запрос: ключевые слова, номер статьи или наименование документа" onkeydown="if(event.key==='Enter') doQuickSearch()">
+          <button class="btn primary" onclick="doQuickSearch()">Найти</button>
+        </div>
+        <div class="search-filters">
+          <label><input type="radio" name="quickScope" value="all" checked> Везде</label>
+          <label><input type="radio" name="quickScope" value="doc"> В названиях документов</label>
+          <label><input type="radio" name="quickScope" value="art"> В названиях статей</label>
+          <label><input type="radio" name="quickScope" value="text"> В тексте статей</label>
+        </div>
+      </div>
+
+      <div class="search-content" id="tabAdv" style="display:none;">
+        <div class="adv-search-form">
+          <div class="adv-field">
+            <label>Текст документа</label>
+            <input type="text" id="advText" placeholder="Слово или фраза в тексте">
+          </div>
+          <div class="adv-field">
+            <label>Название документа</label>
+            <input type="text" id="advTitle" placeholder="Например: Гражданский кодекс">
+          </div>
+          <div class="adv-field">
+            <label>Номер</label>
+            <input type="text" id="advNumber" placeholder="Например: 51-ФЗ">
+          </div>
+          <div class="adv-field">
+            <label>Дата</label>
+            <input type="date" id="advDate">
+          </div>
+          <div class="adv-field">
+            <label>Вид документа</label>
+            <select id="advType">
+              <option value="all">Все</option>
+              <option value="Конституция">Конституция</option>
+              <option value="Кодекс">Кодекс</option>
+              <option value="ФКЗ">ФКЗ</option>
+              <option value="ФЗ">ФЗ</option>
+              <option value="Закон">Закон</option>
+            </select>
+          </div>
+          <div class="adv-actions">
+            <button class="btn" style="background:var(--surface-2);border-color:var(--line);" onclick="clearAdvForm()">Очистить</button>
+            <button class="btn yellow" onclick="doAdvSearch()">Найти документы</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function switchSearchTab(tab, el) {
+  document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  $('tabQuick').style.display = tab === 'quick' ? 'block' : 'none';
+  $('tabAdv').style.display = tab === 'adv' ? 'block' : 'none';
+}
+
+function doQuickSearch() {
+  const q = $('quickSearchInput').value.trim();
+  if (!q) return toast('Введите запрос');
+  const scopeEl = document.querySelector('input[name="quickScope"]:checked');
+  const scope = scopeEl ? scopeEl.value : 'all';
+  
+  state.query = q;
+  state.searchScope = scope;
+  showView('search-results');
+}
+
+function renderSearchResults() {
+  const body = $('workspaceBody');
+  const q = state.query;
+  const scope = state.searchScope || 'all';
+  const lowerQ = q.toLocaleLowerCase('ru');
+  
+  let sqlQuery = '';
+  if (scope === 'doc') {
+    sqlQuery = `SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE lower(code) LIKE '%${lowerQ}%'`;
+  } else if (scope === 'art') {
+    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.heading) LIKE '%${lowerQ}%'`;
+  } else if (scope === 'text') {
+    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${lowerQ}%' LIMIT 250`;
+  } else {
+    // all
+    sqlQuery = `
+      SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status 
+      FROM articles a JOIN documents d ON a.doc_slug = d.slug 
+      WHERE lower(a.heading) LIKE '%${lowerQ}%' OR lower(a.text) LIKE '%${lowerQ}%'
+      LIMIT 250
+    `;
+  }
+
+  let matches = [];
+  try {
+    const res = db.exec(sqlQuery);
+    if (res.length > 0) {
+      matches = res[0].values.map(row => {
+        if (scope === 'doc') {
+          return { isDoc: true, doc: { slug: row[0], code: row[1], type: row[2], act_kind: row[3], base_act: row[4], redaction_date: row[5] } };
+        } else {
+          return { 
+            isDoc: false, 
+            doc: { slug: row[0], code: row[1] }, 
+            number: row[2], 
+            art: { heading: row[3], text: row[4], status: row[5] } 
+          };
+        }
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  body.innerHTML = `<section class="result-page">
+    <div class="result-heading">
+      <div>
+        <div class="eyebrow">Результаты поиска</div>
+        <h1>Найдено по запросу: «${esc(q)}»</h1>
+        <p>Область поиска: ${scope==='doc'?'Названия документов':scope==='art'?'Названия статей':scope==='text'?'Текст статей':'Везде'} · Найдено: ${matches.length}${matches.length===250?' и более':''}</p>
+      </div>
+      <button class="btn" onclick="showView('search-home')">← Новый поиск</button>
+    </div>
+    
+    <div class="results" id="resultItems">
+      ${matches.length ? matches.map(m => {
+        if (m.isDoc) {
+          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}')">
+            <div class="result-doc">${esc(m.doc.act_kind || m.doc.type || 'Документ')}</div>
+            <h3>${markText(m.doc.code, [q])}</h3>
+            <p>Редакция: ${esc(dateOf(m.doc.redaction_date))}</p>
+          </div>`;
+        } else {
+          const snippet = (m.art.text || '').replace(/\s+/g, ' ').slice(0, 360);
+          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}','${m.number}')">
+            <div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div>
+            <h3>${markText(artTitle(m.art, m.number), [q])}</h3>
+            <p>${markText(snippet, [q])}${(m.art.text||'').length>360?'…':''}</p>
+          </div>`;
+        }
+      }).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong><p>Попробуйте изменить запрос или область поиска.</p></div>'}
+    </div>
+    
+    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
+  </section>`;
+}
+
+function clearAdvForm() {
+  $('advText').value = '';
+  $('advTitle').value = '';
+  $('advNumber').value = '';
+  $('advDate').value = '';
+  $('advType').value = 'all';
+}
+
+function doAdvSearch() {
+  const text = $('advText').value.toLowerCase().trim();
+  const title = $('advTitle').value.toLowerCase().trim();
+  const number = $('advNumber').value.toLowerCase().trim();
+  const date = $('advDate').value.trim();
+  const type = $('advType').value;
+
+  let sqlQuery = "SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE 1=1";
+  
+  if (title) sqlQuery += ` AND lower(code) LIKE '%${title}%'`;
+  if (number) sqlQuery += ` AND lower(act_number) LIKE '%${number}%'`;
+  if (date) sqlQuery += ` AND (act_date LIKE '%${date}%' OR redaction_date LIKE '%${date}%')`;
+  if (type !== 'all') sqlQuery += ` AND type = '${type}'`;
+
+  let docMatches = [];
+  try {
+    const res = db.exec(sqlQuery);
+    if (res.length > 0) {
+      docMatches = res[0].values.map(row => ({
+        slug: row[0], code: row[1], type: row[2], act_kind: row[3], base_act: row[4], redaction_date: row[5]
+      }));
+    }
+  } catch (e) { console.error(e); }
+
+  if (text) {
+    let artMatches = [];
+    try {
+      const res = db.exec(`SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${text}%' LIMIT 250`);
+      if (res.length > 0) {
+        artMatches = res[0].values.map(row => ({
+          doc: { slug: row[0], code: row[1] },
+          number: row[2],
+          art: { heading: row[3], text: row[4], status: row[5] }
+        }));
+      }
+    } catch (e) { console.error(e); }
+    showAdvResults(text, artMatches, docMatches, true);
+    return;
+  }
+
+  showAdvResults('', [], docMatches, false);
+}
+
+function showAdvResults(query, artMatches, docMatches, isTextSearch) {
+  const body = $('workspaceBody');
+  
+  if (isTextSearch) {
+    body.innerHTML = `<section class="result-page">
+      <div class="result-heading">
+        <div>
+          <div class="eyebrow">Поиск по реквизитам (с текстом)</div>
+          <h1>Найдено статей: ${artMatches.length}</h1>
+          <p>Запрос: «${esc(query)}»</p>
+        </div>
+        <button class="btn" onclick="showView('search-home')">← Новый поиск</button>
+      </div>
+      <div class="results">
+        ${artMatches.length ? artMatches.map(m => {
+          const snippet = (m.art.text || '').replace(/\s+/g, ' ').slice(0, 360);
+          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}','${m.number}')">
+            <div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div>
+            <h3>${markText(artTitle(m.art, m.number), [query])}</h3>
+            <p>${markText(snippet, [query])}${(m.art.text||'').length>360?'…':''}</p>
+          </div>`;
+        }).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong><p>Попробуйте изменить запрос.</p></div>'}
+      </div>
+      <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
+    </section>`;
+  } else {
+    body.innerHTML = `<section class="result-page">
+      <div class="result-heading">
+        <div>
+          <div class="eyebrow">Поиск по реквизитам</div>
+          <h1>Найдено документов: ${docMatches.length}</h1>
+        </div>
+        <button class="btn" onclick="showView('search-home')">← Новый поиск</button>
+      </div>
+      <div class="results">
+        ${docMatches.length ? docMatches.map(d => `
+          <div class="result-card" onclick="openDocBySlug('${d.slug}')">
+            <div class="result-doc">${esc(d.act_kind || d.type || 'Документ')}</div>
+            <h3>${esc(d.code)}</h3>
+            <p>Редакция: ${esc(dateOf(d.redaction_date))}</p>
+          </div>
+        `).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong><p>Попробуйте изменить параметры поиска.</p></div>'}
+      </div>
+      <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
+    </section>`;
+  }
+}
+
+function markText(text, terms) { 
+  let html = esc(text); 
+  for (const term of terms.filter(t => t.length)) { 
+    const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'giu'); 
+    html = html.replace(re,'<mark>$1</mark>'); 
+  } 
+  return html; 
+}
+
+function safeJsonParse(str) {
+  if (!str) return [];
+  if (typeof str !== 'string') return [];
+  try {
+    const parsed = JSON.parse(str);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.warn('Невалидный JSON в structure_json:', str.slice(0, 100));
+    return [];
+  }
+}
+
+async function openDocBySlug(slug, num = null) { 
+  if (!db) return toast('База данных не загружена');
+  
+  $('workspaceBody').innerHTML = `<div class="empty-state" style="margin-top:100px;text-align:center;"><strong>Загрузка документа...</strong><p>Пожалуйста, подождите</p></div>`;
+  
+  try {
+    const docRes = db.exec(`SELECT * FROM documents WHERE slug = '${slug}'`);
+    if (!docRes.length) throw new Error('Документ не найден');
+    const docRow = docRes[0].values[0];
+    
+    const artsRes = db.exec(`SELECT number, heading, text, status FROM articles WHERE doc_slug = '${slug}'`);
+    const articles = {};
+    if (artsRes.length) {
+      artsRes[0].values.forEach(row => {
+        articles[row[0]] = { number: row[0], heading: row[1], text: row[2], status: row[3] };
+      });
+    }
+
+    const fullDoc = {
+      slug:           docRow[0],
+      code:           docRow[1],
+      type:           docRow[2],
+      act_kind:       docRow[3],
+      act_number:     docRow[4],
+      base_act:       docRow[5],
+      redaction_date: docRow[6],
+      redaction_status: docRow[7],
+      source_url:     docRow[8],
+      articles_total: docRow[9],
+      preamble:       docRow[10] ? String(docRow[10]).split('\n') : [],
+      structure:      docRow[11] ? safeJsonParse(docRow[11]) : [],
+      articles:       articles
+    };
+    
+    const existingIdx = state.docs.findIndex(d => d.slug === slug);
+    if (existingIdx >= 0) state.docs[existingIdx] = fullDoc;
+    else state.docs.push(fullDoc);
+    
+    openDoc(fullDoc, num);
+  } catch (e) {
+    toast('Ошибка загрузки документа: ' + e.message);
+    showView('home');
+  }
+}
+
+function renderCategory(catName) {
+  const body = $('workspaceBody');
+  let docs = [];
+  let desc = '';
+  
+  if (catName === 'Конституция') {
+    docs = state.docs.filter(d => d.type === 'Конституция');
+    desc = `<div class="legal-info">
+      <strong>Конституция Российской Федерации</strong> — высший нормативный правовой акт РФ.
+      <ul>
+        <li><b>Принята:</b> 12 декабря 1993 года (всенародным голосованием).</li>
+        <li><b>Вступила в силу:</b> 25 декабря 1993 года.</li>
+        <li><b>Особенности:</b> Обладает высшей юридической силой, прямым действием и применяется на всей территории РФ. Законы и иные правовые акты не должны противоречить Конституции.</li>
+        <li><b>Структура:</b> Преамбула, 2 раздела, 9 глав (137 статей).</li>
+      </ul>
+    </div>`;
+  } else if (catName === 'Кодексы') {
+    docs = state.docs.filter(d => d.kind === 'codex' || d.type === 'Кодекс');
+    desc = `<div class="legal-info">
+      <strong>Кодекс</strong> — законодательный акт, содержащий систематизированные нормы какой-либо отрасли права.
+      <ul>
+        <li><b>Роль:</b> Являются «фундаментом» отрасли. Например, ГК РФ регулирует имущественные отношения, УК РФ — преступления и наказания.</li>
+        <li><b>Иерархия:</b> Федеральные законы в той же сфере не должны противоречить кодексам.</li>
+      </ul>
+    </div>`;
+  } else if (catName === 'ФКЗ') {
+    docs = state.docs.filter(d => d.type === 'ФКЗ');
+    desc = `<div class="legal-info">
+      <strong>Федеральный конституционный закон (ФКЗ)</strong> — закон особой юридической силы.
+      <ul>
+        <li><b>Особенности:</b> Принимаются только по вопросам, прямо предусмотренным Конституцией РФ (о судебной системе, о Правительстве, о чрезвычайном положении).</li>
+        <li><b>Порядок принятия:</b> Требуют одобрения 2/3 голосов Госдумы и 3/4 голосов Совета Федерации. Подлежат обязательному подписанию Президентом.</li>
+      </ul>
+    </div>`;
+  } else if (catName === 'ФЗ') {
+    docs = state.docs.filter(d => d.type === 'ФЗ' || (!d.type && d.kind !== 'codex'));
+    desc = `<div class="legal-info">
+      <strong>Федеральный закон (ФЗ)</strong> — основной вид текущего законодательства.
+      <ul>
+        <li><b>Роль:</b> Регулируют отдельные сферы общественных отношений (например, «О полиции», «О защите прав потребителей»).</li>
+        <li><b>Порядок принятия:</b> Принимаются простым большинством голосов (50% + 1) в обеих палатах парламента.</li>
+      </ul>
+    </div>`;
+  }
+
+  docs.sort((a, b) => titleOf(a).localeCompare(titleOf(b), 'ru'));
+
+  body.innerHTML = `<section class="docs-page">
+    <div class="back-link" onclick="showView('home')">${icons.arrowLeft} На главную</div>
+    <h1>${catName} <span style="font-size:16px;color:var(--muted);font-weight:normal">(${docs.length})</span></h1>
+    ${desc}
+    
+    <table class="doc-list-table">
+      <thead>
+        <tr>
+          <th>Наименование</th>
+          <th>Реквизиты</th>
+          <th>Статей</th>
+          <th style="width:40px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${docs.map(d => {
+          const isPin = state.pinned.includes(d.slug);
+          return `<tr onclick="openDocBySlug('${d.slug}')" style="cursor:pointer;">
+            <td>
+              <span class="doc-row-title">${esc(titleOf(d))}</span>
+              <div class="doc-row-meta">${esc(d.act_kind || d.type || 'Документ')}</div>
+            </td>
+            <td>
+              <div style="font-size:12px;color:var(--ink)">${esc(d.base_act || '—')}</div>
+              <div class="doc-row-meta">Ред. от ${esc(dateOf(d.redaction_date))}</div>
+            </td>
+            <td>${docsCount(d)}</td>
+            <td onclick="event.stopPropagation();togglePin('${d.slug}')">
+              <button class="row-pin-btn ${isPin ? 'pinned' : ''}" title="${isPin ? 'Открепить' : 'Закрепить'}">
+                ${isPin ? icons.pinFill : icons.pin}
+              </button>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </section>`;
+}
+
+function openDoc(doc, number = null) {
+  if (state.view !== 'reader') {
+    state.prevView = state.view;
+    state.prevCategory = state.category;
+  }
+  state.doc = doc; renderLibrary(); state.view = 'reader'; setActiveNav('');
+  if (number && doc.articles?.[String(number)]) state.article = String(number);
+  else state.article = null;
+  state.readMode = 'passport'; 
+  state.docSearch = { query:'', matches:[], current:0 };
+  renderReader(); closeMobile();
+  if (state.article) recordHistory(doc, doc.articles[state.article], state.article);
+}
+
+function openArticle(number) {
+  if (!state.doc) return;
+  number = String(number);
+  const art = state.doc.articles?.[number];
+  if (!art) { toast(`Статья ${number} не найдена`); return; }
+  state.article = number;
+  state.readMode = 'single'; 
+  renderReader(); recordHistory(state.doc, art, number);
+}
+
+function renderReader() {
+  const body = $('workspaceBody');
+  $('readerTools').hidden = false;
+  if (!state.doc) { showView('home'); return; }
+
+  const art = state.article ? state.doc.articles[state.article] : null;
+  const nums = flattenStructure(state.doc.structure);
+  const isFav = art && state.favorites.includes(recordKey(state.doc, state.article));
+  const isPin = state.pinned.includes(state.doc.slug);
+
+  $('favoriteBtn').innerHTML = isFav ? icons.starFill : icons.star;
+  $('favoriteBtn').classList.toggle('primary', !!isFav);
+
+  $('backToDocBtn').style.display = (state.readMode !== 'passport') ? 'inline-flex' : 'none';
+
+  setBreadcrumb([titleOf(state.doc), art ? `Статья ${state.article}` : 'Документ']);
+
+  let articleHtml = '';
+
+  if (state.readMode === 'full') {
+    let fullHtml = '';
+    const walk = (nodes, level = 0) => {
+      if (!nodes) return;
+      nodes.forEach(node => {
+        if (node.heading) {
+          const hLevel = Math.min(6, level + 2);
+          fullHtml += `<h${hLevel} style="margin-top: 32px; margin-bottom: 16px; font-size: ${1.6 - level * 0.2}em; line-height: 1.3; border-bottom: 1px solid var(--line); padding-bottom: 8px;">${esc(node.heading)}</h${hLevel}>`;
+        }
+        if (node.unit === 'статья' && node.number) {
+          const artData = state.doc.articles[node.number];
+          if (artData) {
+            fullHtml += `<div class="full-article" data-art="${esc(node.number)}" style="margin-top: 24px; margin-bottom: 8px; font-weight: 700; font-size: 1.1em;">${esc(artTitle(artData, node.number))}</div>`;
+            if (artData.text) {
+              fullHtml += `<div class="full-article-body" data-art="${esc(node.number)}">` +
+                artData.text.split('\n').filter(Boolean).map(p => `<p style="margin-bottom: 12px;">${esc(p)}</p>`).join('') +
+                `</div>`;
+            } else {
+              fullHtml += `<p style="color: var(--muted); font-style: italic;">Текст отсутствует.</p>`;
+            }
+          }
+        }
+        if (node.children) walk(node.children, level + 1);
+      });
+    };
+    walk(state.doc.structure);
+
+    articleHtml = `<div style="margin-bottom:20px"><button class="btn" onclick="state.readMode='passport';renderReader()">← К паспорту</button></div><div class="article-body" id="articleBody">${fullHtml}</div>`;
+  } else if (state.readMode === 'passport') {
+    const tocHtml = buildTocHtml(state.doc.structure);
+    let preambleHtml = '';
+    if (state.doc.preamble && state.doc.preamble.length > 0) {
+      preambleHtml = `<div class="preamble-box">${state.doc.preamble.map(p => `<p>${esc(p)}</p>`).join('')}</div>`;
+    }
+
+    articleHtml = `
+      ${renderDocPassport()}
+      ${preambleHtml}
+      <div class="doc-toc-container">
+        <h2>Структура документа</h2>
+        <div class="toc-tree">${tocHtml}</div>
+      </div>
+    `;
+  } else if (state.readMode === 'single') {
+    let passportArticleHtml = '';
+    if (art) {
+      const st = (art.status || '').toLowerCase();
+      const isDead = st.includes('утратила');
+      const statusHtml = isDead ? `<span class="status-pill">Утратила силу</span>` : `<span class="status-pill ok">Действует</span>`;
+
+      passportArticleHtml = `
+        <div class="passport-norm">
+          <div class="article-kicker" style="margin-bottom:8px">Паспорт нормы</div>
+          <h3>${esc(artTitle(art, state.article))}</h3>
+          <div class="meta-grid">
+            <span><b>Документ:</b> ${esc(titleOf(state.doc))}</span>
+            ${state.doc.base_act ? `<span><b>Принят:</b> ${esc(state.doc.base_act)}</span>` : ''}
+            <span><b>Редакция:</b> ${esc(dateOf(state.doc.redaction_date))}</span>
+            <span><b>Статус:</b> ${statusHtml}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    articleHtml = `
+      <div style="margin-bottom:20px"><button class="btn" onclick="state.readMode='passport';renderReader()">← К структуре</button></div>
+      ${passportArticleHtml}
+      ${art ? `<div class="article-body" id="articleBody">${art.text ? art.text.split('\n').filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('') : '<p class="empty">В файле базы для этой статьи нет текста.</p>'}</div>` : ''}
+    `;
+  }
+
+  const structureLinks = nums.map(n => `<a class="aside-link" data-jump="${esc(n)}">${esc(artTitle(state.doc.articles[n] || {}, n))}</a>`).join('');
+
+  body.innerHTML = `
+    <div class="reader-layout">
+      <article class="article">
+        ${articleHtml}
+      </article>
+      <aside class="article-aside">
+        <div class="aside-card">
+          <h3>Действия</h3>
+          ${state.readMode === 'passport' ? `<a class="aside-link" onclick="state.readMode='full';renderReader()">${icons.book} Текст целиком</a>` : ''}
+          <a class="aside-link" id="gotoAside">${icons.target} Переход к статье</a>
+          <a class="aside-link" onclick="showView('home')">${icons.home} Главная</a>
+        </div>
+        ${art ? `
+        <div class="aside-card">
+          <h3>Заметка</h3>
+          <textarea id="noteArea" class="note-area" placeholder="Текст заметки...">${esc(state.notes[recordKey(state.doc, state.article)] || '')}</textarea>
+          <button class="btn primary" id="saveNote" style="width:100%;margin-top:10px">${icons.check} Сохранить</button>
+        </div>
+        ` : ''}
+        <div class="aside-card">
+          <h3>Навигация</h3>
+          <div style="max-height:300px;overflow:auto">${structureLinks || '<span class="aside-link" style="color:var(--muted)">Нет данных</span>'}</div>
+        </div>
+        <footer class="app-footer" style="border:none;padding:0;margin-top:20px;text-align:left;font-size:9px;">
+          © Абдулмаликов С.Р., 2026
+        </footer>
+      </aside>
+    </div>
+  `;
+
+  const readWhole = $('readWholeBtn'); if (readWhole) readWhole.onclick = () => { state.readMode='full'; renderReader(); };
+  const showToc = $('showTocBtn'); if (showToc) showToc.onclick = () => { state.readMode='passport'; renderReader(); };
+  body.querySelectorAll('[data-jump]').forEach(el => el.onclick = () => openArticle(el.dataset.jump));
+  $('gotoAside').onclick = openGoto;
+  const saveNoteBtn = $('saveNote'); if (saveNoteBtn) saveNoteBtn.onclick = saveNote;
+  
+  if (state.readMode === 'passport') {
+    body.querySelectorAll('.toc-node-header').forEach(el => {
+      el.onclick = () => {
+        el.classList.toggle('open');
+        const children = el.nextElementSibling;
+        if (children) children.classList.toggle('open');
+      };
+    });
+  }
+
+  $('articleBody')?.style.setProperty('--reader-size', state.font + 'px');
+  document.documentElement.style.setProperty('--reader-size', state.font + 'px');
+
+  if (state.docSearch.query) setTimeout(() => highlightSearchMatches(), 50);
+}
+
+function buildTocHtml(nodes, level = 0) {
+  if (!nodes) return '';
+  let html = '';
+  nodes.forEach(node => {
+    const hasChildren = node.children && node.children.length > 0;
+    const isArticle = node.unit === 'статья' && node.number;
+    
+    if (isArticle) {
+      html += `<div class="toc-article" onclick="openArticle('${esc(node.number)}')">${esc(artTitle(state.doc.articles[node.number] || {}, node.number))}</div>`;
+    } else if (hasChildren) {
+      const label = node.heading || node.title || 'Раздел';
+      html += `<div class="toc-node">
+        <div class="toc-node-header">
+          ${icons.chevronRight}
+          <span class="toc-label">${esc(label)}</span>
+        </div>
+        <div class="toc-children">
+          ${buildTocHtml(node.children, level + 1)}
+        </div>
+      </div>`;
+    }
+  });
+  return html;
+}
+
+function renderDocPassport() {
+  const doc = state.doc;
+  const isPin = state.pinned.includes(doc.slug);
+  
+  return `
+    <div class="doc-passport">
+      <div class="article-kicker" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:flex-start;">
+        <span>${esc(doc.act_kind || doc.type || 'Правовой документ')}</span>
+        <button class="btn ${isPin ? 'primary' : ''}" onclick="togglePin('${doc.slug}')" style="padding:6px 12px; font-size:12px; border-radius:6px; background:${isPin ? 'var(--ink)' : 'var(--surface)'}; color:${isPin ? 'var(--surface)' : 'var(--ink)'}; border-color:${isPin ? 'var(--ink)' : 'var(--line)'}">
+          ${isPin ? icons.pinFill : icons.pin} ${isPin ? 'Открепить' : 'Закрепить'}
+        </button>
+      </div>
+      <h2>${esc(titleOf(doc))}</h2>
+      <div class="doc-passport-meta">
+        ${doc.base_act ? `<span><b>Принят:</b> ${esc(doc.base_act)}</span>` : ''}
+        <span><b>Редакция:</b> ${esc(dateOf(doc.redaction_date))} <span class="status-pill ok" style="margin-left:4px">Действует</span></span>
+        <span><b>Статей:</b> ${docsCount(doc)}</span>
+        ${doc.act_number ? `<span><b>Номер:</b> ${esc(doc.act_number)}</span>` : ''}
+      </div>
+      <div class="doc-passport-actions">
+        <button class="btn primary" id="readWholeBtn">${icons.book} Читать весь текст</button>
+        <button class="btn" id="showTocBtn" style="display:none">${icons.layers} Структура</button>
+      </div>
+    </div>
+  `;
+}
+
+function flattenStructure(nodes, out = []) {
+  (nodes || []).forEach(n => {
+    if (n.unit === 'статья' && n.number) out.push(String(n.number));
+    if (n.children) flattenStructure(n.children, out);
+  });
+  return out;
+}
+
+function recordHistory(doc, art, number) {
+  const entry = { slug: doc.slug, docCode: titleOf(doc), number: String(number), title: artTitle(art, number), ts: Date.now() };
+  state.history = state.history.filter(h => !(h.slug === entry.slug && String(h.number) === entry.number));
+  state.history.unshift(entry); state.history = state.history.slice(0, 100);
+  writeStore('pravo-history', state.history);
+}
+
+function toggleFavorite() {
+  if (!state.doc || !state.article) return toast('Сначала откройте статью');
+  const key = recordKey(state.doc, state.article);
+  if (state.favorites.includes(key)) {
+    state.favorites = state.favorites.filter(k => k !== key); toast('Удалено из избранного');
+  } else {
+    state.favorites.unshift(key); toast('Добавлено в избранное');
+  }
+  writeStore('pravo-favs', state.favorites);
+  $('favCount').textContent = state.favorites.length;
+  renderReader();
+}
+
+function saveNote() {
+  if (!state.doc || !state.article) return;
+  const key = recordKey(state.doc, state.article), value = $('noteArea').value.trim();
+  if (value) state.notes[key] = value; else delete state.notes[key];
+  writeStore('pravo-notes', state.notes);
+  toast(value ? 'Заметка сохранена' : 'Заметка удалена');
+}
+
+function renderCollection(type) {
+  const body = $('workspaceBody');
+  let records = [];
+  if (type === 'favorites') records = state.favorites.map(getRecord).filter(Boolean);
+  else if (type === 'history') records = state.history.map(h => getRecord(recordKey({slug:h.slug}, h.number))).filter(Boolean);
+  else records = Object.entries(state.notes).map(([key, note]) => { const r = getRecord(key); return r ? { ...r, note } : null; }).filter(Boolean);
+
+  const title = type === 'favorites' ? 'Избранное' : type === 'history' ? 'История' : 'Мои заметки';
+  const desc = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'Журнал просмотренных документов.' : 'Заметки к статьям.';
+
+  body.innerHTML = `<section class="result-page">
+    <div class="result-heading">
+      <div><div class="eyebrow">Библиотека</div><h1>${title}</h1><p>${desc}</p></div>
+      <span class="date-chip">${records.length} ${plural(records.length, ['запись','записи','записей'])}</span>
+    </div>
+    <div class="results">${records.length ? records.map(r => `<div class="result-card" onclick="openDocBySlug('${r.doc.slug}','${r.number}')"><div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div><h3>${esc(artTitle(r.art, r.number))}</h3><p>${esc(type==='notes'?r.note:(r.art.text||'').slice(0,260))}${type!=='notes'&&r.art.text?.length>260?'…':''}</p></div>`).join('') : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`}</div>
+    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
+  </section>`;
+}
+
+function plural(n, forms) { const x = n % 100, y = n % 10; return forms[x > 10 && x < 20 ? 2 : y === 1 ? 0 : y >= 2 && y <= 4 ? 1 : 2]; }
+
+function openGoto() { if (!state.doc) return toast('Сначала откройте документ'); $('gotoModal').classList.add('show'); $('gotoInput').value = ''; $('gotoInput').focus(); }
+function closeGoto() { $('gotoModal').classList.remove('show'); }
+function confirmGoto() { const n = $('gotoInput').value.trim().replace(/^статья\s*/i, ''); if (state.doc?.articles?.[n]) { closeGoto(); openArticle(n); } else toast(`Статья ${n||'—'} не найдена`); }
+function closeMobile() { $('sidebar').classList.remove('open'); $('mobileBackdrop').classList.remove('show'); }
+function toggleTheme() {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('pravo-theme', next); } catch {}
+  $('themeIcon').outerHTML = next === 'dark' ? icons.sun.replace('id="themeIcon"', 'id="themeIcon"') : icons.moon ? icons.moon : '<svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+}
+
+// --- ПОИСК В ТЕКСТЕ ---
+function openDocSearch() {
+  const panel = $('docSearchPanel');
+  if (panel.classList.contains('active')) {
+    panel.classList.remove('active');
+    $('docSearchInput').value = '';
+    state.docSearch = { query:'', matches:[], current:0 };
+    $('searchCount').textContent = '';
+    removeSearchHighlights();
+    return;
+  }
+  panel.classList.add('active');
+  $('docSearchInput').value = '';
+  $('docSearchInput').focus();
+  $('searchCount').textContent = '';
+}
+
+function performDocSearch() {
+  const q = $('docSearchInput').value.trim();
+  if (!q) { state.docSearch = { query:'', matches:[], current:0 }; $('searchCount').textContent = ''; removeSearchHighlights(); return; }
+  const matches = [];
+  const container = $('articleBody') || $('workspaceBody');
+  if (!container) return;
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
+  let node; const lowerQ = q.toLowerCase();
+  removeSearchHighlights();
+  const textNodes = [];
+  while (node = walker.nextNode()) {
+    if (node.parentElement.closest('mark')) continue;
+    if (node.textContent.toLowerCase().includes(lowerQ)) textNodes.push(node);
+  }
+  textNodes.forEach(textNode => {
+    const text = textNode.textContent; const parent = textNode.parentNode; const lowerText = text.toLowerCase();
+    let pos = 0; const frag = document.createDocumentFragment(); let lastPos = 0;
+    while ((pos = lowerText.indexOf(lowerQ, lastPos)) !== -1) {
+      if (pos > lastPos) frag.appendChild(document.createTextNode(text.slice(lastPos, pos)));
+      const mark = document.createElement('mark'); mark.textContent = text.slice(pos, pos + q.length); mark.dataset.matchIndex = String(matches.length); frag.appendChild(mark); matches.push(mark); lastPos = pos + q.length;
+    }
+    if (lastPos < text.length) frag.appendChild(document.createTextNode(text.slice(lastPos)));
+    parent.replaceChild(frag, textNode);
+  });
+  state.docSearch = { query: q, matches, current: -1 };
+  if (matches.length > 0) { state.docSearch.current = 0; scrollToMatch(0); updateSearchCount(); } else { $('searchCount').textContent = 'Нет совпадений'; }
+}
+
+function updateSearchCount() { const { matches, current } = state.docSearch; if (matches.length > 0) $('searchCount').textContent = `${current + 1} из ${matches.length}`; else $('searchCount').textContent = ''; }
+function scrollToMatch(idx) { const { matches } = state.docSearch; if (!matches[idx]) return; matches.forEach(m => m.classList.remove('active-match')); matches[idx].classList.add('active-match'); matches[idx].scrollIntoView({ behavior: 'smooth', block: 'center' }); state.docSearch.current = idx; updateSearchCount(); }
+function nextMatch() { const { matches, current } = state.docSearch; if (!matches.length) return; scrollToMatch((current + 1) % matches.length); }
+function prevMatch() { const { matches, current } = state.docSearch; if (!matches.length) return; scrollToMatch((current - 1 + matches.length) % matches.length); }
+function removeSearchHighlights() { document.querySelectorAll('mark').forEach(m => { const parent = m.parentNode; if (parent) { parent.replaceChild(document.createTextNode(m.textContent), m); parent.normalize(); } }); }
+function highlightSearchMatches() { if (!state.docSearch.query) return; const oldQuery = state.docSearch.query; const oldCurrent = state.docSearch.current; $('docSearchInput').value = oldQuery; setTimeout(() => { performDocSearch(); if (oldCurrent >= 0 && state.docSearch.matches[oldCurrent]) scrollToMatch(oldCurrent); }, 50); }
+
+// --- ИНИЦИАЛИЗАЦИЯ ---
+async function init() {
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
+  try {
+    const theme = localStorage.getItem('pravo-theme');
+    if (theme) { document.documentElement.dataset.theme = theme; if (theme === 'dark') $('themeIcon').outerHTML = icons.sun.replace('id="themeIcon"', 'id="themeIcon"'); }
+  } catch {}
+  document.documentElement.style.setProperty('--reader-size', state.font + 'px');
+  $('favCount').textContent = state.favorites.length;
+
+  $('libSearchInput').addEventListener('input', e => { state.libSearch = e.target.value; renderLibrary(); });
+  $('themeBtn').onclick = toggleTheme;
+  $('brandHome').onclick = () => showView('home');
+  document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => showView(b.dataset.view));
+  $('menuBtn').onclick = () => { $('sidebar').classList.toggle('open'); $('mobileBackdrop').classList.toggle('show'); };
+  $('mobileBackdrop').onclick = closeMobile;
+  $('gotoBtn').onclick = openGoto;
+  $('cancelGoto').onclick = closeGoto;
+  $('confirmGoto').onclick = confirmGoto;
+  $('gotoInput').addEventListener('keydown', e => { if (e.key === 'Enter') confirmGoto(); if (e.key === 'Escape') closeGoto(); });
+  $('gotoModal').addEventListener('click', e => { if (e.target === $('gotoModal')) closeGoto(); });
+  $('favoriteBtn').onclick = toggleFavorite;
+  $('printBtn').onclick = () => window.print();
+  $('noteBtn').onclick = () => { const a = $('noteArea'); if (a) { a.focus(); a.scrollIntoView({ behavior: 'smooth' }); } };
+  
+  $('docSearchBtn').onclick = openDocSearch;
+  $('docSearchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); if (state.docSearch.matches.length > 0 && state.docSearch.query === e.target.value.trim()) nextMatch(); else performDocSearch(); }
+    if (e.key === 'Escape') openDocSearch();
+  });
+  $('docSearchInput').addEventListener('input', () => {
+    const q = $('docSearchInput').value.trim();
+    if (q.length >= 2) performDocSearch();
+    else if (!q) { removeSearchHighlights(); state.docSearch = { query:'', matches:[], current:0 }; $('searchCount').textContent = ''; }
+  });
+  $('searchNext').onclick = () => nextMatch();
+  $('searchPrev').onclick = () => prevMatch();
+  $('searchClose').onclick = () => { $('docSearchPanel').classList.remove('active'); $('docSearchInput').value = ''; state.docSearch = { query:'', matches:[], current:0 }; $('searchCount').textContent = ''; removeSearchHighlights(); };
+
+  const btt = $('backToTop'); const wsBody = $('workspaceBody');
+  wsBody.addEventListener('scroll', () => { if (wsBody.scrollTop > 300) btt.classList.add('show'); else btt.classList.remove('show'); });
+  btt.onclick = () => { wsBody.scrollTo({ top: 0, behavior: 'smooth' }); };
+
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); $('libSearchInput').focus(); }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'g') { e.preventDefault(); openGoto(); }
+    if (e.key === 'Escape') { if ($('gotoModal').classList.contains('show')) closeGoto(); else if (state.docSearch.query) $('searchClose').click(); }
+  });
+
+  try { if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js').catch(() => {}); } catch {}
+
+  // === SQL.JS INIT ===
+  $('dbStatus').textContent = 'Инициализация SQLite...';
+  
+  try {
+    SQL = await initSqlJs({ locateFile: file => `./${file}` });
+  } catch (e) {
+    $('dbStatus').textContent = 'Ошибка SQL.js';
+    $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось загрузить SQL.js</strong><p>Файл sql-wasm.js не найден. ${esc(e.message)}</p></div></section>`;
+    return;
+  }
+
+  // Пытаемся достать базу из IndexedDB
+  $('dbStatus').textContent = 'Загрузка базы данных...';
+  let binaryData = null;
+  
+  try {
+    binaryData = await new Promise((resolve, reject) => {
+      const req = indexedDB.open('PravoDB', 1);
+      req.onupgradeneeded = (e) => { e.target.result.createObjectStore('files'); };
+      req.onsuccess = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('files')) return resolve(null);
+        const tx = db.transaction('files', 'readonly');
+        const store = tx.objectStore('files');
+        const getReq = store.get('laws.db');
+        getReq.onsuccess = () => resolve(getReq.result);
+        getReq.onerror = () => resolve(null);
+      };
+      req.onerror = () => resolve(null);
+    });
+  } catch (e) {}
+
+  if (!binaryData) {
+    $('dbStatus').textContent = 'Скачивание базы...';
+    try {
+      const res = await fetch('./laws.db');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      binaryData = new Uint8Array(await res.arrayBuffer());
+      
+      // Сохраняем в IndexedDB
+      const req = indexedDB.open('PravoDB', 1);
+      req.onsuccess = (e) => {
+        const db = e.target.result;
+        const tx = db.transaction('files', 'readwrite');
+        tx.objectStore('files').put(binaryData, 'laws.db');
+      };
+    } catch (err) {
+      $('dbStatus').textContent = 'Ошибка загрузки';
+      $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось скачать базу данных</strong><p>Убедитесь, что файл <code>laws.db</code> существует. ${esc(err.message)}</p></div></section>`;
+      return;
+    }
+  }
+
+  // Инициализируем базу
+  try {
+    db = new SQL.Database(binaryData);
+    
+    // Загружаем список документов
+    const docsRes = db.exec(`
+      SELECT 
+        d.slug, 
+        d.code, 
+        d.type, 
+        d.act_kind, 
+        d.base_act, 
+        d.redaction_date,
+        (SELECT COUNT(*) FROM articles a WHERE a.doc_slug = d.slug) as articles_total
+      FROM documents d
+    `);
+    state.docs = docsRes[0].values.map(row => ({
+      slug: row[0], 
+      code: row[1], 
+      type: row[2], 
+      act_kind: row[3], 
+      base_act: row[4], 
+      redaction_date: row[5], 
+      articles_total: row[6]
+    }));
+
+    const konst = state.docs.find(d => d.type === 'Конституция');
+    if (konst && !state.pinned.includes(konst.slug)) {
+      state.pinned.push(konst.slug);
+      writeStore('pravo-pinned', state.pinned);
+    }
+
+    $('dbStatus').textContent = 'Источник: pravo.gov.ru';
+    renderLibrary();
+    showView('home');
+  } catch (e) {
+    $('dbStatus').textContent = 'Ошибка SQLite';
+    $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Ошибка базы данных</strong><p>${esc(e.message)}</p></div></section>`;
+  }
+}
+init();
+</script>
+</body>
+</html>
