@@ -1370,7 +1370,8 @@ function openDoc(doc, number = null) {
   if (state.article && doc.articles[state.article]) {
     recordHistory(doc, doc.articles[state.article], state.article);
   } else {
-    recordHistory(doc, { heading: doc.code, text: 'Документ' }, ''); 
+    // Если открыт просто документ, записываем его с пометкой 'doc'
+    recordHistory(doc, { heading: doc.code || 'Документ', text: 'Просмотр документа' }, 'doc'); 
   }
 }
 
@@ -1636,7 +1637,7 @@ function renderCollection(type) {
     records = state.history.map(h => {
       const doc = state.docs.find(d => d.slug === h.slug);
       if (!doc) return null;
-      if (h.number && doc.articles && doc.articles[h.number]) {
+      if (h.number && h.number !== 'doc' && doc.articles && doc.articles[h.number]) {
         return { doc, art: doc.articles[h.number], number: h.number };
       }
       return { doc, art: { heading: doc.code, text: 'Документ' }, number: '' };
