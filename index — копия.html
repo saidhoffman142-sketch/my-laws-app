@@ -6,10 +6,11 @@
 <meta name="theme-color" content="#173b35">
 <meta name="author" content="Абдулмаликов Саид Рамазанович">
 <meta name="copyright" content="© Абдулмаликов Саид Рамазанович, 2026">
-<title>АИПС «РПА» — рабочее пространство юриста</title>
+<title>АИПС «РПА» — Информационно-правовая система</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-192.png">
+<script src="./sql-wasm.js"></script>
 <style>
 :root{color-scheme:light;--bg:#f4f6f5;--surface:#fff;--surface-2:#f8faf9;--ink:#172522;--muted:#687873;--line:#dfe7e3;--accent:#176b55;--accent-2:#105340;--accent-soft:#e4f3ed;--gold:#b58a45;--danger:#b42318;--shadow:0 8px 28px rgba(22,45,37,.07);--reader-size:17px;--sidebar:320px}
 [data-theme=dark]{color-scheme:dark;--bg:#111a18;--surface:#192522;--surface-2:#202e29;--ink:#e8f0ec;--muted:#a3b4ac;--line:#34453e;--accent:#77c9a9;--accent-2:#9adbbf;--accent-soft:#243f35;--gold:#e1bd7d;--danger:#ff8c83;--shadow:0 8px 28px rgba(0,0,0,.2)}
@@ -63,36 +64,10 @@
 
 /* Дашборд */
 .home{max-width:1160px;margin:0 auto;padding:40px 32px 60px}
-.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}
-.welcome h1{font-size:32px;letter-spacing:-1px;margin:12px 0 10px;line-height:1.15;font-weight:800}
-.welcome p{color:var(--muted);font-size:14px;line-height:1.65;margin:0;max-width:580px}
+.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:32px}
+.welcome h1{font-size:28px;letter-spacing:-.5px;margin:0 0 12px;line-height:1.25;font-weight:800}
+.welcome p{color:var(--muted);font-size:14px;line-height:1.65;margin:0;max-width:680px}
 .date-chip{border:1px solid var(--line);background:var(--surface);padding:10px 14px;border-radius:10px;font-size:12px;color:var(--muted);white-space:nowrap;box-shadow:var(--shadow)}
-
-/* ПАНЕЛЬ ПОИСКА */
-.search-panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);margin-bottom:36px;overflow:hidden}
-.search-tabs{display:flex;background:var(--surface-2);border-bottom:1px solid var(--line)}
-.search-tab{padding:14px 24px;font-size:13px;font-weight:650;color:var(--muted);cursor:pointer;border-right:1px solid var(--line);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
-.search-tab:hover{color:var(--ink);background:color-mix(in srgb,var(--surface-2) 50%,var(--surface))}
-.search-tab.active{background:var(--surface);color:var(--accent);border-bottom-color:var(--accent)}
-.search-content{padding:24px}
-.search-row{display:flex;gap:12px;align-items:center;margin-bottom:16px}
-.search-row input[type="text"]{flex:1;padding:12px 16px;border:2px solid var(--line);border-radius:8px;font-size:15px;outline:none;transition:border-color .2s}
-.search-row input[type="text"]:focus{border-color:var(--accent)}
-.search-row .btn{padding:12px 24px;font-size:15px}
-.search-filters{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--ink)}
-.search-filters label{display:flex;align-items:center;gap:6px;cursor:pointer}
-.search-filters select{padding:6px 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;outline:none;background:var(--surface-2)}
-
-/* Форма реквизитов */
-.adv-search-form{display:grid;grid-template-columns:1fr;gap:12px}
-.adv-field{display:flex;align-items:center;gap:12px}
-.adv-field label{width:160px;text-align:right;font-size:13px;color:var(--muted);flex-shrink:0}
-.adv-field input[type="text"],.adv-field input[type="date"],.adv-field select{flex:1;padding:8px 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;outline:none;background:var(--surface);max-width:400px}
-.adv-field input:focus,.adv-field select:focus{border-color:var(--accent)}
-.adv-actions{display:flex;gap:12px;margin-top:16px;margin-left:172px}
-.adv-actions .btn{padding:10px 20px;font-size:14px}
-.adv-actions .btn.yellow{background:#ffe8a1;color:#7a5a00;border-color:#e6cf8a}
-.adv-actions .btn.yellow:hover{background:#ffde7a}
 
 /* Категории */
 .categories{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
@@ -219,7 +194,7 @@
 .result-card p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
 .result-card mark{background:#f5e6b8;color:#382d14;border-radius:3px;padding:0 2px}
 
-/* О сервисе */
+/* О системе */
 .about-page{max-width:800px;margin:0 auto;padding:48px 32px}
 .about-hero{text-align:center;margin-bottom:40px}
 .about-hero .brand-mark{width:80px;height:80px;font-size:36px;margin:0 auto 24px;border-radius:20px;box-shadow:0 8px 24px rgba(23,107,85,.2);background:#fff;padding:8px;}
@@ -265,7 +240,161 @@
 .recent-main strong{font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
 .recent-main small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .recent-open{font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:4px;white-space:nowrap}
+/* Панель поиска */
+.search-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.search-tabs {
+  display: flex;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+}
+.search-tab {
+  padding: 14px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.search-tab:hover {
+  color: var(--ink);
+}
+.search-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--surface);
+}
 
+.search-content {
+  padding: 24px;
+}
+
+.search-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.search-row input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+.search-row input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.search-row .btn {
+  padding: 0 24px;
+  font-size: 14px;
+}
+
+/* Фильтры (радиокнопки) */
+.search-filters {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.search-filters label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.search-filters label:hover {
+  color: var(--ink);
+}
+.search-filters input[type="radio"] {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Форма расширенного поиска */
+.adv-search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.adv-field {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.adv-field label {
+  width: 160px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: right;
+  flex-shrink: 0;
+}
+.adv-field input,
+.adv-field select {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+}
+.adv-field input:focus,
+.adv-field select:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+.adv-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.legal-info {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.legal-info strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+.legal-info ul {
+  padding-left: 20px;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+.legal-info li {
+  margin-bottom: 8px;
+}
+.legal-info li b {
+  color: var(--ink);
+}
 /* Адаптив */
 .mobile-menu{display:none}.mobile-backdrop{display:none}
 @media(max-width:1100px){:root{--sidebar:280px}.doc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.reader-layout{grid-template-columns:minmax(0,1fr) 240px;padding:24px 24px 60px;gap:30px}.brand{min-width:190px}.topbar{gap:14px;padding:0 16px}.categories{grid-template-columns:repeat(2,1fr)}}
@@ -281,9 +410,9 @@
   </button>
   <div class="brand" role="button" tabindex="0" id="brandHome">
     <span class="brand-mark">
-      <img src="logo.png" alt="РПА" onerror="this.style.display='none'; this.parentElement.innerText='§';">
+      <img src="logo.png" alt="АИПС «РПА»" onerror="this.style.display='none'; this.parentElement.innerText='§';">
     </span>
-    <span class="brand-name">АИПС «РПА»<small>рабочее пространство</small></span>
+    <span class="brand-name">АИПС «РПА»<small>Информационно-правовая система</small></span>
   </div>
   <div class="top-actions">
     <button class="icon-btn desktop-only" id="gotoBtn" title="Перейти к статье · Ctrl+G">
@@ -300,7 +429,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="side-top">
       <div class="eyebrow">Навигация</div>
-      <div class="side-heading">Рабочий стол <span style="font-size:10px;color:var(--muted);font-weight:500;letter-spacing:1px">LEGAL OS</span></div>
+      <div class="side-heading">Официальная база <span style="font-size:10px;color:var(--muted);font-weight:500;letter-spacing:1px">Редакция 2026</span></div>
       <nav class="side-nav" aria-label="Основная навигация">
         <button class="nav-item active" data-view="home">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -324,20 +453,19 @@
         </button>
         <button class="nav-item" data-view="about">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          О сервисе
+          О системе
         </button>
       </nav>
     </div>
     <div class="side-divider"></div>
     
     <div class="library-head"><span>Правовая библиотека</span><span id="docCount">—</span></div>
-    <!-- ПОИСК В ЛЕВОЙ ПАНЕЛИ -->
     <div class="library-search">
-      <input type="text" id="libSearchInput" placeholder="Поиск по библиотеке..." autocomplete="off">
+      <input type="text" id="libSearchInput" placeholder="Фильтр библиотеки..." autocomplete="off">
     </div>
     <div class="library-list" id="libraryList"></div>
     
-    <div class="side-footer"><span id="dbStatus">Подключение к базе…</span><span>v9.0</span></div>
+    <div class="side-footer"><span id="dbStatus">Источник: pravo.gov.ru</span><span>© АИПС «РПА»</span></div>
   </aside>
 
   <main class="workspace">
@@ -388,9 +516,9 @@
 
 <div class="modal-backdrop" id="gotoModal">
   <div class="modal">
-    <h2>Перейти к статье</h2>
-    <p>Введите номер статьи текущего документа. Быстрый вызов — Ctrl + G.</p>
-    <input id="gotoInput" placeholder="Например, 15.1" autocomplete="off">
+    <h2>Переход к норме</h2>
+    <p>Укажите номер статьи в текущем документе. Быстрый вызов — Ctrl + G.</p>
+    <input id="gotoInput" placeholder="Например: 15.1" autocomplete="off">
     <div class="modal-actions">
       <button class="btn" id="cancelGoto">Отмена</button>
       <button class="btn primary" id="confirmGoto">Перейти</button>
@@ -429,12 +557,6 @@ function normalizeText(text) {
   }
   return String(text);
 }
-function normalizeArticle(art) {
-  if (!art) return art;
-  if (!art.text && art.content) art.text = normalizeText(art.content);
-  if (art.text && typeof art.text !== 'string') art.text = normalizeText(art.text);
-  return art;
-}
 function fixHeading(heading, number) {
   if (!heading) return `Статья ${number}`;
   let h = heading.trim();
@@ -444,29 +566,102 @@ function fixHeading(heading, number) {
   return h ? `Статья ${number}. ${h}` : `Статья ${number}`;
 }
 
+const HISTORY_MAX = 2000;         // лимит записей журнала
+const HISTORY_MAX_BYTES = 1_500_000; // ~1.5 МБ, чтобы не упереться в лимит localStorage
+
 const state = {
   docs:[], view:'home', doc:null, article:null, category:'',
-  favorites:readStore('pravo-favs',[]), history:readStore('pravo-history',[]),
+  favorites:readStore('pravo-favs',[]), history:readHistory(),
   notes:readStore('pravo-notes',{}), pinned:readStore('pravo-pinned',[]),
   query:'', font:Number(localStorage.getItem('pravo-font')||17),
   readMode: 'single', docSearch: { query:'', matches:[], current:0 },
   libSearch: '', openGroups: { 'konst': false, 'codex': false, 'fkz': false, 'fz': false, 'zakon': false },
-  prevView: 'home'
+  prevView: 'home', prevCategory: '',
+  _suppressHashChange: false, _restoring: false
 };
+
+let SQL = null;
+let db = null;
 
 function readStore(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch{return fallback}}
 function writeStore(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
+const POSITION_KEY = 'pravo-current-position-v2';
+function saveCurrentPosition(){
+  try {
+    const body = $('workspaceBody');
+    const snapshot = {
+      hash: location.hash || '',
+      view: state.view,
+      category: state.category || '',
+      scrollTop: body ? body.scrollTop : 0,
+      docSlug: state.doc?.slug || '',
+      article: state.article || '',
+      readMode: state.readMode || 'passport',
+      savedAt: Date.now()
+    };
+    localStorage.setItem(POSITION_KEY, JSON.stringify(snapshot));
+    if (state.view === 'reader' && state.doc) {
+      const num = state.article || 'doc';
+      const item = state.history.find(h => h.slug === state.doc.slug && String(h.number) === String(num));
+      if (item) {
+        item.scrollTop = snapshot.scrollTop;
+        item.readMode = snapshot.readMode;
+        item.hash = snapshot.hash;
+        writeStore('pravo-history', state.history);
+      }
+    }
+  } catch {}
+}
+function restoreScrollPosition(expectedHash){
+  let saved;
+  try { saved = JSON.parse(localStorage.getItem(POSITION_KEY) || 'null'); } catch {}
+  if (!saved || (expectedHash && saved.hash && saved.hash !== expectedHash)) return;
+  requestAnimationFrame(() => {
+    const body = $('workspaceBody');
+    if (body) body.scrollTop = Math.max(0, Number(saved.scrollTop) || 0);
+  });
+}
+function readHistory(){
+  const raw = readStore('pravo-history', []);
+  if (!Array.isArray(raw)) return [];
+  // миграция: отбрасываем мусорные записи
+  return raw.filter(h => h && h.slug && h.ts).map(h => ({
+    slug: h.slug,
+    docCode: h.docCode || '',
+    number: String(h.number ?? ''),
+    title: h.title || h.docCode || '',
+    snippet: h.snippet || '',
+    scrollTop: Math.max(0, Number(h.scrollTop) || 0),
+    readMode: h.readMode || 'single',
+    hash: h.hash || '',
+    ts: Number(h.ts) || Date.now()
+  }));
+}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function jsArg(v){
+  // Значение вставляется в HTML-атрибут onclick: кавычки должны пережить HTML-парсер.
+  return JSON.stringify(String(v ?? '')).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 function toast(message){const el=document.createElement('div');el.className='toast';el.textContent=message;$('toastRoot').replaceChildren(el);setTimeout(()=>el.remove(),2400)}
-function docsCount(doc){return doc.articles_total || Object.keys(doc.articles||{}).length}
+function docsCount(doc){return doc.articles_total || 0}
 function titleOf(doc){return doc.code||doc.title||doc.name||'Документ без названия'}
 function dateOf(s){if(!s)return 'Дата не указана';const a=String(s).split('-');return a.length===3?`${a[2]}.${a[1]}.${a[0]}`:String(s)}
-function allArticleRecords(){const out=[];for(const doc of state.docs)for(const [number,art] of Object.entries(doc.articles||{}))out.push({doc,art:normalizeArticle(art),number:String(number)});return out}
 function recordKey(doc,number){return `${doc.slug}::${number}`}
-function getRecord(key){const [slug,...rest]=String(key).split('::');const number=rest.join('::');const doc=state.docs.find(d=>d.slug===slug);if(!doc)return null;const art=(doc.articles||{})[number];return art?{doc,art:normalizeArticle(art),number}:null}
+function getRecord(key){const [slug,...rest]=String(key).split('::');const number=rest.join('::');const doc=state.docs.find(d=>d.slug===slug);if(!doc)return null;if(!doc.articles)return null;const art=doc.articles[number];return art?{doc,art,number}:null}
 function artTitle(art,number){return fixHeading(art.heading || art.title, number)}
 function setActiveNav(view){document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===view));}
 function setBreadcrumb(parts){$('breadcrumbs').innerHTML=parts.map((p,i)=>i===parts.length-1?`<strong>${esc(p)}</strong>`:esc(p)).join(' <span> / </span> ')}
+
+// Безопасная установка hash — подавляет hashchange, чтобы не было цикла
+function setHashSafely(hash) {
+  state._suppressHashChange = true;
+  if (hash) window.location.hash = hash;
+  else {
+    // сброс hash без перезагрузки
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+  setTimeout(() => { state._suppressHashChange = false; }, 0);
+}
 
 const icons = {
   book: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
@@ -483,115 +678,91 @@ const icons = {
   layers: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`,
   pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
   pinFill: `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
-  pinBoard: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>`, 
   shield: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, 
   chevronRight: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`,
   home: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
-  sun: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+  sun: `<svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  moon: `<svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`
 };
 
+// --- РЕНДЕР ---
 function showView(view, category = '') {
-  // Сохраняем предыдущую страницу перед любым переходом
   if (view !== state.view || category !== state.category) {
-    state.prevView = state.view;
-    state.prevCategory = state.category;
+    if (state.view !== 'reader') {
+      state.prevView = state.view;
+      state.prevCategory = state.category;
+    }
   }
   state.view=view; state.category=category; setActiveNav(view); closeMobile();
   $('readerTools').hidden = true;
   
+  // --- Сохраняем состояние в hash ---
+  if (view === 'home') setHashSafely('');
+  else if (view === 'category') setHashSafely(`view=category&cat=${encodeURIComponent(category)}`);
+  else if (view === 'favorites') setHashSafely('view=favorites');
+  else if (view === 'history') setHashSafely('view=history');
+  else if (view === 'notes') setHashSafely('view=notes');
+  else if (view === 'about') setHashSafely('view=about');
+  else if (view === 'search-home') setHashSafely('view=search-home');
+  // для 'reader' hash выставляется внутри openDoc/openArticle
+  // 'search-results' не сохраняем — это временное состояние
+
   if(view==='home'){renderHome();setBreadcrumb(['Главная','Обзор'])}
   else if(view==='category'){renderCategory(category);setBreadcrumb(['Главная',category])}
   else if(view==='favorites'){renderCollection('favorites');setBreadcrumb(['Библиотека','Избранное'])}
   else if(view==='history'){renderCollection('history');setBreadcrumb(['Библиотека','Недавние'])}
   else if(view==='notes'){renderCollection('notes');setBreadcrumb(['Библиотека','Заметки'])}
-  else if(view==='about'){renderAbout();setBreadcrumb(['О сервисе'])}
+  else if(view==='about'){renderAbout();setBreadcrumb(['О системе'])}
   else if(view==='search-home'){renderSearchHome();setBreadcrumb(['Поиск','Панель поиска'])}
   else if(view==='search-results'){renderSearchResults();setBreadcrumb(['Поиск','Результаты'])}
   else if(view==='reader'){renderReader()}
+  saveCurrentPosition();
 }
 
 function goBack() {
   if (state.readMode === 'single' && state.article) {
-    // Из статьи — к оглавлению документа
     state.readMode = 'passport';
     state.article = null;
+    setHashSafely(`doc=${state.doc.slug}`);
     renderReader();
   } else if (state.view === 'reader') {
-    // Из документа — на предыдущий экран
     if (state.prevView && state.prevView !== 'reader') {
-      if (state.prevView === 'category') {
-        showView('category', state.prevCategory);
-      } else {
-        showView(state.prevView, state.prevCategory);
-      }
-    } else {
-      showView('home');
-    }
+      if (state.prevView === 'category') showView('category', state.prevCategory);
+      else showView(state.prevView, state.prevCategory);
+    } else showView('home');
   } else if (state.prevView && state.prevView !== state.view) {
-    if (state.prevView === 'category') {
-      showView('category', state.prevCategory);
-    } else {
-      showView(state.prevView, state.prevCategory);
-    }
-  } else {
-    showView('home');
-  }
+    if (state.prevView === 'category') showView('category', state.prevCategory);
+    else showView(state.prevView, state.prevCategory);
+  } else showView('home');
 }
 
 function getDocBadge(doc) {
   const slug = doc.slug || '';
   const type = doc.type || '';
-  // Конституция
-  if (type === 'Конституция' || slug === 'konstituciya-rf')
-    return { bg: '#b58a45', fg: '#fff', label: 'КРФ' };
-  // Уголовный кодекс
+  if (type === 'Конституция' || slug === 'konstituciya-rf') return { bg: '#b58a45', fg: '#fff', label: 'КРФ' };
   if (slug === 'uk-rf')  return { bg: '#c0392b', fg: '#fff', label: 'УК' };
-  // Уголовно-процессуальный
   if (slug === 'upk-rf') return { bg: '#e74c3c', fg: '#fff', label: 'УПК' };
-  // Уголовно-исполнительный
   if (slug === 'uik-rf') return { bg: '#d35400', fg: '#fff', label: 'УИК' };
-  // КоАП
-  if (slug === 'koap-rf') return { bg: '#e67e22', fg: '#fff', label: 'КоАП' };
-  // Гражданский кодекс (все части)
+  if (slug === 'koap-rf') { return { bg: '#e67e22', fg: '#fff', label: 'КоАП' }; }
   if (slug.startsWith('gk-rf')) return { bg: '#2980b9', fg: '#fff', label: 'ГК' };
-  // ГПК
   if (slug === 'gpk-rf')  return { bg: '#1a6fa8', fg: '#fff', label: 'ГПК' };
-  // АПК
   if (slug === 'apk-rf')  return { bg: '#1a6fa8', fg: '#fff', label: 'АПК' };
-  // КАС
   if (slug === 'kas-rf')  return { bg: '#1a6fa8', fg: '#fff', label: 'КАС' };
-  // Трудовой
   if (slug === 'tk-rf')   return { bg: '#27ae60', fg: '#fff', label: 'ТК' };
-  // Налоговый
   if (slug.startsWith('nk-rf')) return { bg: '#8e44ad', fg: '#fff', label: 'НК' };
-  // Бюджетный
   if (slug === 'bk-rf')   return { bg: '#6c3483', fg: '#fff', label: 'БК' };
-  // Семейный
   if (slug === 'sk-rf')   return { bg: '#d63384', fg: '#fff', label: 'СК' };
-  // Жилищный
   if (slug === 'zhk-rf')  return { bg: '#0d6efd', fg: '#fff', label: 'ЖК' };
-  // Земельный
   if (slug === 'zk-rf')   return { bg: '#5d8a2c', fg: '#fff', label: 'ЗК' };
-  // Водный
   if (slug === 'vdk-rf')  return { bg: '#0984e3', fg: '#fff', label: 'ВдК' };
-  // Лесной
   if (slug === 'lk-rf')   return { bg: '#00b894', fg: '#fff', label: 'ЛК' };
-  // Градостроительный
   if (slug === 'grk-rf')  return { bg: '#636e72', fg: '#fff', label: 'ГрК' };
-  // Воздушный
   if (slug === 'vzk-rf')  return { bg: '#74b9ff', fg: '#1a1a2e', label: 'ВзК' };
-  // Торгового мореплавания
   if (slug === 'ktm-rf')  return { bg: '#0652DD', fg: '#fff', label: 'КТМ' };
-  // Внутренний водный транспорт
   if (slug === 'kvvt-rf') return { bg: '#1289A7', fg: '#fff', label: 'КВВТ' };
-  // ФКЗ — тёмно-синие
   if (type === 'ФКЗ')     return { bg: '#2c3e50', fg: '#fff', label: 'ФКЗ' };
-  // Законы РФ/РСФСР — серо-зелёные
   if (type === 'Закон')   return { bg: '#4a6741', fg: '#fff', label: 'ЗРФ' };
-  // Кодексы (остальные) — тёмно-зелёные
-  if (type === 'Кодекс' || doc.kind === 'codex')
-    return { bg: '#176b55', fg: '#fff', label: 'КОД' };
-  // ФЗ по умолчанию — акцентный зелёный
+  if (type === 'Кодекс' || doc.kind === 'codex') return { bg: '#176b55', fg: '#fff', label: 'КОД' };
   return { bg: '#176b55', fg: '#fff', label: 'ФЗ' };
 }
 
@@ -690,8 +861,8 @@ function createDocItem(doc) {
   `;
 
   el.querySelector('.pin-btn').onclick = (e) => { e.stopPropagation(); togglePin(doc.slug); };
-  el.onclick = () => openDoc(doc);
-  el.onkeydown = (e) => { if (e.key === 'Enter') openDoc(doc); };
+  el.onclick = () => openDocBySlug(doc.slug);
+  el.onkeydown = (e) => { if (e.key === 'Enter') openDocBySlug(doc.slug); };
   return el;
 }
 
@@ -718,7 +889,6 @@ function renderHome() {
   }).filter(Boolean);
 
   const pinnedDocs = state.pinned.map(slug => state.docs.find(d => d.slug === slug)).filter(Boolean);
-  const konst = state.docs.find(d => d.type === 'Конституция');
   const codes = state.docs.filter(d => (d.kind === 'codex' || d.type === 'Кодекс') && d.type !== 'Конституция');
   const fkz = state.docs.filter(d => d.type === 'ФКЗ');
   const fz = state.docs.filter(d => (d.type === 'ФЗ' || (!d.type && d.kind !== 'codex' && d.type !== 'Конституция')));
@@ -726,146 +896,126 @@ function renderHome() {
   body.innerHTML = `<section class="home">
     <div class="welcome">
       <div>
-        <div class="eyebrow">Юридический инструмент</div>
-        <h1>Правовая база.<br>Без лишнего шума.</h1>
-        <p>Рабочее пространство для поиска норм, чтения документов и сохранения важных положений.</p>
+        <div class="eyebrow">АИПС «РПА»</div>
+        <h1>Информационно-правовая система</h1>
+        <p><strong>Полное собрание законодательства РФ в вашем устройстве.</strong> В базе представлены Конституция РФ (принята 12.12.1993), действующие кодексы, федеральные конституционные и федеральные законы. Система позволяет быстро находить нужные нормы, отслеживать редакции документов и работать с правовыми актами без подключения к интернету.</p>
       </div>
       <div class="date-chip">${new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(new Date())}</div>
     </div>
 
-    <!-- Категории (Конституция на 1 месте) -->
     <div class="categories">
-      <div class="cat-card" onclick="showView('category', 'Конституция')">
+      <div class="cat-card" onclick="showView('category', ${jsArg('Конституция')})">
         <div class="cat-icon" style="background:var(--gold);color:#fff">${icons.shield}</div>
         <h3>Конституция</h3>
-        <p>Основной закон РФ</p>
+        <p>Принята 12.12.1993. Высшая юридическая сила.</p>
       </div>
-      <div class="cat-card" onclick="showView('category', 'Кодексы')">
+      <div class="cat-card" onclick="showView('category', ${jsArg('Кодексы')})">
         <div class="cat-icon">${icons.book}</div>
         <h3>Кодексы</h3>
-        <p>Основные отрасли права</p>
+        <p>Основа отраслей права. ГК, УК, НК и др.</p>
         <div class="cat-badge">${codes.length}</div>
       </div>
-      <div class="cat-card" onclick="showView('category', 'ФКЗ')">
+      <div class="cat-card" onclick="showView('category', ${jsArg('ФКЗ')})">
         <div class="cat-icon">${icons.layers}</div>
         <h3>ФКЗ</h3>
-        <p>Конституционные законы</p>
+        <p>Особый статус. Принимаются по вопросам Конституции.</p>
         <div class="cat-badge">${fkz.length}</div>
       </div>
-      <div class="cat-card" onclick="showView('category', 'ФЗ')">
+      <div class="cat-card" onclick="showView('category', ${jsArg('ФЗ')})">
         <div class="cat-icon">${icons.file}</div>
         <h3>Федеральные законы</h3>
-        <p>Текущее законодательство</p>
+        <p>Текущее право. Регулируют все сферы жизни.</p>
         <div class="cat-badge">${fz.length}</div>
       </div>
     </div>
 
     ${pinnedDocs.length > 0 ? `
-    <div class="section-heading"><h2>⭐ Закреплённые документы</h2><span>Всегда под рукой</span></div>
+    <div class="section-heading"><h2>Закреплённые документы</h2><span>Быстрый доступ</span></div>
     <div class="doc-grid" style="margin-bottom:32px;">
       ${pinnedDocs.map(d => docCard(d)).join('')}
     </div>
     ` : ''}
     
-    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
+    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
   </section>`;
 }
 
 function docCard(d) {
   const isPin = state.pinned.includes(d.slug) || d.type === 'Конституция'; 
-  return `<button class="doc-card" onclick="openDocBySlug('${d.slug}')">
+  return `<button class="doc-card" onclick="openDocBySlug(${jsArg(d.slug)})">
     <div class="card-top">
       <span class="card-type">${esc(d.type || 'Документ')}</span>
       <span class="card-arrow">${icons.arrowRight}</span>
     </div>
     <h3>${esc(titleOf(d))}</h3>
-    <p>Правовой документ · редакция ${esc(dateOf(d.redaction_date || d.redaction))}</p>
+    <p>Редакция от ${esc(dateOf(d.redaction_date || d.redaction))}</p>
     <div class="card-meta">
       <span>${docsCount(d)} статей</span>
     </div>
-    <button class="card-pin-abs ${isPin ? 'pinned' : ''}" onclick="event.stopPropagation();togglePin('${d.slug}')" title="${isPin ? 'Открепить' : 'Закрепить'}">
+    <button class="card-pin-abs ${isPin ? 'pinned' : ''}" onclick="event.stopPropagation();togglePin(${jsArg(d.slug)})" title="${isPin ? 'Открепить' : 'Закрепить'}">
       ${isPin ? icons.pinFill : icons.pin}
     </button>
   </button>`;
 }
 
-// --- О СЕРВИСЕ ---
+// --- О СИСТЕМЕ ---
 function renderAbout() {
   const body = $('workspaceBody');
   const total = state.docs.length;
-  const arts = state.docs.reduce((s, d) => s + (d.articles_total || Object.keys(d.articles||{}).length), 0);
-  const codes = state.docs.filter(d => d.kind === 'codex' || d.type === 'Кодекс').length;
-  const fz = state.docs.filter(d => d.type === 'ФЗ').length;
-  const fkz = state.docs.filter(d => d.type === 'ФКЗ').length;
+  const arts = state.docs.reduce((s, d) => s + (d.articles_total || 0), 0);
 
   body.innerHTML = `<section class="about-page">
-
     <div class="about-hero">
       <div class="brand-mark" style="width:88px;height:88px;border-radius:22px;margin:0 auto 24px;background:var(--accent);display:grid;place-items:center;box-shadow:0 12px 32px rgba(23,107,85,.25);">
         <img src="logo.png" alt="АИПС «РПА»" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'font-size:40px;color:#fff\\'>§</span>'">
       </div>
       <h1 style="font-size:34px;letter-spacing:-1px;margin:0 0 12px;font-weight:800">АИПС «РПА»</h1>
-      <p style="font-size:15px;color:var(--muted);line-height:1.7;max-width:520px;margin:0 auto">Рабочее пространство юриста — офлайн-база российского законодательства с поиском, заметками и быстрым доступом к нормам.</p>
-    </div>
-
-    <!-- Статистика -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px">
-      ${[
-        ['§', String(total), 'Документов'],
-        ['📄', String(arts.toLocaleString('ru')), 'Статей'],
-        ['📚', String(codes), 'Кодексов'],
-        ['⚖️', String(fz + fkz), 'ФЗ и ФКЗ'],
-      ].map(([icon, val, label]) => `
-        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;text-align:center;box-shadow:var(--shadow)">
-          <div style="font-size:24px;margin-bottom:8px">${icon}</div>
-          <div style="font-size:24px;font-weight:800;letter-spacing:-1px;color:var(--accent)">${val}</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px">${label}</div>
-        </div>`).join('')}
+      <p style="font-size:15px;color:var(--muted);line-height:1.7;max-width:540px;margin:0 auto">Автоматизированная информационно-правовая система, предназначенная для поиска, изучения и систематизации нормативных правовых актов Российской Федерации.</p>
     </div>
 
     <div class="about-card">
-      <h2>О базе данных</h2>
-      <p>База содержит кодексы, федеральные конституционные законы, федеральные законы и законы РФ/РСФСР — всего <strong>${total} документов</strong> и <strong>${arts.toLocaleString('ru')} статей</strong>. Выгрузка с портала <a href="https://pravo.gov.ru" target="_blank" style="color:var(--accent)">pravo.gov.ru</a> от октября 2026 года. У каждого документа — редакция, действующая на дату выгрузки.</p>
-      <p>Все данные хранятся <code>локально в файле</code> и загружаются прямо в браузер — без серверов и интернета.</p>
+      <h2>Источники и состав базы</h2>
+      <p>В основе системы — законодательство Российской Федерации: Конституция РФ, федеральные конституционные законы, кодексы и федеральные законы, а также законы РФ и РСФСР, сохраняющие юридическую силу. По состоянию на <strong>октябрь 2026 года</strong> база включает <strong>${total} нормативных правовых актов</strong> и <strong>${arts.toLocaleString('ru')} статей</strong>.</p>
+      <p>Тексты актов приведены с учётом официальных изменений и дополнений. Источник данных — официальный интернет-портал правовой информации <a href="https://pravo.gov.ru" target="_blank" style="color:var(--accent)">pravo.gov.ru</a>.</p>
     </div>
 
     <div class="about-card">
-      <h2>Возможности</h2>
-      <ul style="padding-left:20px;margin:0;font-size:14px;color:var(--muted);line-height:2">
-        <li>Быстрый поиск по тексту всех статей</li>
-        <li>Поиск по реквизитам: номер, дата, вид документа</li>
-        <li>Оглавление и постатейное чтение документов</li>
-        <li>Избранное — сохранение нужных статей</li>
-        <li>Заметки — личные пометки к статьям</li>
-        <li>Закреплённые документы — быстрый доступ</li>
-        <li>История чтения</li>
-        <li>Тёмная тема</li>
-        <li>Печать и PDF</li>
-        <li>Работает офлайн (PWA)</li>
-      </ul>
+      <h2>Правовой статус и назначение</h2>
+      <p>Система носит <strong>справочный и информационный характер</strong>. Она предназначена для оперативного доступа к текстам нормативных актов, изучения структуры законодательства и подготовки документов. При этом система <strong>не является официальным источником опубликования</strong> нормативных правовых актов.</p>
+      <p>В случаях, требующих юридической точности (например, при подготовке процессуальных документов), рекомендуется сверять тексты с официальными изданиями или официальным порталом правовой информации.</p>
     </div>
 
     <div class="about-card">
-      <h2>Автор</h2>
+      <h2>Конфиденциальность и локальное хранение</h2>
+      <p>Все данные (закладки, заметки, история просмотров) сохраняются <strong>локально на вашем устройстве</strong>. База нормативных актов также хранится локально и не требует постоянного подключения к интернету после первой загрузки. Передача какой-либо информации на сторонние серверы <strong>не осуществляется</strong>.</p>
+      <p>Вы можете в любой момент удалить сохранённые данные, воспользовавшись кнопкой ниже.</p>
+    </div>
+
+    <div class="about-card">
+      <h2>Разработчик</h2>
       <p class="author">Абдулмаликов Саид Рамазанович</p>
       <p style="margin-top:8px">© 2026. Все права защищены.</p>
     </div>
 
     <div class="about-card">
-      <h2>Горячие клавиши</h2>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:8px 20px;font-size:13px;align-items:center">
-        ${[
-          ['Ctrl + K', 'Фокус на поиск по библиотеке'],
-          ['Ctrl + G', 'Перейти к статье по номеру'],
-          ['Esc', 'Закрыть модальное окно / поиск в тексте'],
-        ].map(([key, desc]) => `
-          <kbd style="background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:3px 8px;font-family:monospace;font-size:12px;white-space:nowrap;color:var(--ink)">${key}</kbd>
-          <span style="color:var(--muted)">${desc}</span>
-        `).join('')}
-      </div>
+      <h2>Сброс данных</h2>
+      <p>Если база данных устарела или в работе приложения возникли ошибки, вы можете очистить локальный кэш. После этого потребуется повторная загрузка нормативных актов при наличии подключения к интернету.</p>
+      <button class="btn" style="margin-top:12px; color:var(--danger); border-color:var(--danger);" onclick="clearAllData()">Очистить кэш и перезагрузить</button>
     </div>
-
   </section>`;
+}
+
+function clearAllData() {
+  if (confirm('Вы уверены? Это удалит сохраненную базу данных и потребует повторной загрузки из интернета.')) {
+    localStorage.clear();
+    if ('serviceWorker' in navigator) {
+      caches.keys().then(names => Promise.all(names.map(name => caches.delete(name)))).then(() => {
+        location.reload();
+      });
+    } else {
+      location.reload();
+    }
+  }
 }
 
 // --- ПОИСК (Панель и Результаты) ---
@@ -874,7 +1024,7 @@ function renderSearchHome() {
   body.innerHTML = `<section class="home" style="padding-top:20px;">
     <div class="welcome" style="margin-bottom:20px;">
       <div>
-        <h1 style="font-size:24px; margin-bottom:0;">Поиск по правовой базе</h1>
+        <h1 style="font-size:24px; margin-bottom:0;">Система поиска</h1>
       </div>
     </div>
     
@@ -884,10 +1034,9 @@ function renderSearchHome() {
         <div class="search-tab" onclick="switchSearchTab('adv', this)">Поиск по реквизитам</div>
       </div>
       
-      <!-- Вкладка: Быстрый поиск -->
       <div class="search-content" id="tabQuick">
         <div class="search-row">
-          <input type="text" id="quickSearchInput" placeholder="Введите запрос, например: исковая давность, статья 15 ГК РФ…" onkeydown="if(event.key==='Enter') doQuickSearch()">
+          <input type="text" id="quickSearchInput" placeholder="Введите запрос: ключевые слова, номер статьи или наименование документа" onkeydown="if(event.key==='Enter') doQuickSearch()">
           <button class="btn primary" onclick="doQuickSearch()">Найти</button>
         </div>
         <div class="search-filters">
@@ -898,7 +1047,6 @@ function renderSearchHome() {
         </div>
       </div>
 
-      <!-- Вкладка: Поиск по реквизитам -->
       <div class="search-content" id="tabAdv" style="display:none;">
         <div class="adv-search-form">
           <div class="adv-field">
@@ -918,10 +1066,6 @@ function renderSearchHome() {
             <input type="date" id="advDate">
           </div>
           <div class="adv-field">
-            <label>Принявший орган</label>
-            <input type="text" id="advOrgan" placeholder="Например: Государственная Дума">
-          </div>
-          <div class="adv-field">
             <label>Вид документа</label>
             <select id="advType">
               <option value="all">Все</option>
@@ -933,8 +1077,8 @@ function renderSearchHome() {
             </select>
           </div>
           <div class="adv-actions">
-            <button class="btn" style="background:var(--surface-2);border-color:var(--line);" onclick="clearAdvForm()">Очистить карточку</button>
-            <button class="btn yellow" onclick="doAdvSearch()">Показать список документов</button>
+            <button class="btn" style="background:var(--surface-2);border-color:var(--line);" onclick="clearAdvForm()">Очистить</button>
+            <button class="btn yellow" onclick="doAdvSearch()">Найти документы</button>
           </div>
         </div>
       </div>
@@ -952,7 +1096,6 @@ function switchSearchTab(tab, el) {
 function doQuickSearch() {
   const q = $('quickSearchInput').value.trim();
   if (!q) return toast('Введите запрос');
-  
   const scopeEl = document.querySelector('input[name="quickScope"]:checked');
   const scope = scopeEl ? scopeEl.value : 'all';
   
@@ -966,29 +1109,43 @@ function renderSearchResults() {
   const q = state.query;
   const scope = state.searchScope || 'all';
   const lowerQ = q.toLocaleLowerCase('ru');
-  let matches = [];
-
-  const records = allArticleRecords();
   
+  let sqlQuery = '';
   if (scope === 'doc') {
-    matches = state.docs.filter(d => titleOf(d).toLowerCase().includes(lowerQ)).map(d => ({ doc: d, isDoc: true }));
+    sqlQuery = `SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE lower(code) LIKE '%${lowerQ.replace(/'/g,"''")}%'`;
   } else if (scope === 'art') {
-    matches = records.filter(r => artTitle(r.art, r.number).toLowerCase().includes(lowerQ));
+    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.heading) LIKE '%${lowerQ.replace(/'/g,"''")}%'`;
   } else if (scope === 'text') {
-    matches = records.filter(r => (r.art.text || '').toLowerCase().includes(lowerQ));
+    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${lowerQ.replace(/'/g,"''")}%' LIMIT 250`;
   } else {
-    const docMatches = state.docs.filter(d => titleOf(d).toLowerCase().includes(lowerQ)).map(d => ({ doc: d, isDoc: true }));
-    const artMatches = records.filter(r => artTitle(r.art, r.number).toLowerCase().includes(lowerQ) || (r.art.text || '').toLowerCase().includes(lowerQ));
-    const seen = new Set();
-    matches = [...docMatches, ...artMatches].filter(m => {
-      const key = m.isDoc ? m.doc.slug : recordKey(m.doc, m.number);
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
+    sqlQuery = `
+      SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status 
+      FROM articles a JOIN documents d ON a.doc_slug = d.slug 
+      WHERE lower(a.heading) LIKE '%${lowerQ.replace(/'/g,"''")}%' OR lower(a.text) LIKE '%${lowerQ.replace(/'/g,"''")}%'
+      LIMIT 250
+    `;
   }
 
-  const limited = matches.slice(0, 250);
+  let matches = [];
+  try {
+    const res = db.exec(sqlQuery);
+    if (res.length > 0) {
+      matches = res[0].values.map(row => {
+        if (scope === 'doc') {
+          return { isDoc: true, doc: { slug: row[0], code: row[1], type: row[2], act_kind: row[3], base_act: row[4], redaction_date: row[5] } };
+        } else {
+          return { 
+            isDoc: false, 
+            doc: { slug: row[0], code: row[1] }, 
+            number: row[2], 
+            art: { heading: row[3], text: row[4], status: row[5] } 
+          };
+        }
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
 
   body.innerHTML = `<section class="result-page">
     <div class="result-heading">
@@ -1001,17 +1158,17 @@ function renderSearchResults() {
     </div>
     
     <div class="results" id="resultItems">
-      ${limited.length ? limited.map(m => {
+      ${matches.length ? matches.map(m => {
         if (m.isDoc) {
-          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}')">
+          return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)})">
             <div class="result-doc">${esc(m.doc.act_kind || m.doc.type || 'Документ')}</div>
-            <h3>${markText(titleOf(m.doc), [q])}</h3>
-            <p>Принят: ${esc(dateOf(m.doc.act_date))} · Редакция: ${esc(dateOf(m.doc.redaction_date || m.doc.redaction))}</p>
+            <h3>${markText(m.doc.code, [q])}</h3>
+            <p>Редакция: ${esc(dateOf(m.doc.redaction_date))}</p>
           </div>`;
         } else {
           const snippet = (m.art.text || '').replace(/\s+/g, ' ').slice(0, 360);
-          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}','${m.number}')">
-            <div class="result-doc">${esc(titleOf(m.doc))} · Статья ${esc(m.number)}</div>
+          return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)},${jsArg(m.number)})">
+            <div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div>
             <h3>${markText(artTitle(m.art, m.number), [q])}</h3>
             <p>${markText(snippet, [q])}${(m.art.text||'').length>360?'…':''}</p>
           </div>`;
@@ -1019,7 +1176,7 @@ function renderSearchResults() {
       }).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong><p>Попробуйте изменить запрос или область поиска.</p></div>'}
     </div>
     
-    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
+    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
   </section>`;
 }
 
@@ -1028,7 +1185,6 @@ function clearAdvForm() {
   $('advTitle').value = '';
   $('advNumber').value = '';
   $('advDate').value = '';
-  $('advOrgan').value = '';
   $('advType').value = 'all';
 }
 
@@ -1037,38 +1193,48 @@ function doAdvSearch() {
   const title = $('advTitle').value.toLowerCase().trim();
   const number = $('advNumber').value.toLowerCase().trim();
   const date = $('advDate').value.trim();
-  const organ = $('advOrgan').value.toLowerCase().trim();
   const type = $('advType').value;
 
-  let filtered = state.docs;
-
-  if (title) filtered = filtered.filter(d => titleOf(d).toLowerCase().includes(title));
-  if (number) filtered = filtered.filter(d => (d.act_number || '').toLowerCase().includes(number));
-  if (date) filtered = filtered.filter(d => (d.act_date || '').includes(date) || (d.redaction_date || '').includes(date));
-  if (organ) filtered = filtered.filter(d => (d.act_kind || '').toLowerCase().includes(organ));
+  let sqlQuery = "SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE 1=1";
   
-  if (type !== 'all') {
-    if (type === 'Кодекс') filtered = filtered.filter(d => d.kind === 'codex' || d.type === 'Кодекс');
-    else if (type === 'ФКЗ') filtered = filtered.filter(d => d.type === 'ФКЗ');
-    else if (type === 'ФЗ') filtered = filtered.filter(d => d.type === 'ФЗ' || (!d.type && d.kind !== 'codex'));
-    else filtered = filtered.filter(d => d.type === type);
-  }
+  if (title) sqlQuery += ` AND lower(code) LIKE '%${title.replace(/'/g,"''")}%'`;
+  if (number) sqlQuery += ` AND lower(act_number) LIKE '%${number.replace(/'/g,"''")}%'`;
+  if (date) sqlQuery += ` AND (act_date LIKE '%${date.replace(/'/g,"''")}%' OR redaction_date LIKE '%${date.replace(/'/g,"''")}%')`;
+  if (type !== 'all') sqlQuery += ` AND type = '${type.replace(/'/g,"''")}'`;
+
+  let docMatches = [];
+  try {
+    const res = db.exec(sqlQuery);
+    if (res.length > 0) {
+      docMatches = res[0].values.map(row => ({
+        slug: row[0], code: row[1], type: row[2], act_kind: row[3], base_act: row[4], redaction_date: row[5]
+      }));
+    }
+  } catch (e) { console.error(e); }
 
   if (text) {
-    const records = allArticleRecords();
-    const artMatches = records.filter(r => (r.art.text || '').toLowerCase().includes(text) && filtered.some(f => f.slug === r.doc.slug));
-    showAdvResults(text, artMatches, filtered, true);
+    let artMatches = [];
+    try {
+      const res = db.exec(`SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${text.replace(/'/g,"''")}%' LIMIT 250`);
+      if (res.length > 0) {
+        artMatches = res[0].values.map(row => ({
+          doc: { slug: row[0], code: row[1] },
+          number: row[2],
+          art: { heading: row[3], text: row[4], status: row[5] }
+        }));
+      }
+    } catch (e) { console.error(e); }
+    showAdvResults(text, artMatches, docMatches, true);
     return;
   }
 
-  showAdvResults('', [], filtered, false);
+  showAdvResults('', [], docMatches, false);
 }
 
 function showAdvResults(query, artMatches, docMatches, isTextSearch) {
   const body = $('workspaceBody');
   
   if (isTextSearch) {
-    const limited = artMatches.slice(0, 250);
     body.innerHTML = `<section class="result-page">
       <div class="result-heading">
         <div>
@@ -1079,16 +1245,16 @@ function showAdvResults(query, artMatches, docMatches, isTextSearch) {
         <button class="btn" onclick="showView('search-home')">← Новый поиск</button>
       </div>
       <div class="results">
-        ${limited.length ? limited.map(m => {
+        ${artMatches.length ? artMatches.map(m => {
           const snippet = (m.art.text || '').replace(/\s+/g, ' ').slice(0, 360);
-          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}','${m.number}')">
-            <div class="result-doc">${esc(titleOf(m.doc))} · Статья ${esc(m.number)}</div>
+          return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)},${jsArg(m.number)})">
+            <div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div>
             <h3>${markText(artTitle(m.art, m.number), [query])}</h3>
             <p>${markText(snippet, [query])}${(m.art.text||'').length>360?'…':''}</p>
           </div>`;
         }).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong><p>Попробуйте изменить запрос.</p></div>'}
       </div>
-      <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
+      <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
     </section>`;
   } else {
     body.innerHTML = `<section class="result-page">
@@ -1101,14 +1267,14 @@ function showAdvResults(query, artMatches, docMatches, isTextSearch) {
       </div>
       <div class="results">
         ${docMatches.length ? docMatches.map(d => `
-          <div class="result-card" onclick="openDocBySlug('${d.slug}')">
-            <div class="result-doc">${esc(d.act_kind || d.type || 'Документ')} ${d.act_number ? '· ' + esc(d.act_number) : ''}</div>
-            <h3>${esc(titleOf(d))}</h3>
-            <p>Принят: ${esc(dateOf(d.act_date))} · Редакция: ${esc(dateOf(d.redaction_date || d.redaction))} · ${docsCount(d)} статей</p>
+          <div class="result-card" onclick="openDocBySlug(${jsArg(d.slug)})">
+            <div class="result-doc">${esc(d.act_kind || d.type || 'Документ')}</div>
+            <h3>${esc(d.code)}</h3>
+            <p>Редакция: ${esc(dateOf(d.redaction_date))}</p>
           </div>
         `).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong><p>Попробуйте изменить параметры поиска.</p></div>'}
       </div>
-      <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
+      <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
     </section>`;
   }
 }
@@ -1122,12 +1288,68 @@ function markText(text, terms) {
   return html; 
 }
 
-function openDocBySlug(slug, num = null) { 
-  const d = state.docs.find(x => x.slug === slug); 
-  if (d) openDoc(d, num); 
+function safeJsonParse(str) {
+  if (!str) return [];
+  if (typeof str !== 'string') return [];
+  try {
+    const parsed = JSON.parse(str);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.warn('Невалидный JSON в structure_json:', str.slice(0, 100));
+    return [];
+  }
 }
 
-// --- ОСТАЛЬНЫЕ ФУНКЦИИ ---
+async function openDocBySlug(slug, num = null, savedPosition = null) { 
+  if (!db) return toast('База данных не загружена');
+  
+  $('workspaceBody').innerHTML = `<div class="empty-state" style="margin-top:100px;text-align:center;"><strong>Загрузка документа...</strong><p>Пожалуйста, подождите</p></div>`;
+  
+  try {
+    const docRes = db.exec(`SELECT * FROM documents WHERE slug = '${String(slug).replace(/'/g,"''")}'`);
+    if (!docRes.length) throw new Error('Документ не найден');
+    const docRow = docRes[0].values[0];
+    
+    const artsRes = db.exec(`SELECT number, heading, text, status FROM articles WHERE doc_slug = '${String(slug).replace(/'/g,"''")}'`);
+    const articles = {};
+    if (artsRes.length) {
+      artsRes[0].values.forEach(row => {
+        articles[row[0]] = { number: row[0], heading: row[1], text: row[2], status: row[3] };
+      });
+    }
+
+    const fullDoc = {
+      slug:           docRow[0],
+      code:           docRow[1],
+      type:           docRow[2],
+      act_kind:       docRow[3],
+      act_number:     docRow[4],
+      base_act:       docRow[5],
+      redaction_date: docRow[6],
+      redaction_status: docRow[7],
+      source_url:     docRow[8],
+      articles_total: docRow[9],
+      preamble:       docRow[10] ? String(docRow[10]).split('\n') : [],
+      structure:      docRow[11] ? safeJsonParse(docRow[11]) : [],
+      articles:       articles
+    };
+    
+    const existingIdx = state.docs.findIndex(d => d.slug === slug);
+    if (existingIdx >= 0) state.docs[existingIdx] = fullDoc;
+    else state.docs.push(fullDoc);
+    
+    openDoc(fullDoc, num);
+    if (num && state.article) state.readMode = (savedPosition && savedPosition.readMode) || 'single';
+    if (state.view === 'reader') renderReader();
+    if (savedPosition && typeof savedPosition.scrollTop === 'number') {
+      requestAnimationFrame(() => { $('workspaceBody').scrollTop = Math.max(0, savedPosition.scrollTop); saveCurrentPosition(); });
+    }
+  } catch (e) {
+    toast('Ошибка загрузки документа: ' + e.message);
+    showView('home');
+  }
+}
+
 function renderCategory(catName) {
   const body = $('workspaceBody');
   let docs = [];
@@ -1135,16 +1357,42 @@ function renderCategory(catName) {
   
   if (catName === 'Конституция') {
     docs = state.docs.filter(d => d.type === 'Конституция');
-    desc = 'Основной закон государства, обладающий высшей юридической силой.';
+    desc = `<div class="legal-info">
+      <strong>Конституция Российской Федерации</strong> — высший нормативный правовой акт РФ.
+      <ul>
+        <li><b>Принята:</b> 12 декабря 1993 года (всенародным голосованием).</li>
+        <li><b>Вступила в силу:</b> 25 декабря 1993 года.</li>
+        <li><b>Особенности:</b> Обладает высшей юридической силой, прямым действием и применяется на всей территории РФ. Законы и иные правовые акты не должны противоречить Конституции.</li>
+        <li><b>Структура:</b> Преамбула, 2 раздела, 9 глав (137 статей).</li>
+      </ul>
+    </div>`;
   } else if (catName === 'Кодексы') {
     docs = state.docs.filter(d => d.kind === 'codex' || d.type === 'Кодекс');
-    desc = 'Систематизированные законодательные акты, регулирующие целые отрасли права (гражданское, уголовное, трудовое и др.).';
+    desc = `<div class="legal-info">
+      <strong>Кодекс</strong> — законодательный акт, содержащий систематизированные нормы какой-либо отрасли права.
+      <ul>
+        <li><b>Роль:</b> Являются «фундаментом» отрасли. Например, ГК РФ регулирует имущественные отношения, УК РФ — преступления и наказания.</li>
+        <li><b>Иерархия:</b> Федеральные законы в той же сфере не должны противоречить кодексам.</li>
+      </ul>
+    </div>`;
   } else if (catName === 'ФКЗ') {
     docs = state.docs.filter(d => d.type === 'ФКЗ');
-    desc = 'Законы, принимаемые по вопросам, предусмотренным Конституцией (например, о судебной системе, о чрезвычайном положении).';
+    desc = `<div class="legal-info">
+      <strong>Федеральный конституционный закон (ФКЗ)</strong> — закон особой юридической силы.
+      <ul>
+        <li><b>Особенности:</b> Принимаются только по вопросам, прямо предусмотренным Конституцией РФ (о судебной системе, о Правительстве, о чрезвычайном положении).</li>
+        <li><b>Порядок принятия:</b> Требуют одобрения 2/3 голосов Госдумы и 3/4 голосов Совета Федерации. Подлежат обязательному подписанию Президентом.</li>
+      </ul>
+    </div>`;
   } else if (catName === 'ФЗ') {
     docs = state.docs.filter(d => d.type === 'ФЗ' || (!d.type && d.kind !== 'codex'));
-    desc = 'Федеральные законы, регулирующие отдельные сферы общественных отношений.';
+    desc = `<div class="legal-info">
+      <strong>Федеральный закон (ФЗ)</strong> — основной вид текущего законодательства.
+      <ul>
+        <li><b>Роль:</b> Регулируют отдельные сферы общественных отношений (например, «О полиции», «О защите прав потребителей»).</li>
+        <li><b>Порядок принятия:</b> Принимаются простым большинством голосов (50% + 1) в обеих палатах парламента.</li>
+      </ul>
+    </div>`;
   }
 
   docs.sort((a, b) => titleOf(a).localeCompare(titleOf(b), 'ru'));
@@ -1152,12 +1400,12 @@ function renderCategory(catName) {
   body.innerHTML = `<section class="docs-page">
     <div class="back-link" onclick="showView('home')">${icons.arrowLeft} На главную</div>
     <h1>${catName} <span style="font-size:16px;color:var(--muted);font-weight:normal">(${docs.length})</span></h1>
-    <div class="cat-description">${desc}</div>
+    ${desc}
     
     <table class="doc-list-table">
       <thead>
         <tr>
-          <th>Название документа</th>
+          <th>Наименование</th>
           <th>Реквизиты</th>
           <th>Статей</th>
           <th style="width:40px"></th>
@@ -1166,17 +1414,17 @@ function renderCategory(catName) {
       <tbody>
         ${docs.map(d => {
           const isPin = state.pinned.includes(d.slug);
-          return `<tr onclick="openDocBySlug('${d.slug}')" style="cursor:pointer;">
+          return `<tr onclick="openDocBySlug(${jsArg(d.slug)})" style="cursor:pointer;">
             <td>
               <span class="doc-row-title">${esc(titleOf(d))}</span>
               <div class="doc-row-meta">${esc(d.act_kind || d.type || 'Документ')}</div>
             </td>
             <td>
               <div style="font-size:12px;color:var(--ink)">${esc(d.base_act || '—')}</div>
-              <div class="doc-row-meta">Ред. от ${esc(dateOf(d.redaction_date || d.redaction))}</div>
+              <div class="doc-row-meta">Ред. от ${esc(dateOf(d.redaction_date))}</div>
             </td>
             <td>${docsCount(d)}</td>
-            <td onclick="event.stopPropagation();togglePin('${d.slug}')">
+            <td onclick="event.stopPropagation();togglePin(${jsArg(d.slug)})">
               <button class="row-pin-btn ${isPin ? 'pinned' : ''}" title="${isPin ? 'Открепить' : 'Закрепить'}">
                 ${isPin ? icons.pinFill : icons.pin}
               </button>
@@ -1196,10 +1444,23 @@ function openDoc(doc, number = null) {
   state.doc = doc; renderLibrary(); state.view = 'reader'; setActiveNav('');
   if (number && doc.articles?.[String(number)]) state.article = String(number);
   else state.article = null;
-  state.readMode = 'passport'; 
+  state.readMode = (number && doc.articles?.[String(number)]) ? 'single' : 'passport'; 
   state.docSearch = { query:'', matches:[], current:0 };
   renderReader(); closeMobile();
-  if (state.article) recordHistory(doc, doc.articles[state.article], state.article);
+  
+  // Обновляем URL при открытии документа (без цикла hashchange)
+  if (state.article) {
+    setHashSafely(`doc=${doc.slug}&art=${state.article}`);
+  } else {
+    setHashSafely(`doc=${doc.slug}`);
+  }
+
+  // История
+  if (state.article && doc.articles[state.article]) {
+    recordHistory(doc, doc.articles[state.article], state.article);
+  } else {
+    recordHistory(doc, { heading: doc.code || 'Документ', text: 'Просмотр документа' }, 'doc'); 
+  }
 }
 
 function openArticle(number) {
@@ -1209,7 +1470,12 @@ function openArticle(number) {
   if (!art) { toast(`Статья ${number} не найдена`); return; }
   state.article = number;
   state.readMode = 'single'; 
-  renderReader(); recordHistory(state.doc, art, number);
+  renderReader(); 
+  recordHistory(state.doc, art, number);
+  
+  // Обновляем URL при открытии статьи
+  setHashSafely(`doc=${state.doc.slug}&art=${number}`);
+  saveCurrentPosition();
 }
 
 function renderReader() {
@@ -1217,7 +1483,7 @@ function renderReader() {
   $('readerTools').hidden = false;
   if (!state.doc) { showView('home'); return; }
 
-  const art = state.article ? normalizeArticle(state.doc.articles[state.article]) : null;
+  const art = state.article ? state.doc.articles[state.article] : null;
   const nums = flattenStructure(state.doc.structure);
   const isFav = art && state.favorites.includes(recordKey(state.doc, state.article));
   const isPin = state.pinned.includes(state.doc.slug);
@@ -1241,7 +1507,7 @@ function renderReader() {
           fullHtml += `<h${hLevel} style="margin-top: 32px; margin-bottom: 16px; font-size: ${1.6 - level * 0.2}em; line-height: 1.3; border-bottom: 1px solid var(--line); padding-bottom: 8px;">${esc(node.heading)}</h${hLevel}>`;
         }
         if (node.unit === 'статья' && node.number) {
-          const artData = normalizeArticle(state.doc.articles[node.number]);
+          const artData = state.doc.articles[node.number];
           if (artData) {
             fullHtml += `<div class="full-article" data-art="${esc(node.number)}" style="margin-top: 24px; margin-bottom: 8px; font-weight: 700; font-size: 1.1em;">${esc(artTitle(artData, node.number))}</div>`;
             if (artData.text) {
@@ -1270,7 +1536,7 @@ function renderReader() {
       ${renderDocPassport()}
       ${preambleHtml}
       <div class="doc-toc-container">
-        <h2>Оглавление документа</h2>
+        <h2>Структура документа</h2>
         <div class="toc-tree">${tocHtml}</div>
       </div>
     `;
@@ -1280,12 +1546,6 @@ function renderReader() {
       const st = (art.status || '').toLowerCase();
       const isDead = st.includes('утратила');
       const statusHtml = isDead ? `<span class="status-pill">Утратила силу</span>` : `<span class="status-pill ok">Действует</span>`;
-      let hierarchyStr = '';
-      if (art.hierarchy && Array.isArray(art.hierarchy)) {
-        hierarchyStr = art.hierarchy.map(h => h.heading || h.title).join(' → ');
-      } else if (art.path && Array.isArray(art.path)) {
-        hierarchyStr = art.path.join(' → ');
-      }
 
       passportArticleHtml = `
         <div class="passport-norm">
@@ -1294,8 +1554,7 @@ function renderReader() {
           <div class="meta-grid">
             <span><b>Документ:</b> ${esc(titleOf(state.doc))}</span>
             ${state.doc.base_act ? `<span><b>Принят:</b> ${esc(state.doc.base_act)}</span>` : ''}
-            ${hierarchyStr ? `<span><b>Расположение:</b> ${esc(hierarchyStr)}</span>` : ''}
-            <span><b>Редакция:</b> ${esc(dateOf(state.doc.redaction_date || state.doc.redaction))}</span>
+            <span><b>Редакция:</b> ${esc(dateOf(state.doc.redaction_date))}</span>
             <span><b>Статус:</b> ${statusHtml}</span>
           </div>
         </div>
@@ -1303,13 +1562,13 @@ function renderReader() {
     }
 
     articleHtml = `
-      <div style="margin-bottom:20px"><button class="btn" onclick="state.readMode='passport';renderReader()">← К оглавлению</button></div>
+      <div style="margin-bottom:20px"><button class="btn" onclick="state.readMode='passport';renderReader()">← К структуре</button></div>
       ${passportArticleHtml}
       ${art ? `<div class="article-body" id="articleBody">${art.text ? art.text.split('\n').filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('') : '<p class="empty">В файле базы для этой статьи нет текста.</p>'}</div>` : ''}
     `;
   }
 
-  const structureLinks = nums.map(n => `<a class="aside-link" data-jump="${esc(n)}">${esc(artTitle(normalizeArticle(state.doc.articles[n] || {}), n))}</a>`).join('');
+  const structureLinks = nums.map(n => `<a class="aside-link" data-jump="${esc(n)}">${esc(artTitle(state.doc.articles[n] || {}, n))}</a>`).join('');
 
   body.innerHTML = `
     <div class="reader-layout">
@@ -1319,20 +1578,20 @@ function renderReader() {
       <aside class="article-aside">
         <div class="aside-card">
           <h3>Действия</h3>
-          ${state.readMode === 'passport' ? `<a class="aside-link" onclick="state.readMode='full';renderReader()">${icons.book} Читать весь документ</a>` : ''}
-          <a class="aside-link" id="gotoAside">${icons.target} Перейти к номеру статьи</a>
-          <a class="aside-link" onclick="showView('home')">${icons.home} Все документы</a>
+          ${state.readMode === 'passport' ? `<a class="aside-link" onclick="state.readMode='full';renderReader()">${icons.book} Текст целиком</a>` : ''}
+          <a class="aside-link" id="gotoAside">${icons.target} Переход к статье</a>
+          <a class="aside-link" onclick="showView('home')">${icons.home} Главная</a>
         </div>
         ${art ? `
         <div class="aside-card">
-          <h3>Моя заметка</h3>
-          <textarea id="noteArea" class="note-area" placeholder="Личные выводы, ссылки, аргументы…">${esc(state.notes[recordKey(state.doc, state.article)] || '')}</textarea>
+          <h3>Заметка</h3>
+          <textarea id="noteArea" class="note-area" placeholder="Текст заметки...">${esc(state.notes[recordKey(state.doc, state.article)] || '')}</textarea>
           <button class="btn primary" id="saveNote" style="width:100%;margin-top:10px">${icons.check} Сохранить</button>
         </div>
         ` : ''}
         <div class="aside-card">
-          <h3>Быстрый переход</h3>
-          <div style="max-height:300px;overflow:auto">${structureLinks || '<span class="aside-link" style="color:var(--muted)">Нет статей</span>'}</div>
+          <h3>Навигация</h3>
+          <div style="max-height:300px;overflow:auto">${structureLinks || '<span class="aside-link" style="color:var(--muted)">Нет данных</span>'}</div>
         </div>
         <footer class="app-footer" style="border:none;padding:0;margin-top:20px;text-align:left;font-size:9px;">
           © Абдулмаликов С.Р., 2026
@@ -1371,7 +1630,7 @@ function buildTocHtml(nodes, level = 0) {
     const isArticle = node.unit === 'статья' && node.number;
     
     if (isArticle) {
-      html += `<div class="toc-article" onclick="openArticle('${esc(node.number)}')">${esc(artTitle(normalizeArticle(state.doc.articles[node.number] || {}), node.number))}</div>`;
+      html += `<div class="toc-article" onclick="openArticle(${jsArg(node.number)})">${esc(artTitle(state.doc.articles[node.number] || {}, node.number))}</div>`;
     } else if (hasChildren) {
       const label = node.heading || node.title || 'Раздел';
       html += `<div class="toc-node">
@@ -1396,21 +1655,20 @@ function renderDocPassport() {
     <div class="doc-passport">
       <div class="article-kicker" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:flex-start;">
         <span>${esc(doc.act_kind || doc.type || 'Правовой документ')}</span>
-        <button class="btn ${isPin ? 'primary' : ''}" onclick="togglePin('${doc.slug}')" style="padding:6px 12px; font-size:12px; border-radius:6px; background:${isPin ? 'var(--ink)' : 'var(--surface)'}; color:${isPin ? 'var(--surface)' : 'var(--ink)'}; border-color:${isPin ? 'var(--ink)' : 'var(--line)'}">
+        <button class="btn ${isPin ? 'primary' : ''}" onclick="togglePin(${jsArg(doc.slug)})" style="padding:6px 12px; font-size:12px; border-radius:6px; background:${isPin ? 'var(--ink)' : 'var(--surface)'}; color:${isPin ? 'var(--surface)' : 'var(--ink)'}; border-color:${isPin ? 'var(--ink)' : 'var(--line)'}">
           ${isPin ? icons.pinFill : icons.pin} ${isPin ? 'Открепить' : 'Закрепить'}
         </button>
       </div>
       <h2>${esc(titleOf(doc))}</h2>
       <div class="doc-passport-meta">
         ${doc.base_act ? `<span><b>Принят:</b> ${esc(doc.base_act)}</span>` : ''}
-        <span><b>Редакция:</b> ${esc(dateOf(doc.redaction_date || doc.redaction))} <span class="status-pill ok" style="margin-left:4px">${esc(doc.redaction_status || 'Действует')}</span></span>
+        <span><b>Редакция:</b> ${esc(dateOf(doc.redaction_date))} <span class="status-pill ok" style="margin-left:4px">Действует</span></span>
         <span><b>Статей:</b> ${docsCount(doc)}</span>
         ${doc.act_number ? `<span><b>Номер:</b> ${esc(doc.act_number)}</span>` : ''}
-        ${doc.source_url ? `<span><b>Источник:</b> <a href="${esc(doc.source_url)}" target="_blank" style="color:var(--accent);text-decoration:none">Официальный текст ↗</a></span>` : ''}
       </div>
       <div class="doc-passport-actions">
-        <button class="btn primary" id="readWholeBtn">${icons.book} Читать весь документ</button>
-        <button class="btn" id="showTocBtn" style="display:none">${icons.layers} Оглавление</button>
+        <button class="btn primary" id="readWholeBtn">${icons.book} Читать весь текст</button>
+        <button class="btn" id="showTocBtn" style="display:none">${icons.layers} Структура</button>
       </div>
     </div>
   `;
@@ -1424,11 +1682,102 @@ function flattenStructure(nodes, out = []) {
   return out;
 }
 
+// --- ЖУРНАЛ ---
+function trimHistoryBySize() {
+  // Обрезка по количеству
+  if (state.history.length > HISTORY_MAX) state.history.length = HISTORY_MAX;
+  // Обрезка по объёму, чтобы не упереться в лимит localStorage
+  let json = JSON.stringify(state.history);
+  while (json.length > HISTORY_MAX_BYTES && state.history.length > 1) {
+    state.history.pop();
+    json = JSON.stringify(state.history);
+  }
+}
+
 function recordHistory(doc, art, number) {
-  const entry = { slug: doc.slug, docCode: titleOf(doc), number: String(number), title: artTitle(normalizeArticle(art), number), ts: Date.now() };
+  const num = String(number || '');
+  const first = state.history[0];
+  // не дублируем, если открыта та же самая запись подряд
+  if (first && first.slug === doc.slug && String(first.number) === num) {
+    first.ts = Date.now();
+    first.hash = location.hash || '';
+    first.readMode = state.readMode || first.readMode || 'single';
+    first.scrollTop = $('workspaceBody')?.scrollTop || 0;
+    writeStore('pravo-history', state.history);
+    return;
+  }
+
+  const isArticle = num && num !== 'doc';
+  const snippet = isArticle
+    ? (art.text || '').replace(/\s+/g, ' ').slice(0, 120)
+    : (doc.base_act || doc.act_kind || doc.type || '');
+
+  const entry = {
+    slug: doc.slug,
+    docCode: titleOf(doc),
+    number: num,
+    title: isArticle ? artTitle(art, num) : titleOf(doc),
+    snippet: snippet,
+    scrollTop: 0,
+    readMode: state.readMode || 'passport',
+    hash: location.hash || '',
+    ts: Date.now()
+  };
+
   state.history = state.history.filter(h => !(h.slug === entry.slug && String(h.number) === entry.number));
-  state.history.unshift(entry); state.history = state.history.slice(0, 100);
+  state.history.unshift(entry);
+  trimHistoryBySize();
   writeStore('pravo-history', state.history);
+}
+
+function exportHistory() {
+  if (!state.history.length) return toast('Журнал пуст');
+  const blob = new Blob([JSON.stringify(state.history, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const d = new Date();
+  a.download = `pravo-history-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Журнал сохранён в файл');
+}
+
+function importHistory(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!Array.isArray(data)) throw new Error('Ожидался массив записей');
+      const cleaned = data.filter(h => h && h.slug && h.ts).map(h => ({
+        slug: String(h.slug),
+        docCode: String(h.docCode || ''),
+        number: String(h.number ?? ''),
+        title: String(h.title || h.docCode || ''),
+        snippet: String(h.snippet || ''),
+        ts: Number(h.ts) || Date.now()
+      }));
+      if (!cleaned.length) throw new Error('Нет валидных записей');
+      // слияние: импортированные добавляем, дубликаты по (slug, number) убираем
+      const merged = [...cleaned, ...state.history];
+      const seen = new Set();
+      const result = [];
+      for (const h of merged) {
+        const key = h.slug + '::' + h.number;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        result.push(h);
+      }
+      state.history = result;
+      trimHistoryBySize();
+      writeStore('pravo-history', state.history);
+      toast(`Импортировано записей: ${cleaned.length}`);
+      if (state.view === 'history') renderCollection('history');
+    } catch (e) {
+      toast('Ошибка импорта: ' + e.message);
+    }
+  };
+  reader.readAsText(file);
 }
 
 function toggleFavorite() {
@@ -1452,24 +1801,107 @@ function saveNote() {
   toast(value ? 'Заметка сохранена' : 'Заметка удалена');
 }
 
+async function openHistoryEntry(index) {
+  const h = state.history[index];
+  if (!h) return;
+  await openDocBySlug(h.slug, h.number && h.number !== 'doc' ? h.number : null, {
+    scrollTop: Math.max(0, Number(h.scrollTop) || 0),
+    readMode: h.readMode || 'single'
+  });
+}
+
 function renderCollection(type) {
   const body = $('workspaceBody');
   let records = [];
-  if (type === 'favorites') records = state.favorites.map(getRecord).filter(Boolean);
-  else if (type === 'history') records = state.history.map(h => getRecord(recordKey({slug:h.slug}, h.number))).filter(Boolean);
-  else records = Object.entries(state.notes).map(([key, note]) => { const r = getRecord(key); return r ? { ...r, note } : null; }).filter(Boolean);
 
-  const title = type === 'favorites' ? 'Избранное' : type === 'history' ? 'Недавно открытые' : 'Мои заметки';
-  const desc = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'История чтения.' : 'Заметки привязаны к статьям.';
+  if (type === 'favorites') {
+    // для избранного нужен полный объект doc/art, иначе никак
+    records = state.favorites.map(getRecord).filter(Boolean);
+  } else if (type === 'history') {
+    // ИСПРАВЛЕНИЕ: журнал самодостаточен, не зависим от state.docs
+    records = state.history.slice(); // показываем всё, что есть
+  } else {
+    records = Object.entries(state.notes).map(([key, note]) => { 
+      const r = getRecord(key); 
+      return r ? { ...r, note } : null; 
+    }).filter(Boolean);
+  }
+
+  const title = type === 'favorites' ? 'Избранное' : type === 'history' ? 'История просмотров' : 'Мои заметки';
+  const desc  = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'Журнал просмотренных документов и статей. Хранится локально на этом устройстве.' : 'Заметки к статьям.';
+
+  const historyActions = type === 'history' && records.length ? `
+    <button class="btn" onclick="exportHistory()" title="Скачать журнал в JSON">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Скачать журнал
+    </button>
+    <label class="btn" style="cursor:pointer" title="Загрузить журнал из JSON">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Загрузить журнал
+      <input type="file" accept="application/json,.json" style="display:none" onchange="importHistory(this.files[0]); this.value='';">
+    </label>
+    <button class="btn" onclick="clearHistory()" style="color:var(--danger);border-color:var(--danger)">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      Очистить
+    </button>` : '';
+
+  const renderHistoryCard = (h, historyIndex) => {
+    const dateStr = h.ts ? new Intl.DateTimeFormat('ru-RU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }).format(new Date(h.ts)) : '';
+    const isArticle = h.number && h.number !== 'doc' && h.number !== '';
+    const onclick = `openHistoryEntry(${historyIndex})`;
+    const snippet = h.snippet ? esc(h.snippet) + (h.snippet.length >= 120 ? '…' : '') : '';
+    return `<div class="result-card" onclick="${onclick}" style="cursor:pointer">
+      <div class="result-doc" style="display:flex;justify-content:space-between;align-items:center">
+        <span>${esc(h.docCode || '')}</span>
+        <span style="font-size:10px;color:var(--muted)">${dateStr}</span>
+      </div>
+      <h3 style="color:var(--accent)">${esc(h.title || h.docCode || '')}</h3>
+      ${snippet ? `<p style="color:var(--muted);font-size:13px;line-height:1.5;margin:0">${snippet}</p>` : ''}
+    </div>`;
+  };
+
+  const renderFavCard = r => `
+    <div class="result-card" onclick="openDocBySlug(${jsArg(r.doc.slug)},${jsArg(r.number)})" style="cursor:pointer">
+      <div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div>
+      <h3 style="color:var(--accent)">${esc(artTitle(r.art, r.number))}</h3>
+      <p style="color:var(--muted);font-size:13px;margin:0">${esc((r.art.text||'').slice(0,200))}${(r.art.text||'').length>200?'…':''}</p>
+    </div>`;
+
+  const renderNoteCard = r => `
+    <div class="result-card" onclick="openDocBySlug(${jsArg(r.doc.slug)},${jsArg(r.number)})" style="cursor:pointer">
+      <div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div>
+      <h3 style="color:var(--accent)">${esc(artTitle(r.art, r.number))}</h3>
+      <p style="color:var(--muted);font-size:13px;margin:0">${esc(r.note)}</p>
+    </div>`;
 
   body.innerHTML = `<section class="result-page">
     <div class="result-heading">
       <div><div class="eyebrow">Библиотека</div><h1>${title}</h1><p>${desc}</p></div>
-      <span class="date-chip">${records.length} ${plural(records.length, ['запись','записи','записей'])}</span>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="date-chip">${records.length} ${plural(records.length, ['запись','записи','записей'])}</span>
+        ${historyActions}
+      </div>
     </div>
-    <div class="results">${records.length ? records.map(r => `<div class="result-card" onclick="openDocBySlug('${r.doc.slug}','${r.number}')"><div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div><h3>${esc(artTitle(r.art, r.number))}</h3><p>${esc(type==='notes'?r.note:(r.art.text||'').slice(0,260))}${type!=='notes'&&r.art.text?.length>260?'…':''}</p></div>`).join('') : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`}</div>
+    <div class="results">
+      ${records.length
+        ? type === 'history'
+          ? records.map((h, i) => renderHistoryCard(h, i)).join('')
+          : type === 'favorites'
+            ? records.map(renderFavCard).join('')
+            : records.map(renderNoteCard).join('')
+        : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`
+      }
+    </div>
     <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
   </section>`;
+}
+
+function clearHistory() {
+  if (!confirm('Очистить всю историю просмотров?')) return;
+  state.history = [];
+  writeStore('pravo-history', []);
+  renderCollection('history');
+  toast('История очищена');
 }
 
 function plural(n, forms) { const x = n % 100, y = n % 10; return forms[x > 10 && x < 20 ? 2 : y === 1 ? 0 : y >= 2 && y <= 4 ? 1 : 2]; }
@@ -1482,7 +1914,7 @@ function toggleTheme() {
   const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = next;
   try { localStorage.setItem('pravo-theme', next); } catch {}
-  $('themeIcon').outerHTML = next === 'dark' ? icons.sun.replace('id="themeIcon"', 'id="themeIcon"') : icons.moon ? icons.moon : '<svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  $('themeIcon').outerHTML = next === 'dark' ? icons.sun : icons.moon;
 }
 
 // --- ПОИСК В ТЕКСТЕ ---
@@ -1537,19 +1969,61 @@ function prevMatch() { const { matches, current } = state.docSearch; if (!matche
 function removeSearchHighlights() { document.querySelectorAll('mark').forEach(m => { const parent = m.parentNode; if (parent) { parent.replaceChild(document.createTextNode(m.textContent), m); parent.normalize(); } }); }
 function highlightSearchMatches() { if (!state.docSearch.query) return; const oldQuery = state.docSearch.query; const oldCurrent = state.docSearch.current; $('docSearchInput').value = oldQuery; setTimeout(() => { performDocSearch(); if (oldCurrent >= 0 && state.docSearch.matches[oldCurrent]) scrollToMatch(oldCurrent); }, 50); }
 
+async function restoreFromHash() {
+  if (state._restoring) return;
+  state._restoring = true;
+  try {
+    const hash = window.location.hash.substring(1);
+    if (!hash) return;
+    const params = new URLSearchParams(hash);
+    const view = params.get('view');
+    const slug = params.get('doc');
+    const art = params.get('art');
+
+    // Если открыт документ — приоритет у него
+    if (slug && db) {
+      await openDocBySlug(slug, art);
+      return;
+    }
+
+    // Иначе восстанавливаем список/страницу
+    if (view === 'category') {
+      showView('category', params.get('cat') || '');
+    } else if (view === 'favorites') {
+      showView('favorites');
+    } else if (view === 'history') {
+      showView('history');
+    } else if (view === 'notes') {
+      showView('notes');
+    } else if (view === 'about') {
+      showView('about');
+    } else if (view === 'search-home') {
+      showView('search-home');
+    } else {
+      // fallback
+      showView('home');
+    }
+  } finally {
+    state._restoring = false;
+  }
+}
+
 // --- ИНИЦИАЛИЗАЦИЯ ---
-function init() {
+async function init() {
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
   try {
     const theme = localStorage.getItem('pravo-theme');
-    if (theme) { document.documentElement.dataset.theme = theme; if (theme === 'dark') $('themeIcon').outerHTML = icons.sun.replace('id="themeIcon"', 'id="themeIcon"'); }
+    if (theme) {
+      document.documentElement.dataset.theme = theme;
+      if (theme === 'dark') $('themeIcon').outerHTML = icons.sun;
+    }
   } catch {}
   document.documentElement.style.setProperty('--reader-size', state.font + 'px');
   $('favCount').textContent = state.favorites.length;
 
   $('libSearchInput').addEventListener('input', e => { state.libSearch = e.target.value; renderLibrary(); });
-
   $('themeBtn').onclick = toggleTheme;
-  $('brandHome').onclick = () => showView('home');
+  $('brandHome').onclick = () => { setHashSafely(''); showView('home'); };
   document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => showView(b.dataset.view));
   $('menuBtn').onclick = () => { $('sidebar').classList.toggle('open'); $('mobileBackdrop').classList.toggle('show'); };
   $('mobileBackdrop').onclick = closeMobile;
@@ -1558,11 +2032,10 @@ function init() {
   $('confirmGoto').onclick = confirmGoto;
   $('gotoInput').addEventListener('keydown', e => { if (e.key === 'Enter') confirmGoto(); if (e.key === 'Escape') closeGoto(); });
   $('gotoModal').addEventListener('click', e => { if (e.target === $('gotoModal')) closeGoto(); });
-  
   $('favoriteBtn').onclick = toggleFavorite;
   $('printBtn').onclick = () => window.print();
   $('noteBtn').onclick = () => { const a = $('noteArea'); if (a) { a.focus(); a.scrollIntoView({ behavior: 'smooth' }); } };
-
+  
   $('docSearchBtn').onclick = openDocSearch;
   $('docSearchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); if (state.docSearch.matches.length > 0 && state.docSearch.query === e.target.value.trim()) nextMatch(); else performDocSearch(); }
@@ -1578,7 +2051,14 @@ function init() {
   $('searchClose').onclick = () => { $('docSearchPanel').classList.remove('active'); $('docSearchInput').value = ''; state.docSearch = { query:'', matches:[], current:0 }; $('searchCount').textContent = ''; removeSearchHighlights(); };
 
   const btt = $('backToTop'); const wsBody = $('workspaceBody');
-  wsBody.addEventListener('scroll', () => { if (wsBody.scrollTop > 300) btt.classList.add('show'); else btt.classList.remove('show'); });
+  let positionSaveTimer = null;
+  wsBody.addEventListener('scroll', () => {
+    if (wsBody.scrollTop > 300) btt.classList.add('show'); else btt.classList.remove('show');
+    clearTimeout(positionSaveTimer);
+    positionSaveTimer = setTimeout(saveCurrentPosition, 180);
+  });
+  window.addEventListener('beforeunload', saveCurrentPosition);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') saveCurrentPosition(); });
   btt.onclick = () => { wsBody.scrollTo({ top: 0, behavior: 'smooth' }); };
 
   document.addEventListener('keydown', e => {
@@ -1587,29 +2067,197 @@ function init() {
     if (e.key === 'Escape') { if ($('gotoModal').classList.contains('show')) closeGoto(); else if (state.docSearch.query) $('searchClose').click(); }
   });
 
+  window.addEventListener('hashchange', () => {
+    if (!db || state._suppressHashChange || state._restoring) return;
+    if (window.location.hash) {
+      restoreFromHash();
+    } else {
+      showView('home');
+    }
+  });
+
   try { if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js').catch(() => {}); } catch {}
 
-  fetch('./articles.json', { cache: 'no-cache' })
-    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(data => {
-      state.docs = Array.isArray(data.docs) ? data.docs : [];
-      state.docs.forEach(doc => { if (doc.articles) Object.keys(doc.articles).forEach(num => { doc.articles[num] = normalizeArticle(doc.articles[num]); }); });
+  // === SQL.JS INIT ===
+  $('dbStatus').textContent = 'Инициализация SQLite...';
+  
+  try {
+    SQL = await initSqlJs({ locateFile: file => `./${file}` });
+  } catch (e) {
+    $('dbStatus').textContent = 'Ошибка SQL.js';
+    $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось загрузить SQL.js</strong><p>Файл sql-wasm.js не найден. ${esc(e.message)}</p></div></section>`;
+    return;
+  }
+
+  // Пытаемся достать базу из IndexedDB (для офлайн-режима)
+  $('dbStatus').textContent = 'Загрузка базы данных...';
+  let binaryData = null;
+  
+  try {
+    binaryData = await new Promise((resolve, reject) => {
+      const req = indexedDB.open('PravoDB', 1);
+      req.onupgradeneeded = (e) => {
+        if (!e.target.result.objectStoreNames.contains('files')) e.target.result.createObjectStore('files');
+      };
+      req.onsuccess = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('files')) return resolve(null);
+        const tx = db.transaction('files', 'readonly');
+        const store = tx.objectStore('files');
+        const getReq = store.get('laws.db');
+        getReq.onsuccess = () => resolve(getReq.result);
+        getReq.onerror = () => resolve(null);
+      };
+      req.onerror = () => resolve(null);
+    });
+  } catch (e) {}
+
+  // Если в IndexedDB ничего нет — скачиваем части базы
+  if (!binaryData) {
+    $('dbStatus').textContent = 'Скачивание базы (часть 1)...';
+    try {
+      const TOTAL_PARTS = 5;
+      const chunks = [];
       
-      const konst = state.docs.find(d => d.type === 'Конституция');
-      if (konst && !state.pinned.includes(konst.slug)) {
-        state.pinned.push(konst.slug);
-        writeStore('pravo-pinned', state.pinned);
+      for (let i = 1; i <= TOTAL_PARTS; i++) {
+        const partNum = String(i).padStart(3, '0');
+        $('dbStatus').textContent = `Скачивание базы (${i} из ${TOTAL_PARTS})...`;
+        
+        const res = await fetch(`./laws.db.${partNum}`);
+        if (!res.ok) throw new Error(`Ошибка HTTP ${res.status} при скачивании части ${partNum}`);
+        
+        const arrayBuffer = await res.arrayBuffer();
+        chunks.push(new Uint8Array(arrayBuffer));
       }
 
-      $('dbStatus').textContent = 'База загружена';
-      renderLibrary();
-      showView('home');
-    })
-    .catch(err => {
-      $('dbStatus').textContent = 'База не найдена';
-      $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось загрузить базу</strong><p>Файл <code>articles.json</code> не найден рядом с index.html. ${esc(err.message)}</p></div><footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович</p></footer></section>`;
-      renderLibrary();
-    });
+      $('dbStatus').textContent = 'Сборка базы данных...';
+      let totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
+      binaryData = new Uint8Array(totalLength);
+      
+      let offset = 0;
+      for (const chunk of chunks) {
+        binaryData.set(chunk, offset);
+        offset += chunk.length;
+      }
+
+      // Сохраняем собранную базу в IndexedDB (с обработкой ошибок и ожиданием завершения tx)
+      $('dbStatus').textContent = 'Сохранение базы для офлайн-режима...';
+      try {
+        await new Promise((resolve, reject) => {
+          const req = indexedDB.open('PravoDB', 1);
+          req.onupgradeneeded = (e) => {
+            const idb = e.target.result;
+            if (!idb.objectStoreNames.contains('files')) idb.createObjectStore('files');
+          };
+          req.onerror = (e) => reject(e.target.error || new Error('Не удалось открыть IndexedDB'));
+          req.onsuccess = (e) => {
+            const idb = e.target.result;
+            let tx;
+            try {
+              tx = idb.transaction('files', 'readwrite');
+            } catch (err) {
+              idb.close();
+              return reject(err);
+            }
+            tx.oncomplete = () => { idb.close(); resolve(); };
+            tx.onerror = (ev) => { console.error('IDB put error:', ev.target.error); };
+            tx.onabort = (ev) => {
+              console.error('IDB tx aborted:', ev.target.error);
+              idb.close();
+              reject(ev.target.error || new Error('Транзакция IndexedDB прервана'));
+            };
+            try {
+              tx.objectStore('files').put(binaryData, 'laws.db');
+            } catch (err) {
+              idb.close();
+              reject(err);
+            }
+          };
+        });
+
+        // Проверяем, что запись реально сохранилась и не пустая
+        const saved = await new Promise((resolve) => {
+          const req = indexedDB.open('PravoDB', 1);
+          req.onsuccess = (e) => {
+            const idb = e.target.result;
+            const tx = idb.transaction('files', 'readonly');
+            const getReq = tx.objectStore('files').get('laws.db');
+            getReq.onsuccess = () => { idb.close(); resolve(getReq.result); };
+            getReq.onerror = () => { idb.close(); resolve(null); };
+          };
+          req.onerror = () => resolve(null);
+        });
+
+        if (!saved || !saved.byteLength) {
+          console.warn('IndexedDB: laws.db отсутствует или пуст после записи');
+          toast('База загружена, но не сохранилась для офлайна');
+        } else {
+          console.log('IndexedDB: laws.db сохранён,', saved.byteLength, 'байт');
+        }
+      } catch (saveErr) {
+        console.warn('Не удалось сохранить базу в IndexedDB:', saveErr);
+        toast('База загружена, но не сохранилась для офлайна: ' + saveErr.message);
+        // не прерываем работу — база уже в памяти (binaryData), приложение продолжит работать
+      }
+    } catch (err) {
+      $('dbStatus').textContent = 'Ошибка загрузки';
+      $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось скачать базу данных</strong><p>Убедитесь, что файлы <code>laws.db.001</code> ... <code>laws.db.005</code> существуют. ${esc(err.message)}</p></div></section>`;
+      return;
+    }
+  }
+
+  try {
+    db = new SQL.Database(binaryData);
+    
+    const docsRes = db.exec(`
+      SELECT 
+        d.slug, 
+        d.code, 
+        d.type, 
+        d.act_kind, 
+        d.base_act, 
+        d.redaction_date,
+        (SELECT COUNT(*) FROM articles a WHERE a.doc_slug = d.slug) as articles_total
+      FROM documents d
+    `);
+    state.docs = docsRes[0].values.map(row => ({
+      slug: row[0], 
+      code: row[1], 
+      type: row[2], 
+      act_kind: row[3], 
+      base_act: row[4], 
+      redaction_date: row[5], 
+      articles_total: row[6]
+    }));
+
+    const konst = state.docs.find(d => d.type === 'Конституция');
+    if (konst && !state.pinned.includes(konst.slug)) {
+      state.pinned.push(konst.slug);
+      writeStore('pravo-pinned', state.pinned);
+    }
+
+    $('dbStatus').textContent = 'Источник: pravo.gov.ru';
+    renderLibrary();
+
+    // ВАЖНО: сначала показываем home (или пытаемся восстановить из хэша),
+    // но в любом случае state.docs уже готов, поэтому restoreFromHash сработает.
+    if (window.location.hash) {
+      await restoreFromHash();
+    } else {
+      // Если URL без hash, восстанавливаем последний экран из сохранённого состояния.
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem(POSITION_KEY) || 'null'); } catch {}
+      if (saved && saved.view && saved.view !== 'reader' && saved.view !== 'search-results') {
+        if (saved.view === 'category') showView('category', saved.category || '');
+        else showView(saved.view);
+      } else showView('home');
+    }
+    restoreScrollPosition(location.hash || '');
+
+  } catch (e) {
+    $('dbStatus').textContent = 'Ошибка SQLite';
+    $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Ошибка базы данных</strong><p>${esc(e.message)}</p></div></section>`;
+  }
 }
 init();
 </script>
