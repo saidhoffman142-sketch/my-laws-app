@@ -2034,17 +2034,66 @@ async function init() {
         binaryData.set(chunk, offset);
         offset += chunk.length;
       }
-      
-      const req = indexedDB.open('PravoDB', 1);
-      req.onupgradeneeded = (e) => {
-        if (!e.target.result.objectStoreNames.contains('files')) e.target.result.createObjectStore('files');
-      };
-      req.onsuccess = (e) => {
-        const db = e.target.result;
-        const tx = db.transaction('files', 'readwrite');
-        tx.objectStore('files').put(binaryData, 'laws.db');
-        tx.oncomplete = () => db.close();
-      };
+
+      // Сохраняем собранную базу в IndexedDB (с обработкой ошибок и ожиданием завершения tx)
+      $('dbStatus').textContent = 'Сохранение базы для офлайн-режима...';
+      try {
+        await new Promise((resolve, reject) => {
+          const req = indexedDB.open('PravoDB', 1);
+          req.onupgradeneeded = (e) => {
+            const idb = e.target.result;
+            if (!idb.objectStoreNames.contains('files')) idb.createObjectStore('files');
+          };
+          req.onerror = (e) => reject(e.target.error || new Error('Не удалось открыть IndexedDB'));
+          req.onsuccess = (e) => {
+            const idb = e.target.result;
+            let tx;
+            try {
+              tx = idb.transaction('files', 'readwrite');
+            } catch (err) {
+              idb.close();
+              return reject(err);
+            }
+            tx.oncomplete = () => { idb.close(); resolve(); };
+            tx.onerror = (ev) => { console.error('IDB put error:', ev.target.error); };
+            tx.onabort = (ev) => {
+              console.error('IDB tx aborted:', ev.target.error);
+              idb.close();
+              reject(ev.target.error || new Error('Транзакция IndexedDB прервана'));
+            };
+            try {
+              tx.objectStore('files').put(binaryData, 'laws.db');
+            } catch (err) {
+              idb.close();
+              reject(err);
+            }
+          };
+        });
+
+        // Проверяем, что запись реально сохранилась и не пустая
+        const saved = await new Promise((resolve) => {
+          const req = indexedDB.open('PravoDB', 1);
+          req.onsuccess = (e) => {
+            const idb = e.target.result;
+            const tx = idb.transaction('files', 'readonly');
+            const getReq = tx.objectStore('files').get('laws.db');
+            getReq.onsuccess = () => { idb.close(); resolve(getReq.result); };
+            getReq.onerror = () => { idb.close(); resolve(null); };
+          };
+          req.onerror = () => resolve(null);
+        });
+
+        if (!saved || !saved.byteLength) {
+          console.warn('IndexedDB: laws.db отсутствует или пуст после записи');
+          toast('База загружена, но не сохранилась для офлайна');
+        } else {
+          console.log('IndexedDB: laws.db сохранён,', saved.byteLength, 'байт');
+        }
+      } catch (saveErr) {
+        console.warn('Не удалось сохранить базу в IndexedDB:', saveErr);
+        toast('База загружена, но не сохранилась для офлайна: ' + saveErr.message);
+        // не прерываем работу — база уже в памяти (binaryData), приложение продолжит работать
+      }
     } catch (err) {
       $('dbStatus').textContent = 'Ошибка загрузки';
       $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось скачать базу данных</strong><p>Убедитесь, что файлы <code>laws.db.001</code> ... <code>laws.db.005</code> существуют. ${esc(err.message)}</p></div></section>`;
