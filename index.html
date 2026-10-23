@@ -654,6 +654,17 @@ function showView(view, category = '') {
   state.view=view; state.category=category; setActiveNav(view); closeMobile();
   $('readerTools').hidden = true;
   
+  // --- Сохраняем состояние в hash ---
+  if (view === 'home') setHashSafely('');
+  else if (view === 'category') setHashSafely(`view=category&cat=${encodeURIComponent(category)}`);
+  else if (view === 'favorites') setHashSafely('view=favorites');
+  else if (view === 'history') setHashSafely('view=history');
+  else if (view === 'notes') setHashSafely('view=notes');
+  else if (view === 'about') setHashSafely('view=about');
+  else if (view === 'search-home') setHashSafely('view=search-home');
+  // для 'reader' hash выставляется внутри openDoc/openArticle
+  // 'search-results' не сохраняем — это временное состояние
+
   if(view==='home'){renderHome();setBreadcrumb(['Главная','Обзор'])}
   else if(view==='category'){renderCategory(category);setBreadcrumb(['Главная',category])}
   else if(view==='favorites'){renderCollection('favorites');setBreadcrumb(['Библиотека','Избранное'])}
@@ -850,24 +861,24 @@ function renderHome() {
     </div>
 
     <div class="categories">
-      <div class="cat-card" onclick="showView('category', 'Конституция')">
+      <div class="cat-card" onclick="showView('category', ${jsArg('Конституция')})">
         <div class="cat-icon" style="background:var(--gold);color:#fff">${icons.shield}</div>
         <h3>Конституция</h3>
         <p>Принята 12.12.1993. Высшая юридическая сила.</p>
       </div>
-      <div class="cat-card" onclick="showView('category', 'Кодексы')">
+      <div class="cat-card" onclick="showView('category', ${jsArg('Кодексы')})">
         <div class="cat-icon">${icons.book}</div>
         <h3>Кодексы</h3>
         <p>Основа отраслей права. ГК, УК, НК и др.</p>
         <div class="cat-badge">${codes.length}</div>
       </div>
-      <div class="cat-card" onclick="showView('category', 'ФКЗ')">
+      <div class="cat-card" onclick="showView('category', ${jsArg('ФКЗ')})">
         <div class="cat-icon">${icons.layers}</div>
         <h3>ФКЗ</h3>
         <p>Особый статус. Принимаются по вопросам Конституции.</p>
         <div class="cat-badge">${fkz.length}</div>
       </div>
-      <div class="cat-card" onclick="showView('category', 'ФЗ')">
+      <div class="cat-card" onclick="showView('category', ${jsArg('ФЗ')})">
         <div class="cat-icon">${icons.file}</div>
         <h3>Федеральные законы</h3>
         <p>Текущее право. Регулируют все сферы жизни.</p>
@@ -1899,12 +1910,33 @@ async function restoreFromHash() {
     const hash = window.location.hash.substring(1);
     if (!hash) return;
     const params = new URLSearchParams(hash);
+    const view = params.get('view');
     const slug = params.get('doc');
     const art = params.get('art');
-    if (!slug || !db) return;
 
-    // Если документа ещё нет в state.docs — openDocBySlug сам его загрузит из db
-    await openDocBySlug(slug, art);
+    // Если открыт документ — приоритет у него
+    if (slug && db) {
+      await openDocBySlug(slug, art);
+      return;
+    }
+
+    // Иначе восстанавливаем список/страницу
+    if (view === 'category') {
+      showView('category', params.get('cat') || '');
+    } else if (view === 'favorites') {
+      showView('favorites');
+    } else if (view === 'history') {
+      showView('history');
+    } else if (view === 'notes') {
+      showView('notes');
+    } else if (view === 'about') {
+      showView('about');
+    } else if (view === 'search-home') {
+      showView('search-home');
+    } else {
+      // fallback
+      showView('home');
+    }
   } finally {
     state._restoring = false;
   }
