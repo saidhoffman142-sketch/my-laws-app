@@ -1357,7 +1357,11 @@ function openDoc(doc, number = null) {
   state.readMode = 'passport'; 
   state.docSearch = { query:'', matches:[], current:0 };
   renderReader(); closeMobile();
-  if (state.article) recordHistory(doc, doc.articles[state.article], state.article);
+  if (state.article && doc.articles[state.article]) {
+  recordHistory(doc, doc.articles[state.article], state.article);
+} else {
+  recordHistory(doc, { heading: doc.code, text: 'Открытие документа' }, ''); 
+}
 }
 
 function openArticle(number) {
@@ -1605,9 +1609,25 @@ function saveNote() {
 function renderCollection(type) {
   const body = $('workspaceBody');
   let records = [];
-  if (type === 'favorites') records = state.favorites.map(getRecord).filter(Boolean);
-  else if (type === 'history') records = state.history.map(h => getRecord(recordKey({slug:h.slug}, h.number))).filter(Boolean);
-  else records = Object.entries(state.notes).map(([key, note]) => { const r = getRecord(key); return r ? { ...r, note } : null; }).filter(Boolean);
+  
+  if (type === 'favorites') {
+    records = state.favorites.map(getRecord).filter(Boolean);
+  } else if (type === 'history') {
+    // Для истории показываем и документы, и статьи
+    records = state.history.map(h => {
+      const doc = state.docs.find(d => d.slug === h.slug);
+      if (!doc) return null;
+      if (h.number && doc.articles && doc.articles[h.number]) {
+        return { doc, art: doc.articles[h.number], number: h.number };
+      }
+      return { doc, art: { heading: doc.code, text: 'Документ' }, number: '' };
+    }).filter(Boolean);
+  } else {
+    records = Object.entries(state.notes).map(([key, note]) => { 
+      const r = getRecord(key); 
+      return r ? { ...r, note } : null; 
+    }).filter(Boolean);
+  }
 
   const title = type === 'favorites' ? 'Избранное' : type === 'history' ? 'История' : 'Мои заметки';
   const desc = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'Журнал просмотренных документов.' : 'Заметки к статьям.';
@@ -1617,8 +1637,16 @@ function renderCollection(type) {
       <div><div class="eyebrow">Библиотека</div><h1>${title}</h1><p>${desc}</p></div>
       <span class="date-chip">${records.length} ${plural(records.length, ['запись','записи','записей'])}</span>
     </div>
-    <div class="results">${records.length ? records.map(r => `<div class="result-card" onclick="openDocBySlug('${r.doc.slug}','${r.number}')"><div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div><h3>${esc(artTitle(r.art, r.number))}</h3><p>${esc(type==='notes'?r.note:(r.art.text||'').slice(0,260))}${type!=='notes'&&r.art.text?.length>260?'…':''}</p></div>`).join('') : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`}</div>
-    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
+    <div class="results">
+      ${records.length ? records.map(r => `
+        <div class="result-card" onclick="openDocBySlug('${r.doc.slug}'${r.number ? `, '${r.number}'` : ''})">
+          <div class="result-doc">${esc(titleOf(r.doc))} ${r.number ? `· Статья ${esc(r.number)}` : ''}</div>
+          <h3>${esc(r.number ? artTitle(r.art, r.number) : titleOf(r.doc))}</h3>
+          <p>${esc(type==='notes' ? r.note : (r.art.text || '').slice(0, 260))}${type!=='notes' && r.art.text?.length > 260 ? '…' : ''}</p>
+        </div>
+      `).join('') : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`}
+    </div>
+    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Раманович.</p></footer>
   </section>`;
 }
 
