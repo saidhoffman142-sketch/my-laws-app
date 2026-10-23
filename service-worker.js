@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pravo-sql-v7'; // Версию подняли, чтобы сбросить старый кэш
+const CACHE_NAME = 'pravo-sql-v10'; // Версию подняли, чтобы сбросить старый кэш
 const ASSETS = [
   './',
   './index.html',
