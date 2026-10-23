@@ -1749,7 +1749,7 @@ async function init() {
     return;
   }
 
-  // Пытаемся достать базу из IndexedDB
+  // Пытаемся достать базу из IndexedDB (для офлайн-режима)
   $('dbStatus').textContent = 'Загрузка базы данных...';
   let binaryData = null;
   
@@ -1770,28 +1770,52 @@ async function init() {
     });
   } catch (e) {}
 
+  // Если в IndexedDB ничего нет — скачиваем части базы
   if (!binaryData) {
-    $('dbStatus').textContent = 'Скачивание базы...';
+    $('dbStatus').textContent = 'Скачивание базы (часть 1)...';
     try {
-      const res = await fetch('https://github.com/saidhoffman142-sketch/my-laws-app/releases/download/v1.0/laws.db');
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      binaryData = new Uint8Array(await res.arrayBuffer());
+      const TOTAL_PARTS = 5; // У вас 5 частей (laws.db.001 ... laws.db.005)
+      const chunks = [];
       
-      // Сохраняем в IndexedDB
+      for (let i = 1; i <= TOTAL_PARTS; i++) {
+        const partNum = String(i).padStart(3, '0');
+        $('dbStatus').textContent = `Скачивание базы (${i} из ${TOTAL_PARTS})...`;
+        
+        const res = await fetch(`./laws.db.${partNum}`);
+        if (!res.ok) throw new Error(`Ошибка HTTP ${res.status} при скачивании части ${partNum}`);
+        
+        const arrayBuffer = await res.arrayBuffer();
+        chunks.push(new Uint8Array(arrayBuffer));
+      }
+
+      // Склеиваем все части в единый массив байтов
+      $('dbStatus').textContent = 'Сборка базы данных...';
+      let totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
+      binaryData = new Uint8Array(totalLength);
+      
+      let offset = 0;
+      for (const chunk of chunks) {
+        binaryData.set(chunk, offset);
+        offset += chunk.length;
+      }
+      
+      // Сохраняем собранную базу в IndexedDB для офлайн-доступа
       const req = indexedDB.open('PravoDB', 1);
+      req.onupgradeneeded = (e) => { e.target.result.createObjectStore('files'); };
       req.onsuccess = (e) => {
         const db = e.target.result;
         const tx = db.transaction('files', 'readwrite');
         tx.objectStore('files').put(binaryData, 'laws.db');
+        tx.oncomplete = () => db.close();
       };
     } catch (err) {
       $('dbStatus').textContent = 'Ошибка загрузки';
-      $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось скачать базу данных</strong><p>Убедитесь, что файл <code>laws.db</code> существует. ${esc(err.message)}</p></div></section>`;
+      $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось скачать базу данных</strong><p>Убедитесь, что файлы <code>laws.db.001</code> ... <code>laws.db.005</code> существуют. ${esc(err.message)}</p></div></section>`;
       return;
     }
   }
 
-  // Инициализируем базу
+  // Инициализируем базу в SQL.js
   try {
     db = new SQL.Database(binaryData);
     

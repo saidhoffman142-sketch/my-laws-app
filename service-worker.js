@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pravo-sql-v6'; // Увеличьте версию!
+const CACHE_NAME = 'pravo-sql-v7'; // Версию подняли, чтобы сбросить старый кэш
 const ASSETS = [
   './',
   './index.html',
@@ -7,9 +7,13 @@ const ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './sql-wasm.js',
-  './sql-wasm.wasm', // <-- ВАЖНО: добавьте .wasm файл!
+  './sql-wasm.wasm',
   './offline.html',
-  './laws.db'
+  './laws.db.001', // <--- Добавили части базы
+  './laws.db.002',
+  './laws.db.003',
+  './laws.db.004',
+  './laws.db.005'
 ];
 
 self.addEventListener('install', (event) => {
@@ -41,11 +45,9 @@ self.addEventListener('fetch', (event) => {
       if (cached) return cached;
       
       return fetch(event.request).catch(() => {
-        // Если это запрос страницы (HTML) и сети нет — показываем offline.html
         if (event.request.mode === 'navigate') {
           return caches.match('./offline.html');
         }
-        // Для остальных файлов просто возвращаем ошибку
         return new Response('Offline', { status: 503 });
       });
     })
