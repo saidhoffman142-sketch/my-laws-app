@@ -638,6 +638,7 @@ function goBack() {
   if (state.readMode === 'single' && state.article) {
     state.readMode = 'passport';
     state.article = null;
+    window.location.hash = `doc=${state.doc.slug}`;
     renderReader();
   } else if (state.view === 'reader') {
     if (state.prevView && state.prevView !== 'reader') {
@@ -812,7 +813,7 @@ function renderHome() {
       <div>
         <div class="eyebrow">АИПС «РПА»</div>
         <h1>Информационно-правовая система</h1>
-        <p>База данных законодательства Российской Федерации. Обеспечивает поиск нормативных актов, доступ к редакциям документов и сохранение избранных материалов в локальном хранилище.</p>
+        <p><strong>Полное собрание законодательства РФ в вашем устройстве.</strong> В базе представлены Конституция РФ (принята 12.12.1993), действующие кодексы, федеральные конституционные и федеральные законы. Система позволяет быстро находить нужные нормы, отслеживать редакции документов и работать с правовыми актами без подключения к интернету.</p>
       </div>
       <div class="date-chip">${new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(new Date())}</div>
     </div>
@@ -1357,11 +1358,20 @@ function openDoc(doc, number = null) {
   state.readMode = 'passport'; 
   state.docSearch = { query:'', matches:[], current:0 };
   renderReader(); closeMobile();
+  
+  // Обновляем URL при открытии документа
+  if (state.article) {
+    window.location.hash = `doc=${doc.slug}&art=${state.article}`;
+  } else {
+    window.location.hash = `doc=${doc.slug}`;
+  }
+
+  // История
   if (state.article && doc.articles[state.article]) {
-  recordHistory(doc, doc.articles[state.article], state.article);
-} else {
-  recordHistory(doc, { heading: doc.code, text: 'Открытие документа' }, ''); 
-}
+    recordHistory(doc, doc.articles[state.article], state.article);
+  } else {
+    recordHistory(doc, { heading: doc.code, text: 'Документ' }, ''); 
+  }
 }
 
 function openArticle(number) {
@@ -1371,7 +1381,11 @@ function openArticle(number) {
   if (!art) { toast(`Статья ${number} не найдена`); return; }
   state.article = number;
   state.readMode = 'single'; 
-  renderReader(); recordHistory(state.doc, art, number);
+  renderReader(); 
+  recordHistory(state.doc, art, number);
+  
+  // Обновляем URL при открытии статьи
+  window.location.hash = `doc=${state.doc.slug}&art=${number}`;
 }
 
 function renderReader() {
@@ -1579,7 +1593,13 @@ function flattenStructure(nodes, out = []) {
 }
 
 function recordHistory(doc, art, number) {
-  const entry = { slug: doc.slug, docCode: titleOf(doc), number: String(number), title: artTitle(art, number), ts: Date.now() };
+  const entry = { 
+    slug: doc.slug, 
+    docCode: titleOf(doc), 
+    number: String(number || ''), 
+    title: number ? artTitle(art, number) : titleOf(doc), 
+    ts: Date.now() 
+  };
   state.history = state.history.filter(h => !(h.slug === entry.slug && String(h.number) === entry.number));
   state.history.unshift(entry); state.history = state.history.slice(0, 100);
   writeStore('pravo-history', state.history);
@@ -1613,7 +1633,6 @@ function renderCollection(type) {
   if (type === 'favorites') {
     records = state.favorites.map(getRecord).filter(Boolean);
   } else if (type === 'history') {
-    // Для истории показываем и документы, и статьи
     records = state.history.map(h => {
       const doc = state.docs.find(d => d.slug === h.slug);
       if (!doc) return null;
@@ -1715,6 +1734,23 @@ function prevMatch() { const { matches, current } = state.docSearch; if (!matche
 function removeSearchHighlights() { document.querySelectorAll('mark').forEach(m => { const parent = m.parentNode; if (parent) { parent.replaceChild(document.createTextNode(m.textContent), m); parent.normalize(); } }); }
 function highlightSearchMatches() { if (!state.docSearch.query) return; const oldQuery = state.docSearch.query; const oldCurrent = state.docSearch.current; $('docSearchInput').value = oldQuery; setTimeout(() => { performDocSearch(); if (oldCurrent >= 0 && state.docSearch.matches[oldCurrent]) scrollToMatch(oldCurrent); }, 50); }
 
+// --- ВОССТАНОВЛЕНИЕ ИЗ URL ---
+async function restoreFromHash() {
+  const hash = window.location.hash.substring(1);
+  if (!hash) return;
+  
+  const params = new URLSearchParams(hash);
+  const slug = params.get('doc');
+  const art = params.get('art');
+  
+  if (slug && db) {
+    const docExists = state.docs.some(d => d.slug === slug);
+    if (docExists) {
+      await openDocBySlug(slug, art);
+    }
+  }
+}
+
 // --- ИНИЦИАЛИЗАЦИЯ ---
 async function init() {
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
@@ -1727,7 +1763,7 @@ async function init() {
 
   $('libSearchInput').addEventListener('input', e => { state.libSearch = e.target.value; renderLibrary(); });
   $('themeBtn').onclick = toggleTheme;
-  $('brandHome').onclick = () => showView('home');
+  $('brandHome').onclick = () => { window.location.hash = ''; showView('home'); };
   document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => showView(b.dataset.view));
   $('menuBtn').onclick = () => { $('sidebar').classList.toggle('open'); $('mobileBackdrop').classList.toggle('show'); };
   $('mobileBackdrop').onclick = closeMobile;
@@ -1762,6 +1798,14 @@ async function init() {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); $('libSearchInput').focus(); }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'g') { e.preventDefault(); openGoto(); }
     if (e.key === 'Escape') { if ($('gotoModal').classList.contains('show')) closeGoto(); else if (state.docSearch.query) $('searchClose').click(); }
+  });
+
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash) {
+      restoreFromHash();
+    } else {
+      showView('home');
+    }
   });
 
   try { if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js').catch(() => {}); } catch {}
@@ -1877,7 +1921,13 @@ async function init() {
 
     $('dbStatus').textContent = 'Источник: pravo.gov.ru';
     renderLibrary();
-    showView('home');
+    
+    // Восстанавливаем состояние из URL, если оно есть
+    if (window.location.hash) {
+      await restoreFromHash();
+    } else {
+      showView('home');
+    }
   } catch (e) {
     $('dbStatus').textContent = 'Ошибка SQLite';
     $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Ошибка базы данных</strong><p>${esc(e.message)}</p></div></section>`;
