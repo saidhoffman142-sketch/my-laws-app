@@ -566,14 +566,18 @@ function fixHeading(heading, number) {
   return h ? `Статья ${number}. ${h}` : `Статья ${number}`;
 }
 
+const HISTORY_MAX = 2000;         // лимит записей журнала
+const HISTORY_MAX_BYTES = 1_500_000; // ~1.5 МБ, чтобы не упереться в лимит localStorage
+
 const state = {
   docs:[], view:'home', doc:null, article:null, category:'',
-  favorites:readStore('pravo-favs',[]), history:readStore('pravo-history',[]),
+  favorites:readStore('pravo-favs',[]), history:readHistory(),
   notes:readStore('pravo-notes',{}), pinned:readStore('pravo-pinned',[]),
   query:'', font:Number(localStorage.getItem('pravo-font')||17),
   readMode: 'single', docSearch: { query:'', matches:[], current:0 },
   libSearch: '', openGroups: { 'konst': false, 'codex': false, 'fkz': false, 'fz': false, 'zakon': false },
-  prevView: 'home'
+  prevView: 'home', prevCategory: '',
+  _suppressHashChange: false, _restoring: false
 };
 
 let SQL = null;
@@ -581,7 +585,21 @@ let db = null;
 
 function readStore(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch{return fallback}}
 function writeStore(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
+function readHistory(){
+  const raw = readStore('pravo-history', []);
+  if (!Array.isArray(raw)) return [];
+  // миграция: отбрасываем мусорные записи
+  return raw.filter(h => h && h.slug && h.ts).map(h => ({
+    slug: h.slug,
+    docCode: h.docCode || '',
+    number: String(h.number ?? ''),
+    title: h.title || h.docCode || '',
+    snippet: h.snippet || '',
+    ts: Number(h.ts) || Date.now()
+  }));
+}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function jsArg(v){return JSON.stringify(String(v ?? ''))}
 function toast(message){const el=document.createElement('div');el.className='toast';el.textContent=message;$('toastRoot').replaceChildren(el);setTimeout(()=>el.remove(),2400)}
 function docsCount(doc){return doc.articles_total || 0}
 function titleOf(doc){return doc.code||doc.title||doc.name||'Документ без названия'}
@@ -591,6 +609,17 @@ function getRecord(key){const [slug,...rest]=String(key).split('::');const numbe
 function artTitle(art,number){return fixHeading(art.heading || art.title, number)}
 function setActiveNav(view){document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===view));}
 function setBreadcrumb(parts){$('breadcrumbs').innerHTML=parts.map((p,i)=>i===parts.length-1?`<strong>${esc(p)}</strong>`:esc(p)).join(' <span> / </span> ')}
+
+// Безопасная установка hash — подавляет hashchange, чтобы не было цикла
+function setHashSafely(hash) {
+  state._suppressHashChange = true;
+  if (hash) window.location.hash = hash;
+  else {
+    // сброс hash без перезагрузки
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+  setTimeout(() => { state._suppressHashChange = false; }, 0);
+}
 
 const icons = {
   book: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
@@ -607,18 +636,20 @@ const icons = {
   layers: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`,
   pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
   pinFill: `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
-  pinBoard: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>`, 
   shield: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, 
   chevronRight: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`,
   home: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
-  sun: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+  sun: `<svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  moon: `<svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`
 };
 
 // --- РЕНДЕР ---
 function showView(view, category = '') {
   if (view !== state.view || category !== state.category) {
-    state.prevView = state.view;
-    state.prevCategory = state.category;
+    if (state.view !== 'reader') {
+      state.prevView = state.view;
+      state.prevCategory = state.category;
+    }
   }
   state.view=view; state.category=category; setActiveNav(view); closeMobile();
   $('readerTools').hidden = true;
@@ -638,7 +669,7 @@ function goBack() {
   if (state.readMode === 'single' && state.article) {
     state.readMode = 'passport';
     state.article = null;
-    window.location.hash = `doc=${state.doc.slug}`;
+    setHashSafely(`doc=${state.doc.slug}`);
     renderReader();
   } else if (state.view === 'reader') {
     if (state.prevView && state.prevView !== 'reader') {
@@ -658,7 +689,7 @@ function getDocBadge(doc) {
   if (slug === 'uk-rf')  return { bg: '#c0392b', fg: '#fff', label: 'УК' };
   if (slug === 'upk-rf') return { bg: '#e74c3c', fg: '#fff', label: 'УПК' };
   if (slug === 'uik-rf') return { bg: '#d35400', fg: '#fff', label: 'УИК' };
-  if (slug === 'koap-rf') return { bg: '#e67e22', fg: '#fff', label: 'КоАП' };
+  if (slug === 'koap-rf') { return { bg: '#e67e22', fg: '#fff', label: 'КоАП' }; }
   if (slug.startsWith('gk-rf')) return { bg: '#2980b9', fg: '#fff', label: 'ГК' };
   if (slug === 'gpk-rf')  return { bg: '#1a6fa8', fg: '#fff', label: 'ГПК' };
   if (slug === 'apk-rf')  return { bg: '#1a6fa8', fg: '#fff', label: 'АПК' };
@@ -857,7 +888,7 @@ function renderHome() {
 
 function docCard(d) {
   const isPin = state.pinned.includes(d.slug) || d.type === 'Конституция'; 
-  return `<button class="doc-card" onclick="openDocBySlug('${d.slug}')">
+  return `<button class="doc-card" onclick="openDocBySlug(${jsArg(d.slug)})">
     <div class="card-top">
       <span class="card-type">${esc(d.type || 'Документ')}</span>
       <span class="card-arrow">${icons.arrowRight}</span>
@@ -867,7 +898,7 @@ function docCard(d) {
     <div class="card-meta">
       <span>${docsCount(d)} статей</span>
     </div>
-    <button class="card-pin-abs ${isPin ? 'pinned' : ''}" onclick="event.stopPropagation();togglePin('${d.slug}')" title="${isPin ? 'Открепить' : 'Закрепить'}">
+    <button class="card-pin-abs ${isPin ? 'pinned' : ''}" onclick="event.stopPropagation();togglePin(${jsArg(d.slug)})" title="${isPin ? 'Открепить' : 'Закрепить'}">
       ${isPin ? icons.pinFill : icons.pin}
     </button>
   </button>`;
@@ -1027,17 +1058,16 @@ function renderSearchResults() {
   
   let sqlQuery = '';
   if (scope === 'doc') {
-    sqlQuery = `SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE lower(code) LIKE '%${lowerQ}%'`;
+    sqlQuery = `SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE lower(code) LIKE '%${lowerQ.replace(/'/g,"''")}%'`;
   } else if (scope === 'art') {
-    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.heading) LIKE '%${lowerQ}%'`;
+    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.heading) LIKE '%${lowerQ.replace(/'/g,"''")}%'`;
   } else if (scope === 'text') {
-    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${lowerQ}%' LIMIT 250`;
+    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${lowerQ.replace(/'/g,"''")}%' LIMIT 250`;
   } else {
-    // all
     sqlQuery = `
       SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status 
       FROM articles a JOIN documents d ON a.doc_slug = d.slug 
-      WHERE lower(a.heading) LIKE '%${lowerQ}%' OR lower(a.text) LIKE '%${lowerQ}%'
+      WHERE lower(a.heading) LIKE '%${lowerQ.replace(/'/g,"''")}%' OR lower(a.text) LIKE '%${lowerQ.replace(/'/g,"''")}%'
       LIMIT 250
     `;
   }
@@ -1076,14 +1106,14 @@ function renderSearchResults() {
     <div class="results" id="resultItems">
       ${matches.length ? matches.map(m => {
         if (m.isDoc) {
-          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}')">
+          return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)})">
             <div class="result-doc">${esc(m.doc.act_kind || m.doc.type || 'Документ')}</div>
             <h3>${markText(m.doc.code, [q])}</h3>
             <p>Редакция: ${esc(dateOf(m.doc.redaction_date))}</p>
           </div>`;
         } else {
           const snippet = (m.art.text || '').replace(/\s+/g, ' ').slice(0, 360);
-          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}','${m.number}')">
+          return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)},${jsArg(m.number)})">
             <div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div>
             <h3>${markText(artTitle(m.art, m.number), [q])}</h3>
             <p>${markText(snippet, [q])}${(m.art.text||'').length>360?'…':''}</p>
@@ -1113,10 +1143,10 @@ function doAdvSearch() {
 
   let sqlQuery = "SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE 1=1";
   
-  if (title) sqlQuery += ` AND lower(code) LIKE '%${title}%'`;
-  if (number) sqlQuery += ` AND lower(act_number) LIKE '%${number}%'`;
-  if (date) sqlQuery += ` AND (act_date LIKE '%${date}%' OR redaction_date LIKE '%${date}%')`;
-  if (type !== 'all') sqlQuery += ` AND type = '${type}'`;
+  if (title) sqlQuery += ` AND lower(code) LIKE '%${title.replace(/'/g,"''")}%'`;
+  if (number) sqlQuery += ` AND lower(act_number) LIKE '%${number.replace(/'/g,"''")}%'`;
+  if (date) sqlQuery += ` AND (act_date LIKE '%${date.replace(/'/g,"''")}%' OR redaction_date LIKE '%${date.replace(/'/g,"''")}%')`;
+  if (type !== 'all') sqlQuery += ` AND type = '${type.replace(/'/g,"''")}'`;
 
   let docMatches = [];
   try {
@@ -1131,7 +1161,7 @@ function doAdvSearch() {
   if (text) {
     let artMatches = [];
     try {
-      const res = db.exec(`SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${text}%' LIMIT 250`);
+      const res = db.exec(`SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${text.replace(/'/g,"''")}%' LIMIT 250`);
       if (res.length > 0) {
         artMatches = res[0].values.map(row => ({
           doc: { slug: row[0], code: row[1] },
@@ -1163,7 +1193,7 @@ function showAdvResults(query, artMatches, docMatches, isTextSearch) {
       <div class="results">
         ${artMatches.length ? artMatches.map(m => {
           const snippet = (m.art.text || '').replace(/\s+/g, ' ').slice(0, 360);
-          return `<div class="result-card" onclick="openDocBySlug('${m.doc.slug}','${m.number}')">
+          return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)},${jsArg(m.number)})">
             <div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div>
             <h3>${markText(artTitle(m.art, m.number), [query])}</h3>
             <p>${markText(snippet, [query])}${(m.art.text||'').length>360?'…':''}</p>
@@ -1183,7 +1213,7 @@ function showAdvResults(query, artMatches, docMatches, isTextSearch) {
       </div>
       <div class="results">
         ${docMatches.length ? docMatches.map(d => `
-          <div class="result-card" onclick="openDocBySlug('${d.slug}')">
+          <div class="result-card" onclick="openDocBySlug(${jsArg(d.slug)})">
             <div class="result-doc">${esc(d.act_kind || d.type || 'Документ')}</div>
             <h3>${esc(d.code)}</h3>
             <p>Редакция: ${esc(dateOf(d.redaction_date))}</p>
@@ -1222,11 +1252,11 @@ async function openDocBySlug(slug, num = null) {
   $('workspaceBody').innerHTML = `<div class="empty-state" style="margin-top:100px;text-align:center;"><strong>Загрузка документа...</strong><p>Пожалуйста, подождите</p></div>`;
   
   try {
-    const docRes = db.exec(`SELECT * FROM documents WHERE slug = '${slug}'`);
+    const docRes = db.exec(`SELECT * FROM documents WHERE slug = '${String(slug).replace(/'/g,"''")}'`);
     if (!docRes.length) throw new Error('Документ не найден');
     const docRow = docRes[0].values[0];
     
-    const artsRes = db.exec(`SELECT number, heading, text, status FROM articles WHERE doc_slug = '${slug}'`);
+    const artsRes = db.exec(`SELECT number, heading, text, status FROM articles WHERE doc_slug = '${String(slug).replace(/'/g,"''")}'`);
     const articles = {};
     if (artsRes.length) {
       artsRes[0].values.forEach(row => {
@@ -1325,7 +1355,7 @@ function renderCategory(catName) {
       <tbody>
         ${docs.map(d => {
           const isPin = state.pinned.includes(d.slug);
-          return `<tr onclick="openDocBySlug('${d.slug}')" style="cursor:pointer;">
+          return `<tr onclick="openDocBySlug(${jsArg(d.slug)})" style="cursor:pointer;">
             <td>
               <span class="doc-row-title">${esc(titleOf(d))}</span>
               <div class="doc-row-meta">${esc(d.act_kind || d.type || 'Документ')}</div>
@@ -1335,7 +1365,7 @@ function renderCategory(catName) {
               <div class="doc-row-meta">Ред. от ${esc(dateOf(d.redaction_date))}</div>
             </td>
             <td>${docsCount(d)}</td>
-            <td onclick="event.stopPropagation();togglePin('${d.slug}')">
+            <td onclick="event.stopPropagation();togglePin(${jsArg(d.slug)})">
               <button class="row-pin-btn ${isPin ? 'pinned' : ''}" title="${isPin ? 'Открепить' : 'Закрепить'}">
                 ${isPin ? icons.pinFill : icons.pin}
               </button>
@@ -1359,18 +1389,17 @@ function openDoc(doc, number = null) {
   state.docSearch = { query:'', matches:[], current:0 };
   renderReader(); closeMobile();
   
-  // Обновляем URL при открытии документа
+  // Обновляем URL при открытии документа (без цикла hashchange)
   if (state.article) {
-    window.location.hash = `doc=${doc.slug}&art=${state.article}`;
+    setHashSafely(`doc=${doc.slug}&art=${state.article}`);
   } else {
-    window.location.hash = `doc=${doc.slug}`;
+    setHashSafely(`doc=${doc.slug}`);
   }
 
   // История
   if (state.article && doc.articles[state.article]) {
     recordHistory(doc, doc.articles[state.article], state.article);
   } else {
-    // Если открыт просто документ, записываем его с пометкой 'doc'
     recordHistory(doc, { heading: doc.code || 'Документ', text: 'Просмотр документа' }, 'doc'); 
   }
 }
@@ -1386,7 +1415,7 @@ function openArticle(number) {
   recordHistory(state.doc, art, number);
   
   // Обновляем URL при открытии статьи
-  window.location.hash = `doc=${state.doc.slug}&art=${number}`;
+  setHashSafely(`doc=${state.doc.slug}&art=${number}`);
 }
 
 function renderReader() {
@@ -1541,7 +1570,7 @@ function buildTocHtml(nodes, level = 0) {
     const isArticle = node.unit === 'статья' && node.number;
     
     if (isArticle) {
-      html += `<div class="toc-article" onclick="openArticle('${esc(node.number)}')">${esc(artTitle(state.doc.articles[node.number] || {}, node.number))}</div>`;
+      html += `<div class="toc-article" onclick="openArticle(${jsArg(node.number)})">${esc(artTitle(state.doc.articles[node.number] || {}, node.number))}</div>`;
     } else if (hasChildren) {
       const label = node.heading || node.title || 'Раздел';
       html += `<div class="toc-node">
@@ -1566,7 +1595,7 @@ function renderDocPassport() {
     <div class="doc-passport">
       <div class="article-kicker" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:flex-start;">
         <span>${esc(doc.act_kind || doc.type || 'Правовой документ')}</span>
-        <button class="btn ${isPin ? 'primary' : ''}" onclick="togglePin('${doc.slug}')" style="padding:6px 12px; font-size:12px; border-radius:6px; background:${isPin ? 'var(--ink)' : 'var(--surface)'}; color:${isPin ? 'var(--surface)' : 'var(--ink)'}; border-color:${isPin ? 'var(--ink)' : 'var(--line)'}">
+        <button class="btn ${isPin ? 'primary' : ''}" onclick="togglePin(${jsArg(doc.slug)})" style="padding:6px 12px; font-size:12px; border-radius:6px; background:${isPin ? 'var(--ink)' : 'var(--surface)'}; color:${isPin ? 'var(--surface)' : 'var(--ink)'}; border-color:${isPin ? 'var(--ink)' : 'var(--line)'}">
           ${isPin ? icons.pinFill : icons.pin} ${isPin ? 'Открепить' : 'Закрепить'}
         </button>
       </div>
@@ -1593,19 +1622,92 @@ function flattenStructure(nodes, out = []) {
   return out;
 }
 
+// --- ЖУРНАЛ ---
+function trimHistoryBySize() {
+  // Обрезка по количеству
+  if (state.history.length > HISTORY_MAX) state.history.length = HISTORY_MAX;
+  // Обрезка по объёму, чтобы не упереться в лимит localStorage
+  let json = JSON.stringify(state.history);
+  while (json.length > HISTORY_MAX_BYTES && state.history.length > 1) {
+    state.history.pop();
+    json = JSON.stringify(state.history);
+  }
+}
+
 function recordHistory(doc, art, number) {
-  const entry = { 
-    slug: doc.slug, 
-    docCode: titleOf(doc), 
-    number: String(number || ''), 
-    title: number && number !== 'doc' ? artTitle(art, number) : titleOf(doc),
-    snippet: number && number !== 'doc' ? (art.text || '').replace(/\s+/g,' ').slice(0, 120) : (doc.act_kind || doc.type || ''),
-    ts: Date.now() 
+  const num = String(number || '');
+  const first = state.history[0];
+  // не дублируем, если открыта та же самая запись подряд
+  if (first && first.slug === doc.slug && String(first.number) === num) return;
+
+  const isArticle = num && num !== 'doc';
+  const snippet = isArticle
+    ? (art.text || '').replace(/\s+/g, ' ').slice(0, 120)
+    : (doc.base_act || doc.act_kind || doc.type || '');
+
+  const entry = {
+    slug: doc.slug,
+    docCode: titleOf(doc),
+    number: num,
+    title: isArticle ? artTitle(art, num) : titleOf(doc),
+    snippet: snippet,
+    ts: Date.now()
   };
+
   state.history = state.history.filter(h => !(h.slug === entry.slug && String(h.number) === entry.number));
   state.history.unshift(entry);
-  state.history = state.history.slice(0, 100);
+  trimHistoryBySize();
   writeStore('pravo-history', state.history);
+}
+
+function exportHistory() {
+  if (!state.history.length) return toast('Журнал пуст');
+  const blob = new Blob([JSON.stringify(state.history, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const d = new Date();
+  a.download = `pravo-history-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Журнал сохранён в файл');
+}
+
+function importHistory(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!Array.isArray(data)) throw new Error('Ожидался массив записей');
+      const cleaned = data.filter(h => h && h.slug && h.ts).map(h => ({
+        slug: String(h.slug),
+        docCode: String(h.docCode || ''),
+        number: String(h.number ?? ''),
+        title: String(h.title || h.docCode || ''),
+        snippet: String(h.snippet || ''),
+        ts: Number(h.ts) || Date.now()
+      }));
+      if (!cleaned.length) throw new Error('Нет валидных записей');
+      // слияние: импортированные добавляем, дубликаты по (slug, number) убираем
+      const merged = [...cleaned, ...state.history];
+      const seen = new Set();
+      const result = [];
+      for (const h of merged) {
+        const key = h.slug + '::' + h.number;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        result.push(h);
+      }
+      state.history = result;
+      trimHistoryBySize();
+      writeStore('pravo-history', state.history);
+      toast(`Импортировано записей: ${cleaned.length}`);
+      if (state.view === 'history') renderCollection('history');
+    } catch (e) {
+      toast('Ошибка импорта: ' + e.message);
+    }
+  };
+  reader.readAsText(file);
 }
 
 function toggleFavorite() {
@@ -1636,7 +1738,6 @@ function renderCollection(type) {
   if (type === 'favorites') {
     records = state.favorites.map(getRecord).filter(Boolean);
   } else if (type === 'history') {
-    // Берём данные прямо из записей истории — не зависим от загруженных articles
     records = state.history.map(h => {
       const doc = state.docs.find(d => d.slug === h.slug);
       return doc ? { ...h, doc } : null;
@@ -1649,39 +1750,49 @@ function renderCollection(type) {
   }
 
   const title = type === 'favorites' ? 'Избранное' : type === 'history' ? 'История просмотров' : 'Мои заметки';
-  const desc  = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'Журнал просмотренных документов и статей.' : 'Заметки к статьям.';
+  const desc  = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'Журнал просмотренных документов и статей. Хранится локально на этом устройстве.' : 'Заметки к статьям.';
 
   const historyActions = type === 'history' && records.length ? `
+    <button class="btn" onclick="exportHistory()" title="Скачать журнал в JSON">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Скачать журнал
+    </button>
+    <label class="btn" style="cursor:pointer" title="Загрузить журнал из JSON">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Загрузить журнал
+      <input type="file" accept="application/json,.json" style="display:none" onchange="importHistory(this.files[0]); this.value='';">
+    </label>
     <button class="btn" onclick="clearHistory()" style="color:var(--danger);border-color:var(--danger)">
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-      Очистить журнал
+      Очистить
     </button>` : '';
 
   const renderHistoryCard = h => {
     const dateStr = h.ts ? new Intl.DateTimeFormat('ru-RU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }).format(new Date(h.ts)) : '';
     const isArticle = h.number && h.number !== 'doc' && h.number !== '';
     const onclick = isArticle
-      ? `openDocBySlug('${h.slug}','${h.number}')`
-      : `openDocBySlug('${h.slug}')`;
+      ? `openDocBySlug(${jsArg(h.slug)},${jsArg(h.number)})`
+      : `openDocBySlug(${jsArg(h.slug)})`;
+    const snippet = h.snippet ? esc(h.snippet) + (h.snippet.length >= 120 ? '…' : '') : '';
     return `<div class="result-card" onclick="${onclick}" style="cursor:pointer">
       <div class="result-doc" style="display:flex;justify-content:space-between;align-items:center">
         <span>${esc(h.docCode || '')}</span>
         <span style="font-size:10px;color:var(--muted)">${dateStr}</span>
       </div>
       <h3 style="color:var(--accent)">${esc(h.title || h.docCode || '')}</h3>
-      ${h.snippet ? `<p style="color:var(--muted);font-size:13px;line-height:1.5;margin:0">${esc(h.snippet)}…</p>` : ''}
+      ${snippet ? `<p style="color:var(--muted);font-size:13px;line-height:1.5;margin:0">${snippet}</p>` : ''}
     </div>`;
   };
 
   const renderFavCard = r => `
-    <div class="result-card" onclick="openDocBySlug('${r.doc.slug}','${r.number}')" style="cursor:pointer">
+    <div class="result-card" onclick="openDocBySlug(${jsArg(r.doc.slug)},${jsArg(r.number)})" style="cursor:pointer">
       <div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div>
       <h3 style="color:var(--accent)">${esc(artTitle(r.art, r.number))}</h3>
       <p style="color:var(--muted);font-size:13px;margin:0">${esc((r.art.text||'').slice(0,200))}${(r.art.text||'').length>200?'…':''}</p>
     </div>`;
 
   const renderNoteCard = r => `
-    <div class="result-card" onclick="openDocBySlug('${r.doc.slug}','${r.number}')" style="cursor:pointer">
+    <div class="result-card" onclick="openDocBySlug(${jsArg(r.doc.slug)},${jsArg(r.number)})" style="cursor:pointer">
       <div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div>
       <h3 style="color:var(--accent)">${esc(artTitle(r.art, r.number))}</h3>
       <p style="color:var(--muted);font-size:13px;margin:0">${esc(r.note)}</p>
@@ -1690,7 +1801,7 @@ function renderCollection(type) {
   body.innerHTML = `<section class="result-page">
     <div class="result-heading">
       <div><div class="eyebrow">Библиотека</div><h1>${title}</h1><p>${desc}</p></div>
-      <div style="display:flex;gap:8px;align-items:center">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span class="date-chip">${records.length} ${plural(records.length, ['запись','записи','записей'])}</span>
         ${historyActions}
       </div>
@@ -1727,7 +1838,7 @@ function toggleTheme() {
   const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = next;
   try { localStorage.setItem('pravo-theme', next); } catch {}
-  $('themeIcon').outerHTML = next === 'dark' ? icons.sun.replace('id="themeIcon"', 'id="themeIcon"') : icons.moon ? icons.moon : '<svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  $('themeIcon').outerHTML = next === 'dark' ? icons.sun : icons.moon;
 }
 
 // --- ПОИСК В ТЕКСТЕ ---
@@ -1784,18 +1895,20 @@ function highlightSearchMatches() { if (!state.docSearch.query) return; const ol
 
 // --- ВОССТАНОВЛЕНИЕ ИЗ URL ---
 async function restoreFromHash() {
-  const hash = window.location.hash.substring(1);
-  if (!hash) return;
-  
-  const params = new URLSearchParams(hash);
-  const slug = params.get('doc');
-  const art = params.get('art');
-  
-  if (slug && db) {
-    const docExists = state.docs.some(d => d.slug === slug);
-    if (docExists) {
-      await openDocBySlug(slug, art);
+  if (state._restoring) return;
+  state._restoring = true;
+  try {
+    const hash = window.location.hash.substring(1);
+    if (!hash) return;
+    const params = new URLSearchParams(hash);
+    const slug = params.get('doc');
+    const art = params.get('art');
+    if (slug && db) {
+      const docExists = state.docs.some(d => d.slug === slug);
+      if (docExists) await openDocBySlug(slug, art);
     }
+  } finally {
+    state._restoring = false;
   }
 }
 
@@ -1804,14 +1917,17 @@ async function init() {
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
   try {
     const theme = localStorage.getItem('pravo-theme');
-    if (theme) { document.documentElement.dataset.theme = theme; if (theme === 'dark') $('themeIcon').outerHTML = icons.sun.replace('id="themeIcon"', 'id="themeIcon"'); }
+    if (theme) {
+      document.documentElement.dataset.theme = theme;
+      if (theme === 'dark') $('themeIcon').outerHTML = icons.sun;
+    }
   } catch {}
   document.documentElement.style.setProperty('--reader-size', state.font + 'px');
   $('favCount').textContent = state.favorites.length;
 
   $('libSearchInput').addEventListener('input', e => { state.libSearch = e.target.value; renderLibrary(); });
   $('themeBtn').onclick = toggleTheme;
-  $('brandHome').onclick = () => { window.location.hash = ''; showView('home'); };
+  $('brandHome').onclick = () => { setHashSafely(''); showView('home'); };
   document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => showView(b.dataset.view));
   $('menuBtn').onclick = () => { $('sidebar').classList.toggle('open'); $('mobileBackdrop').classList.toggle('show'); };
   $('mobileBackdrop').onclick = closeMobile;
@@ -1849,8 +1965,7 @@ async function init() {
   });
 
   window.addEventListener('hashchange', () => {
-    // Не реагируем если база ещё не загружена или это навигация внутри приложения
-    if (!db || state._suppressHashChange) return;
+    if (!db || state._suppressHashChange || state._restoring) return;
     if (window.location.hash) {
       restoreFromHash();
     } else {
@@ -1878,7 +1993,9 @@ async function init() {
   try {
     binaryData = await new Promise((resolve, reject) => {
       const req = indexedDB.open('PravoDB', 1);
-      req.onupgradeneeded = (e) => { e.target.result.createObjectStore('files'); };
+      req.onupgradeneeded = (e) => {
+        if (!e.target.result.objectStoreNames.contains('files')) e.target.result.createObjectStore('files');
+      };
       req.onsuccess = (e) => {
         const db = e.target.result;
         if (!db.objectStoreNames.contains('files')) return resolve(null);
@@ -1896,7 +2013,7 @@ async function init() {
   if (!binaryData) {
     $('dbStatus').textContent = 'Скачивание базы (часть 1)...';
     try {
-      const TOTAL_PARTS = 5; // У вас 5 частей (laws.db.001 ... laws.db.005)
+      const TOTAL_PARTS = 5;
       const chunks = [];
       
       for (let i = 1; i <= TOTAL_PARTS; i++) {
@@ -1910,7 +2027,6 @@ async function init() {
         chunks.push(new Uint8Array(arrayBuffer));
       }
 
-      // Склеиваем все части в единый массив байтов
       $('dbStatus').textContent = 'Сборка базы данных...';
       let totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
       binaryData = new Uint8Array(totalLength);
@@ -1921,9 +2037,10 @@ async function init() {
         offset += chunk.length;
       }
       
-      // Сохраняем собранную базу в IndexedDB для офлайн-доступа
       const req = indexedDB.open('PravoDB', 1);
-      req.onupgradeneeded = (e) => { e.target.result.createObjectStore('files'); };
+      req.onupgradeneeded = (e) => {
+        if (!e.target.result.objectStoreNames.contains('files')) e.target.result.createObjectStore('files');
+      };
       req.onsuccess = (e) => {
         const db = e.target.result;
         const tx = db.transaction('files', 'readwrite');
@@ -1937,11 +2054,9 @@ async function init() {
     }
   }
 
-  // Инициализируем базу в SQL.js
   try {
     db = new SQL.Database(binaryData);
     
-    // Загружаем список документов
     const docsRes = db.exec(`
       SELECT 
         d.slug, 
@@ -1972,7 +2087,6 @@ async function init() {
     $('dbStatus').textContent = 'Источник: pravo.gov.ru';
     renderLibrary();
     
-    // Восстанавливаем состояние из URL, если оно есть
     if (window.location.hash) {
       await restoreFromHash();
     } else {
