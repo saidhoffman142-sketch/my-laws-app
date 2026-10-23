@@ -1736,12 +1736,11 @@ function renderCollection(type) {
   let records = [];
 
   if (type === 'favorites') {
+    // для избранного нужен полный объект doc/art, иначе никак
     records = state.favorites.map(getRecord).filter(Boolean);
   } else if (type === 'history') {
-    records = state.history.map(h => {
-      const doc = state.docs.find(d => d.slug === h.slug);
-      return doc ? { ...h, doc } : null;
-    }).filter(Boolean);
+    // ИСПРАВЛЕНИЕ: журнал самодостаточен, не зависим от state.docs
+    records = state.history.slice(); // показываем всё, что есть
   } else {
     records = Object.entries(state.notes).map(([key, note]) => { 
       const r = getRecord(key); 
@@ -1893,7 +1892,6 @@ function prevMatch() { const { matches, current } = state.docSearch; if (!matche
 function removeSearchHighlights() { document.querySelectorAll('mark').forEach(m => { const parent = m.parentNode; if (parent) { parent.replaceChild(document.createTextNode(m.textContent), m); parent.normalize(); } }); }
 function highlightSearchMatches() { if (!state.docSearch.query) return; const oldQuery = state.docSearch.query; const oldCurrent = state.docSearch.current; $('docSearchInput').value = oldQuery; setTimeout(() => { performDocSearch(); if (oldCurrent >= 0 && state.docSearch.matches[oldCurrent]) scrollToMatch(oldCurrent); }, 50); }
 
-// --- ВОССТАНОВЛЕНИЕ ИЗ URL ---
 async function restoreFromHash() {
   if (state._restoring) return;
   state._restoring = true;
@@ -1903,10 +1901,10 @@ async function restoreFromHash() {
     const params = new URLSearchParams(hash);
     const slug = params.get('doc');
     const art = params.get('art');
-    if (slug && db) {
-      const docExists = state.docs.some(d => d.slug === slug);
-      if (docExists) await openDocBySlug(slug, art);
-    }
+    if (!slug || !db) return;
+
+    // Если документа ещё нет в state.docs — openDocBySlug сам его загрузит из db
+    await openDocBySlug(slug, art);
   } finally {
     state._restoring = false;
   }
@@ -2086,7 +2084,9 @@ async function init() {
 
     $('dbStatus').textContent = 'Источник: pravo.gov.ru';
     renderLibrary();
-    
+
+    // ВАЖНО: сначала показываем home (или пытаемся восстановить из хэша),
+    // но в любом случае state.docs уже готов, поэтому restoreFromHash сработает.
     if (window.location.hash) {
       await restoreFromHash();
     } else {
