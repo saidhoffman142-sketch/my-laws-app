@@ -4,7 +4,7 @@
 //  Это единственное место, где нужно править версию.
 // ============================================================
 
-const BUILD = '2026-10-25-1';
+const BUILD = 'AIPS-RPA-v1';
 const CACHE_NAME = `pravo-rpa-${BUILD}`;
 const OFFLINE_URL = './offline.html';
 

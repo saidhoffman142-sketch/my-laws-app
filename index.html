@@ -899,6 +899,8 @@ function renderReader() {
   document.querySelectorAll('[data-jump]').forEach(el => el.onclick = () => openArticle(el.dataset.jump));
   $('gotoAside').onclick = openGoto;
   const sn = $('saveNote'); if (sn) sn.onclick = saveNote;
+  const rw = $('readWholeBtn');
+  if (rw) rw.onclick = () => { state.readMode = 'full'; renderReader(); };
   if (state.readMode === 'passport') document.querySelectorAll('.toc-node-header').forEach(el => el.onclick = () => { el.classList.toggle('open'); el.nextElementSibling?.classList.toggle('open'); });
   $('articleBody')?.style.setProperty('--reader-size', state.font + 'px');
   document.documentElement.style.setProperty('--reader-size', state.font + 'px');
@@ -931,7 +933,9 @@ function renderDocPassport() {
       <span><b>Статей:</b> ${docsCount(d)}</span>
       ${d.act_number ? `<span><b>Номер:</b> ${esc(d.act_number)}</span>` : ''}
     </div>
-    <div class="doc-passport-actions"><button class="btn primary" id="readWholeBtn">${icons.book} Читать весь текст</button></div>
+    <div class="doc-passport-actions">
+      <button class="btn primary" onclick="state.readMode='full';renderReader()">${icons.book} Читать весь текст</button>
+    </div>
   </div>`;
 }
 
