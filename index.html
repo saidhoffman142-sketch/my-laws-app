@@ -220,6 +220,15 @@
 .toast{position:fixed;right:24px;bottom:24px;background:var(--ink);color:var(--surface);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:50;animation:fadein .2s ease}@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}#backToTop{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:20px;box-shadow:var(--shadow);cursor:pointer;display:none;z-index:40;align-items:center;justify-content:center;transition:all .3s}#backToTop:hover{background:var(--accent-2);transform:translateY(-2px)}#backToTop.show{display:flex}
 .app-footer{text-align:center;padding:24px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:auto}
 
+.recent-list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.recent-row{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:all .2s}
+.recent-row:hover{border-color:var(--accent);background:var(--surface-2);transform:translateX(4px)}
+.recent-row .doc-symbol{width:36px;height:36px;font-size:14px;background:var(--accent-soft);border:none;color:var(--accent)}
+.recent-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.recent-main strong{font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.recent-main small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-open{font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:4px;white-space:nowrap}
+
 .search-panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
 .search-tabs{display:flex;background:var(--surface-2);border-bottom:1px solid var(--line)}
 .search-tab{padding:14px 24px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
@@ -371,40 +380,74 @@
 
 <script>
 // ============================================================
-//  АИПС «РПА» — SQLite в браузере через sql.js
-//  База лежит частями laws.db.001 … laws.db.005 (по 50 МБ).
-//  В IndexedDB храним каждую часть ОТДЕЛЬНОЙ записью,
-//  чтобы не превысить лимит на размер одной записи (~127 МБ).
+//  АИПС «РПА» — исправленная версия
+//  Ключевое исправление: jsArg/esc корректно экранируют данные,
+//  вставляемые в HTML-атрибуты (onclick, data-jump и т.п.).
 // ============================================================
 
 const $ = id => document.getElementById(id);
 
+// --- БЕЗОПАСНОЕ ЭКРАНИРОВАНИЕ ---
+// esc — для HTML-текста и HTML-атрибутов (заменяет &, <, >, ", ').
+function esc(v) {
+  return String(v ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[c]));
+}
+
+// jsArg — возвращает JS-литерал строки, обёрнутый в ОДИНАРНЫЕ кавычки.
+// Это безопасно для вставки в HTML-атрибут onclick="...", т.к. атрибут
+// обёрнут в двойные кавычки, а одинарные внутри него допустимы.
+// Одинарные кавычки и обратные слэши экранируются.
+function jsArg(v) {
+  return "'" + String(v ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
+}
+
+// --- ХРАНИЛИЩА ---
 const HISTORY_MAX = 2000;
 const HISTORY_MAX_BYTES = 1_500_000;
 
 function readStore(key, fallback) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; } }
 function writeStore(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
+
 function readHistory() {
   const raw = readStore('pravo-history', []);
   if (!Array.isArray(raw)) return [];
   return raw.filter(h => h && h.slug && h.ts).map(h => ({
-    slug: String(h.slug), docCode: h.docCode || '', number: String(h.number ?? ''),
-    title: h.title || h.docCode || '', snippet: h.snippet || '', ts: Number(h.ts) || Date.now()
+    slug: String(h.slug),
+    docCode: h.docCode || '',
+    number: String(h.number ?? ''),
+    title: h.title || h.docCode || '',
+    snippet: h.snippet || '',
+    ts: Number(h.ts) || Date.now()
   }));
 }
 
 const state = {
-  docs: [], view: 'home', doc: null, article: null, category: '',
-  favorites: readStore('pravo-favs', []), history: readHistory(),
-  notes: readStore('pravo-notes', {}), pinned: readStore('pravo-pinned', []),
-  query: '', searchScope: 'all',
+  docs: [],
+  view: 'home',
+  doc: null,
+  article: null,
+  category: '',
+  favorites: readStore('pravo-favs', []),
+  history: readHistory(),
+  notes: readStore('pravo-notes', {}),
+  pinned: readStore('pravo-pinned', []),
+  query: '',
+  searchScope: 'all',
   font: Number(localStorage.getItem('pravo-font') || 17),
   readMode: 'passport',
   docSearch: { query: '', matches: [], current: 0 },
   libSearch: '',
   openGroups: { konst: false, codex: false, fkz: false, fz: false, zakon: false },
-  prevView: 'home', prevCategory: '',
-  _suppressHashChange: false, _restoring: false
+  prevView: 'home',
+  prevCategory: '',
+  _suppressHashChange: false,
+  _restoring: false
 };
 
 let SQL = null;
@@ -429,8 +472,6 @@ const isFKZ   = d => normalizeType(d) === 'ФКЗ';
 const isFZ    = d => normalizeType(d) === 'ФЗ';
 
 // --- УТИЛИТЫ ---
-function esc(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function jsArg(v) { return JSON.stringify(String(v ?? '')); }
 function toast(msg) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; $('toastRoot').replaceChildren(el); setTimeout(() => el.remove(), 2600); }
 function titleOf(doc) { return doc?.code || doc?.title || doc?.name || 'Документ без названия'; }
 function docsCount(doc) { return doc?.articles_total || 0; }
@@ -446,8 +487,7 @@ function getRecord(key) {
   return art ? { doc, art, number } : { doc, art: { heading: `Статья ${number}` }, number, stub: true };
 }
 
-function artTitle(art, number) {
-  const heading = art?.heading || art?.title || '';
+function fixHeading(heading, number) {
   if (!heading) return `Статья ${number}`;
   let h = String(heading).trim();
   const p = `Статья ${number}.`;
@@ -455,6 +495,7 @@ function artTitle(art, number) {
   else if (h.startsWith(`Статья ${number}`)) h = h.slice(`Статья ${number}`.length).trim();
   return h ? `Статья ${number}. ${h}` : `Статья ${number}`;
 }
+function artTitle(art, number) { return fixHeading(art?.heading || art?.title, number); }
 
 function setActiveNav(view) { document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === view)); }
 function setBreadcrumb(parts) { $('breadcrumbs').innerHTML = parts.map((p, i) => i === parts.length - 1 ? `<strong>${esc(p)}</strong>` : esc(p)).join(' <span> / </span> '); }
@@ -477,8 +518,8 @@ const icons = {
   check: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`,
   target: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
   layers: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`,
-  pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
-  pinFill: `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
+  pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
+  pinFill: `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
   shield: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
   chevronRight: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`,
   home: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
@@ -1210,27 +1251,6 @@ function idbPut(idb, key, value) {
     tx.onerror = ev => reject(ev.target.error || new Error('IDB put error'));
     tx.onabort = ev => reject(ev.target.error || new Error('IDB tx aborted'));
     try { tx.objectStore(IDB_STORE).put(value, key); } catch (e) { reject(e); }
-  });
-}
-
-function idbDelete(idb, key) {
-  return new Promise((resolve, reject) => {
-    let tx;
-    try { tx = idb.transaction(IDB_STORE, 'readwrite'); } catch (e) { return reject(e); }
-    tx.oncomplete = () => resolve();
-    tx.onerror = ev => reject(ev.target.error);
-    try { tx.objectStore(IDB_STORE).delete(key); } catch (e) { reject(e); }
-  });
-}
-
-function idbAllKeys(idb) {
-  return new Promise((resolve, reject) => {
-    try {
-      const tx = idb.transaction(IDB_STORE, 'readonly');
-      const r = tx.objectStore(IDB_STORE).getAllKeys();
-      r.onsuccess = () => resolve(r.result || []);
-      r.onerror = () => reject(r.error);
-    } catch (e) { reject(e); }
   });
 }
 
