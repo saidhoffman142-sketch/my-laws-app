@@ -220,15 +220,6 @@
 .toast{position:fixed;right:24px;bottom:24px;background:var(--ink);color:var(--surface);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:50;animation:fadein .2s ease}@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}#backToTop{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:20px;box-shadow:var(--shadow);cursor:pointer;display:none;z-index:40;align-items:center;justify-content:center;transition:all .3s}#backToTop:hover{background:var(--accent-2);transform:translateY(-2px)}#backToTop.show{display:flex}
 .app-footer{text-align:center;padding:24px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:auto}
 
-.recent-list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.recent-row{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--surface);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:all .2s}
-.recent-row:hover{border-color:var(--accent);background:var(--surface-2);transform:translateX(4px)}
-.recent-row .doc-symbol{width:36px;height:36px;font-size:14px;background:var(--accent-soft);border:none;color:var(--accent)}
-.recent-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-.recent-main strong{font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
-.recent-main small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.recent-open{font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:4px;white-space:nowrap}
-
 .search-panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
 .search-tabs{display:flex;background:var(--surface-2);border-bottom:1px solid var(--line)}
 .search-tab{padding:14px 24px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
@@ -258,7 +249,7 @@
 
 .mobile-menu{display:none}.mobile-backdrop{display:none}
 @media(max-width:1100px){:root{--sidebar:280px}.doc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.reader-layout{grid-template-columns:minmax(0,1fr) 240px;padding:24px 24px 60px;gap:30px}.brand{min-width:190px}.topbar{gap:14px;padding:0 16px}.categories{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:800px){.app{grid-template-rows:56px 1fr}.topbar{padding:0 12px;gap:10px}.brand{min-width:0;font-size:15px}.brand small{display:none}.brand-mark{width:32px;height:32px}.top-actions .desktop-only{display:none}.layout{grid-template-columns:minmax(0,1fr)}.sidebar{position:fixed;left:0;top:56px;bottom:0;width:min(310px,88vw);z-index:21;transform:translateX(-105%);transition:transform .25s cubic-bezier(0.4,0,0.2,1);box-shadow:var(--shadow)}.sidebar.open{transform:translateX(0)}.mobile-backdrop.show{display:block;position:fixed;inset:56px 0 0;background:rgba(0,0,0,.35);z-index:20;backdrop-filter:blur(2px)}.mobile-menu{display:inline-flex}.workspace-toolbar{padding:0 12px;min-height:54px;gap:8px}.toolbar-actions-label{display:none}.workspace-toolbar .btn{padding:8px 10px;font-size:12px}.home{padding:24px 16px 40px}.welcome{align-items:flex-start;flex-direction:column;gap:16px}.welcome h1{font-size:28px}.date-chip{display:none}.categories{grid-template-columns:1fr;gap:12px}.cat-card{padding:20px}.doc-grid{grid-template-columns:1fr;max-height:none}.reader-layout{display:block;padding:20px 16px 60px}.article-aside{position:static;margin-top:32px;display:grid;grid-template-columns:1fr;gap:12px}.article h1{font-size:24px}.doc-passport{padding:20px}.doc-passport h2{font-size:19px}.doc-passport-meta{grid-template-columns:1fr}.doc-search-panel input{width:120px}.result-page{padding:24px 16px 60px}.doc-list-table{display:block;overflow-x:auto}.search-tabs{flex-wrap:wrap}.search-tab{padding:10px 16px;flex:1;text-align:center;border-bottom:none;border-right:none;border-left:none;border-top:2px solid transparent}.search-tab.active{border-top-color:var(--accent)}.adv-field{flex-direction:column;align-items:flex-start;gap:4px}.adv-field label{text-align:left;width:auto}.adv-field input,.adv-field select{width:100%;max-width:none}.adv-actions{margin-left:0;justify-content:flex-end}}
+@media(max-width:800px){.app{grid-template-rows:56px 1fr}.topbar{padding:0 12px;gap:10px}.brand{min-width:0;font-size:15px}.brand small{display:none}.brand-mark{width:32px;height:32px}.top-actions .desktop-only{display:none}.layout{grid-template-columns:minmax(0,1fr)}.sidebar{position:fixed;left:0;top:56px;bottom:0;width:min(310px,88vw);z-index:21;transform:translateX(-105%);transition:transform .25s cubic-bezier(0.4,0,0.2,1);box-shadow:var(--shadow)}.sidebar.open{transform:translateX(0)}.mobile-backdrop.show{display:block;position:fixed;inset:56px 0 0;background:rgba(0,0,0,.35);z-index:20;backdrop-filter:blur(2px)}.mobile-menu{display:inline-flex}.workspace-toolbar{padding:0 12px;min-height:54px;gap:8px}.workspace-toolbar .btn{padding:8px 10px;font-size:12px}.home{padding:24px 16px 40px}.welcome{align-items:flex-start;flex-direction:column;gap:16px}.welcome h1{font-size:28px}.date-chip{display:none}.categories{grid-template-columns:1fr;gap:12px}.cat-card{padding:20px}.doc-grid{grid-template-columns:1fr}.reader-layout{display:block;padding:20px 16px 60px}.article-aside{position:static;margin-top:32px;display:grid;grid-template-columns:1fr;gap:12px}.article h1{font-size:24px}.doc-passport{padding:20px}.doc-passport h2{font-size:19px}.doc-search-panel input{width:120px}.result-page{padding:24px 16px 60px}.doc-list-table{display:block;overflow-x:auto}.search-tabs{flex-wrap:wrap}.search-tab{padding:10px 16px;flex:1;text-align:center;border-bottom:none;border-top:2px solid transparent}.search-tab.active{border-top-color:var(--accent)}.adv-field{flex-direction:column;align-items:flex-start;gap:4px}.adv-field label{text-align:left;width:auto}.adv-field input,.adv-field select{width:100%;max-width:none}}
 @media print{body{height:auto;overflow:visible;background:#fff;color:#000}.app{height:auto;display:block}.topbar,.sidebar,.workspace-toolbar,.article-aside,.mobile-backdrop,#backToTop,.app-footer,.doc-passport-actions,.doc-search-panel{display:none!important}.layout,.workspace,.workspace-body{display:block;overflow:visible;height:auto}.reader-layout{display:block;padding:0;max-width:none}.article{max-width:none}.article-body{font-size:12pt;color:#000}.article h1{font-size:20pt}.doc-passport{border:none;background:none;padding:0;margin-bottom:20px;box-shadow:none}.passport-norm{background:none;border:none;border-bottom:1px solid #ccc;border-radius:0;padding:0 0 20px;margin-bottom:20px}}
 </style>
 </head>
@@ -318,46 +309,34 @@
       </nav>
     </div>
     <div class="side-divider"></div>
-    
     <div class="library-head"><span>Правовая библиотека</span><span id="docCount">—</span></div>
     <div class="library-search">
       <input type="text" id="libSearchInput" placeholder="Фильтр библиотеки..." autocomplete="off">
     </div>
     <div class="library-list" id="libraryList"></div>
-    
     <div class="side-footer"><span id="dbStatus">Источник: pravo.gov.ru</span><span>© АИПС «РПА»</span></div>
   </aside>
 
   <main class="workspace">
     <div class="workspace-toolbar" id="workspaceToolbar">
       <div class="breadcrumbs" id="breadcrumbs">Главная <span> / </span> <strong>Обзор</strong></div>
-      
       <div class="toolbar-group" id="readerTools" hidden>
         <button class="btn" id="backBtn" title="Вернуться назад" onclick="goBack()">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
           Назад
         </button>
-
         <div class="doc-search-panel" id="docSearchPanel">
-          <input type="search" id="docSearchInput" placeholder="Найти в тексте..." title="Поиск по тексту документа">
+          <input type="search" id="docSearchInput" placeholder="Найти в тексте...">
           <span class="search-count" id="searchCount"></span>
-          <button id="searchPrev" title="Предыдущее совпадение">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
-          </button>
-          <button id="searchNext" title="Следующее совпадение">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <button id="searchClose" title="Закрыть поиск">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
+          <button id="searchPrev" title="Предыдущее"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></button>
+          <button id="searchNext" title="Следующее"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <button id="searchClose" title="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
-        
         <button class="btn" id="docSearchBtn" title="Поиск по тексту">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
           Поиск в тексте
         </button>
-        <button class="btn" id="backToDocBtn" title="Вернуться к документу" onclick="state.readMode='passport';renderReader()" style="display:none">← К паспорту</button>
-        
+        <button class="btn" id="backToDocBtn" onclick="state.readMode='passport';renderReader()" style="display:none">← К паспорту</button>
         <button class="icon-btn" id="favoriteBtn" title="В избранное">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </button>
@@ -392,12 +371,14 @@
 
 <script>
 // ============================================================
-//  АИПС «РПА» — исправленная логика
+//  АИПС «РПА» — SQLite в браузере через sql.js
+//  База лежит частями laws.db.001 … laws.db.005 (по 50 МБ).
+//  В IndexedDB храним каждую часть ОТДЕЛЬНОЙ записью,
+//  чтобы не превысить лимит на размер одной записи (~127 МБ).
 // ============================================================
 
 const $ = id => document.getElementById(id);
 
-// --- ХРАНИЛИЩА ---
 const HISTORY_MAX = 2000;
 const HISTORY_MAX_BYTES = 1_500_000;
 
@@ -407,43 +388,29 @@ function readHistory() {
   const raw = readStore('pravo-history', []);
   if (!Array.isArray(raw)) return [];
   return raw.filter(h => h && h.slug && h.ts).map(h => ({
-    slug: String(h.slug),
-    docCode: h.docCode || '',
-    number: String(h.number ?? ''),
-    title: h.title || h.docCode || '',
-    snippet: h.snippet || '',
-    ts: Number(h.ts) || Date.now()
+    slug: String(h.slug), docCode: h.docCode || '', number: String(h.number ?? ''),
+    title: h.title || h.docCode || '', snippet: h.snippet || '', ts: Number(h.ts) || Date.now()
   }));
 }
 
 const state = {
-  docs: [],
-  view: 'home',
-  doc: null,
-  article: null,
-  category: '',
-  favorites: readStore('pravo-favs', []),
-  history: readHistory(),
-  notes: readStore('pravo-notes', {}),
-  pinned: readStore('pravo-pinned', []),
-  query: '',
-  searchScope: 'all',
+  docs: [], view: 'home', doc: null, article: null, category: '',
+  favorites: readStore('pravo-favs', []), history: readHistory(),
+  notes: readStore('pravo-notes', {}), pinned: readStore('pravo-pinned', []),
+  query: '', searchScope: 'all',
   font: Number(localStorage.getItem('pravo-font') || 17),
   readMode: 'passport',
   docSearch: { query: '', matches: [], current: 0 },
   libSearch: '',
-  openGroups: { 'konst': false, 'codex': false, 'fkz': false, 'fz': false, 'zakon': false },
-  prevView: 'home',
-  prevCategory: '',
-  _suppressHashChange: false,
-  _restoring: false
+  openGroups: { konst: false, codex: false, fkz: false, fz: false, zakon: false },
+  prevView: 'home', prevCategory: '',
+  _suppressHashChange: false, _restoring: false
 };
 
 let SQL = null;
 let db = null;
 
 // --- НОРМАЛИЗАЦИЯ ТИПОВ ---
-// Единая точка: любые фильтры категорий и бейджи используют только её.
 function normalizeType(doc) {
   if (!doc) return 'Документ';
   const raw = String(doc.type || doc.act_kind || '').toLowerCase();
@@ -456,16 +423,15 @@ function normalizeType(doc) {
   if (raw === 'фкз') return 'ФКЗ';
   return doc.type || doc.act_kind || 'Документ';
 }
-
-function isCodex(doc) { return normalizeType(doc) === 'Кодекс'; }
-function isKonst(doc) { return normalizeType(doc) === 'Конституция'; }
-function isFKZ(doc)   { return normalizeType(doc) === 'ФКЗ'; }
-function isFZ(doc)    { return normalizeType(doc) === 'ФЗ'; }
+const isCodex = d => normalizeType(d) === 'Кодекс';
+const isKonst = d => normalizeType(d) === 'Конституция';
+const isFKZ   = d => normalizeType(d) === 'ФКЗ';
+const isFZ    = d => normalizeType(d) === 'ФЗ';
 
 // --- УТИЛИТЫ ---
 function esc(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function jsArg(v) { return JSON.stringify(String(v ?? '')); }
-function toast(message) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = message; $('toastRoot').replaceChildren(el); setTimeout(() => el.remove(), 2600); }
+function toast(msg) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; $('toastRoot').replaceChildren(el); setTimeout(() => el.remove(), 2600); }
 function titleOf(doc) { return doc?.code || doc?.title || doc?.name || 'Документ без названия'; }
 function docsCount(doc) { return doc?.articles_total || 0; }
 function dateOf(s) { if (!s) return 'Дата не указана'; const a = String(s).split('-'); return a.length === 3 ? `${a[2]}.${a[1]}.${a[0]}` : String(s); }
@@ -475,51 +441,44 @@ function getRecord(key) {
   const [slug, ...rest] = String(key).split('::');
   const number = rest.join('::');
   const doc = state.docs.find(d => d.slug === slug);
-  if (!doc) return { doc: { slug, code: slug, articles: {} }, art: { heading: `Статья ${number}` }, number, stub: true };
-  if (!doc.articles) return { doc, art: { heading: `Статья ${number}` }, number, stub: true };
+  if (!doc || !doc.articles) return { doc: { slug, code: slug, articles: {} }, art: { heading: `Статья ${number}` }, number, stub: true };
   const art = doc.articles[number];
-  if (!art) return { doc, art: { heading: `Статья ${number}` }, number, stub: true };
-  return { doc, art, number };
+  return art ? { doc, art, number } : { doc, art: { heading: `Статья ${number}` }, number, stub: true };
 }
 
 function artTitle(art, number) {
   const heading = art?.heading || art?.title || '';
   if (!heading) return `Статья ${number}`;
   let h = String(heading).trim();
-  const prefix = `Статья ${number}.`;
-  if (h.startsWith(prefix)) h = h.slice(prefix.length).trim();
+  const p = `Статья ${number}.`;
+  if (h.startsWith(p)) h = h.slice(p.length).trim();
   else if (h.startsWith(`Статья ${number}`)) h = h.slice(`Статья ${number}`.length).trim();
   return h ? `Статья ${number}. ${h}` : `Статья ${number}`;
 }
 
 function setActiveNav(view) { document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === view)); }
 function setBreadcrumb(parts) { $('breadcrumbs').innerHTML = parts.map((p, i) => i === parts.length - 1 ? `<strong>${esc(p)}</strong>` : esc(p)).join(' <span> / </span> '); }
-
 function setHashSafely(hash) {
   state._suppressHashChange = true;
   if (hash) window.location.hash = hash;
   else history.replaceState(null, '', window.location.pathname + window.location.search);
   setTimeout(() => { state._suppressHashChange = false; }, 0);
 }
-
 function closeMobile() { $('sidebar').classList.remove('open'); $('mobileBackdrop').classList.remove('show'); }
 
 // --- ИКОНКИ ---
 const icons = {
   book: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
-  search: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
   star: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
   starFill: `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
-  edit: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
-  clock: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
   file: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
   arrowRight: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
   arrowLeft: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
   check: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`,
   target: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
   layers: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`,
-  pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
-  pinFill: `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
+  pin: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
+  pinFill: `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
   shield: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
   chevronRight: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`,
   home: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
@@ -555,23 +514,16 @@ function getDocBadge(doc) {
   if (type === 'ФКЗ')   return { bg: '#2c3e50', fg: '#fff', label: 'ФКЗ' };
   if (type === 'Закон') return { bg: '#4a6741', fg: '#fff', label: 'ЗРФ' };
   if (type === 'Кодекс') return { bg: '#176b55', fg: '#fff', label: 'КОД' };
-  if (type === 'ФЗ')    return { bg: '#176b55', fg: '#fff', label: 'ФЗ' };
   return { bg: '#176b55', fg: '#fff', label: 'ФЗ' };
 }
 
 // --- НАВИГАЦИЯ ---
 function showView(view, category = '') {
   if (view !== state.view || category !== state.category) {
-    if (state.view !== 'reader') {
-      state.prevView = state.view;
-      state.prevCategory = state.category;
-    }
+    if (state.view !== 'reader') { state.prevView = state.view; state.prevCategory = state.category; }
   }
-  state.view = view;
-  state.category = category;
-  setActiveNav(view);
-  closeMobile();
-  $('readerTools').hidden = true;
+  state.view = view; state.category = category;
+  setActiveNav(view); closeMobile(); $('readerTools').hidden = true;
 
   if (view === 'home') setHashSafely('');
   else if (view === 'category') setHashSafely(`view=category&cat=${encodeURIComponent(category)}`);
@@ -594,18 +546,13 @@ function showView(view, category = '') {
 
 function goBack() {
   if (state.readMode === 'single' && state.article) {
-    state.readMode = 'passport';
-    state.article = null;
-    setHashSafely(`doc=${state.doc.slug}`);
-    renderReader();
+    state.readMode = 'passport'; state.article = null;
+    setHashSafely(`doc=${state.doc.slug}`); renderReader();
   } else if (state.view === 'reader') {
     if (state.prevView && state.prevView !== 'reader') {
       if (state.prevView === 'category') showView('category', state.prevCategory);
       else showView(state.prevView, state.prevCategory);
     } else showView('home');
-  } else if (state.prevView && state.prevView !== state.view) {
-    if (state.prevView === 'category') showView('category', state.prevCategory);
-    else showView(state.prevView, state.prevCategory);
   } else showView('home');
 }
 
@@ -633,19 +580,13 @@ function renderLibrary() {
   const pinnedToShow = search ? pinnedDocs.filter(d => titleOf(d).toLowerCase().includes(search)) : pinnedDocs;
 
   if (pinnedToShow.length) {
-    const pinGroup = document.createElement('div');
-    pinGroup.className = 'lib-group';
-    const pinHeader = document.createElement('div');
-    pinHeader.className = 'lib-group-header open';
-    pinHeader.style.cssText = 'color:var(--gold);gap:6px;';
-    pinHeader.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Закреплённые`;
-    const pinContent = document.createElement('div');
-    pinContent.className = 'lib-group-content open';
-    pinContent.style.paddingLeft = '0';
-    pinnedToShow.forEach(doc => pinContent.appendChild(createDocItem(doc)));
-    pinGroup.appendChild(pinHeader);
-    pinGroup.appendChild(pinContent);
-    root.appendChild(pinGroup);
+    const g = document.createElement('div'); g.className = 'lib-group';
+    const h = document.createElement('div'); h.className = 'lib-group-header open';
+    h.style.cssText = 'color:var(--gold);gap:6px;';
+    h.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg> Закреплённые`;
+    const c = document.createElement('div'); c.className = 'lib-group-content open'; c.style.paddingLeft = '0';
+    pinnedToShow.forEach(doc => c.appendChild(createDocItem(doc)));
+    g.appendChild(h); g.appendChild(c); root.appendChild(g);
   }
 
   for (const cat of cats) {
@@ -653,30 +594,21 @@ function renderLibrary() {
       ? state.docs.filter(d => cat.match(d) && titleOf(d).toLowerCase().includes(search) && !state.pinned.includes(d.slug))
       : state.docs.filter(d => cat.match(d) && !state.pinned.includes(d.slug));
     if (!docs.length) continue;
-
     docs.sort((a, b) => titleOf(a).localeCompare(titleOf(b), 'ru'));
 
-    const group = document.createElement('div');
-    group.className = 'lib-group';
+    const g = document.createElement('div'); g.className = 'lib-group';
     const isOpen = state.openGroups[cat.key] || search;
-
-    const header = document.createElement('div');
-    header.className = 'lib-group-header' + (isOpen ? ' open' : '');
-    header.innerHTML = `${icons.chevronRight} ${cat.name} <span style="margin-left:auto;font-size:10px;font-weight:500;color:var(--muted)">${docs.length}</span>`;
-    header.onclick = () => { state.openGroups[cat.key] = !state.openGroups[cat.key]; renderLibrary(); };
-
-    const content = document.createElement('div');
-    content.className = 'lib-group-content' + (isOpen ? ' open' : '');
-    docs.forEach(doc => content.appendChild(createDocItem(doc)));
-
-    group.appendChild(header);
-    group.appendChild(content);
-    root.appendChild(group);
+    const h = document.createElement('div');
+    h.className = 'lib-group-header' + (isOpen ? ' open' : '');
+    h.innerHTML = `${icons.chevronRight} ${cat.name} <span style="margin-left:auto;font-size:10px;font-weight:500;color:var(--muted)">${docs.length}</span>`;
+    h.onclick = () => { state.openGroups[cat.key] = !state.openGroups[cat.key]; renderLibrary(); };
+    const c = document.createElement('div');
+    c.className = 'lib-group-content' + (isOpen ? ' open' : '');
+    docs.forEach(doc => c.appendChild(createDocItem(doc)));
+    g.appendChild(h); g.appendChild(c); root.appendChild(g);
   }
 
-  if (search && !root.children.length) {
-    root.innerHTML = '<div class="empty-state" style="padding:20px">Ничего не найдено</div>';
-  }
+  if (search && !root.children.length) root.innerHTML = '<div class="empty-state" style="padding:20px">Ничего не найдено</div>';
 }
 
 function createDocItem(doc) {
@@ -684,16 +616,11 @@ function createDocItem(doc) {
   el.className = 'lib-doc' + (state.doc?.slug === doc.slug ? ' active' : '');
   el.tabIndex = 0;
   const isPin = state.pinned.includes(doc.slug);
-  const badge = getDocBadge(doc);
+  const b = getDocBadge(doc);
   el.innerHTML = `
-    <div class="doc-symbol" style="background:${badge.bg};color:${badge.fg}">${badge.label}</div>
-    <div class="doc-info">
-      <strong>${esc(titleOf(doc))}</strong>
-      <small>${esc(doc.act_kind || doc.type || 'Документ')}</small>
-    </div>
-    <button class="pin-btn ${isPin ? 'pinned' : ''}" title="${isPin ? 'Открепить' : 'Закрепить'}">
-      ${isPin ? icons.pinFill : icons.pin}
-    </button>`;
+    <div class="doc-symbol" style="background:${b.bg};color:${b.fg}">${b.label}</div>
+    <div class="doc-info"><strong>${esc(titleOf(doc))}</strong><small>${esc(doc.act_kind || doc.type || 'Документ')}</small></div>
+    <button class="pin-btn ${isPin ? 'pinned' : ''}" title="${isPin ? 'Открепить' : 'Закрепить'}">${isPin ? icons.pinFill : icons.pin}</button>`;
   el.querySelector('.pin-btn').onclick = (e) => { e.stopPropagation(); togglePin(doc.slug); };
   el.onclick = () => openDocBySlug(doc.slug);
   el.onkeydown = (e) => { if (e.key === 'Enter') openDocBySlug(doc.slug); };
@@ -701,13 +628,8 @@ function createDocItem(doc) {
 }
 
 function togglePin(slug) {
-  if (state.pinned.includes(slug)) {
-    state.pinned = state.pinned.filter(s => s !== slug);
-    toast('Документ откреплён');
-  } else {
-    state.pinned.unshift(slug);
-    toast('Документ закреплён');
-  }
+  if (state.pinned.includes(slug)) { state.pinned = state.pinned.filter(s => s !== slug); toast('Документ откреплён'); }
+  else { state.pinned.unshift(slug); toast('Документ закреплён'); }
   writeStore('pravo-pinned', state.pinned);
   renderLibrary();
   if (state.view === 'home') renderHome();
@@ -717,54 +639,39 @@ function togglePin(slug) {
 
 // --- ГЛАВНАЯ ---
 function renderHome() {
-  const body = $('workspaceBody');
   const pinnedDocs = state.pinned.map(slug => state.docs.find(d => d.slug === slug)).filter(Boolean);
   const codes = state.docs.filter(isCodex);
   const fkz = state.docs.filter(isFKZ);
   const fz = state.docs.filter(isFZ);
-
-  body.innerHTML = `<section class="home">
+  $('workspaceBody').innerHTML = `<section class="home">
     <div class="welcome">
       <div>
         <div class="eyebrow">АИПС «РПА»</div>
         <h1>Информационно-правовая система</h1>
-        <p><strong>Полное собрание законодательства РФ в вашем устройстве.</strong> В базе представлены Конституция РФ, действующие кодексы, федеральные конституционные и федеральные законы. Система позволяет быстро находить нужные нормы, отслеживать редакции документов и работать с правовыми актами без подключения к интернету.</p>
+        <p><strong>Полное собрание законодательства РФ в вашем устройстве.</strong> Конституция, кодексы, ФКЗ и федеральные законы. Быстрый поиск, отслеживание редакций, работа без интернета.</p>
       </div>
       <div class="date-chip">${new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date())}</div>
     </div>
-
     <div class="categories">
       <div class="cat-card" onclick="showView('category', ${jsArg('Конституция')})">
         <div class="cat-icon" style="background:var(--gold);color:#fff">${icons.shield}</div>
-        <h3>Конституция</h3>
-        <p>Принята 12.12.1993. Высшая юридическая сила.</p>
+        <h3>Конституция</h3><p>Принята 12.12.1993. Высшая юридическая сила.</p>
       </div>
       <div class="cat-card" onclick="showView('category', ${jsArg('Кодексы')})">
-        <div class="cat-icon">${icons.book}</div>
-        <h3>Кодексы</h3>
-        <p>Основа отраслей права. ГК, УК, НК и др.</p>
+        <div class="cat-icon">${icons.book}</div><h3>Кодексы</h3><p>Основа отраслей права. ГК, УК, НК и др.</p>
         <div class="cat-badge">${codes.length}</div>
       </div>
       <div class="cat-card" onclick="showView('category', ${jsArg('ФКЗ')})">
-        <div class="cat-icon">${icons.layers}</div>
-        <h3>ФКЗ</h3>
-        <p>Особый статус. Принимаются по вопросам Конституции.</p>
+        <div class="cat-icon">${icons.layers}</div><h3>ФКЗ</h3><p>Особый статус. Принимаются по вопросам Конституции.</p>
         <div class="cat-badge">${fkz.length}</div>
       </div>
       <div class="cat-card" onclick="showView('category', ${jsArg('ФЗ')})">
-        <div class="cat-icon">${icons.file}</div>
-        <h3>Федеральные законы</h3>
-        <p>Текущее право. Регулируют все сферы жизни.</p>
+        <div class="cat-icon">${icons.file}</div><h3>Федеральные законы</h3><p>Текущее право. Регулируют все сферы жизни.</p>
         <div class="cat-badge">${fz.length}</div>
       </div>
     </div>
-
-    ${pinnedDocs.length > 0 ? `
-    <div class="section-heading"><h2>Закреплённые документы</h2><span>Быстрый доступ</span></div>
-    <div class="doc-grid" style="margin-bottom:32px;">
-      ${pinnedDocs.map(d => docCard(d)).join('')}
-    </div>` : ''}
-
+    ${pinnedDocs.length ? `<div class="section-heading"><h2>Закреплённые документы</h2><span>Быстрый доступ</span></div>
+      <div class="doc-grid" style="margin-bottom:32px;">${pinnedDocs.map(docCard).join('')}</div>` : ''}
     <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
   </section>`;
 }
@@ -772,160 +679,86 @@ function renderHome() {
 function docCard(d) {
   const isPin = state.pinned.includes(d.slug) || normalizeType(d) === 'Конституция';
   return `<button class="doc-card" onclick="openDocBySlug(${jsArg(d.slug)})">
-    <div class="card-top">
-      <span class="card-type">${esc(d.type || 'Документ')}</span>
-      <span class="card-arrow">${icons.arrowRight}</span>
-    </div>
-    <h3>${esc(titleOf(d))}</h3>
-    <p>Редакция от ${esc(dateOf(d.redaction_date))}</p>
+    <div class="card-top"><span class="card-type">${esc(d.type || 'Документ')}</span><span class="card-arrow">${icons.arrowRight}</span></div>
+    <h3>${esc(titleOf(d))}</h3><p>Редакция от ${esc(dateOf(d.redaction_date))}</p>
     <div class="card-meta"><span>${docsCount(d)} статей</span></div>
-    <button class="card-pin-abs ${isPin ? 'pinned' : ''}" onclick="event.stopPropagation();togglePin(${jsArg(d.slug)})" title="${isPin ? 'Открепить' : 'Закрепить'}">
-      ${isPin ? icons.pinFill : icons.pin}
-    </button>
+    <button class="card-pin-abs ${isPin ? 'pinned' : ''}" onclick="event.stopPropagation();togglePin(${jsArg(d.slug)})" title="${isPin ? 'Открепить' : 'Закрепить'}">${isPin ? icons.pinFill : icons.pin}</button>
   </button>`;
 }
 
 // --- КАТЕГОРИИ ---
 function renderCategory(catName) {
-  const body = $('workspaceBody');
   let docs = [];
   let desc = '';
-
-  if (catName === 'Конституция') {
-    docs = state.docs.filter(isKonst);
-    desc = `<div class="legal-info">
-      <strong>Конституция Российской Федерации</strong> — высший нормативный правовой акт РФ.
-      <ul>
-        <li><b>Принята:</b> 12 декабря 1993 года (всенародным голосованием).</li>
-        <li><b>Вступила в силу:</b> 25 декабря 1993 года.</li>
-        <li><b>Особенности:</b> Обладает высшей юридической силой, прямым действием и применяется на всей территории РФ.</li>
-        <li><b>Структура:</b> Преамбула, 2 раздела, 9 глав (137 статей).</li>
-      </ul>
-    </div>`;
-  } else if (catName === 'Кодексы') {
-    docs = state.docs.filter(isCodex);
-    desc = `<div class="legal-info">
-      <strong>Кодекс</strong> — законодательный акт, содержащий систематизированные нормы какой-либо отрасли права.
-      <ul>
-        <li><b>Роль:</b> Являются «фундаментом» отрасли. Например, ГК РФ регулирует имущественные отношения, УК РФ — преступления и наказания.</li>
-        <li><b>Иерархия:</b> Федеральные законы в той же сфере не должны противоречить кодексам.</li>
-      </ul>
-    </div>`;
-  } else if (catName === 'ФКЗ') {
-    docs = state.docs.filter(isFKZ);
-    desc = `<div class="legal-info">
-      <strong>Федеральный конституционный закон (ФКЗ)</strong> — закон особой юридической силы.
-      <ul>
-        <li><b>Особенности:</b> Принимаются только по вопросам, прямо предусмотренным Конституцией РФ.</li>
-        <li><b>Порядок принятия:</b> Требуют одобрения 2/3 голосов Госдумы и 3/4 голосов Совета Федерации.</li>
-      </ul>
-    </div>`;
-  } else if (catName === 'ФЗ') {
-    docs = state.docs.filter(isFZ);
-    desc = `<div class="legal-info">
-      <strong>Федеральный закон (ФЗ)</strong> — основной вид текущего законодательства.
-      <ul>
-        <li><b>Роль:</b> Регулируют отдельные сферы общественных отношений.</li>
-        <li><b>Порядок принятия:</b> Принимаются простым большинством голосов в обеих палатах парламента.</li>
-      </ul>
-    </div>`;
-  }
+  if (catName === 'Конституция') { docs = state.docs.filter(isKonst); desc = `<div class="legal-info"><strong>Конституция РФ</strong> — высший нормативный правовой акт.<ul><li><b>Принята:</b> 12.12.1993.</li><li><b>Структура:</b> Преамбула, 2 раздела, 9 глав (137 статей).</li></ul></div>`; }
+  else if (catName === 'Кодексы') { docs = state.docs.filter(isCodex); desc = `<div class="legal-info"><strong>Кодекс</strong> — систематизированный акт отрасли права.<ul><li><b>Роль:</b> фундамент отрасли.</li><li><b>Иерархия:</b> ФЗ не должны противоречить кодексам.</li></ul></div>`; }
+  else if (catName === 'ФКЗ') { docs = state.docs.filter(isFKZ); desc = `<div class="legal-info"><strong>ФКЗ</strong> — закон особой юридической силы.<ul><li>Принимаются по вопросам Конституции.</li><li>2/3 ГД, 3/4 СФ.</li></ul></div>`; }
+  else if (catName === 'ФЗ') { docs = state.docs.filter(isFZ); desc = `<div class="legal-info"><strong>ФЗ</strong> — основной вид текущего законодательства.<ul><li>Принимаются простым большинством.</li></ul></div>`; }
 
   docs.sort((a, b) => titleOf(a).localeCompare(titleOf(b), 'ru'));
+  if (!docs.length) console.warn('[РПА] Пустая категория:', catName, '| типы:', Array.from(new Set(state.docs.map(d => d.type))));
 
-  if (!docs.length) {
-    console.warn('[РПА] Пустая категория:', catName, '| реальные типы в state.docs:', Array.from(new Set(state.docs.map(d => d.type))));
-  }
-
-  body.innerHTML = `<section class="docs-page">
+  $('workspaceBody').innerHTML = `<section class="docs-page">
     <div class="back-link" onclick="showView('home')">${icons.arrowLeft} На главную</div>
     <h1>${catName} <span style="font-size:16px;color:var(--muted);font-weight:normal">(${docs.length})</span></h1>
     ${desc}
-    ${docs.length ? `
-    <table class="doc-list-table">
-      <thead>
-        <tr><th>Наименование</th><th>Реквизиты</th><th>Статей</th><th style="width:40px"></th></tr>
-      </thead>
-      <tbody>
-        ${docs.map(d => {
-          const isPin = state.pinned.includes(d.slug);
-          return `<tr onclick="openDocBySlug(${jsArg(d.slug)})" style="cursor:pointer;">
-            <td>
-              <span class="doc-row-title">${esc(titleOf(d))}</span>
-              <div class="doc-row-meta">${esc(d.act_kind || d.type || 'Документ')}</div>
-            </td>
-            <td>
-              <div style="font-size:12px;color:var(--ink)">${esc(d.base_act || '—')}</div>
-              <div class="doc-row-meta">Ред. от ${esc(dateOf(d.redaction_date))}</div>
-            </td>
-            <td>${docsCount(d)}</td>
-            <td onclick="event.stopPropagation();togglePin(${jsArg(d.slug)})">
-              <button class="row-pin-btn ${isPin ? 'pinned' : ''}" title="${isPin ? 'Открепить' : 'Закрепить'}">
-                ${isPin ? icons.pinFill : icons.pin}
-              </button>
-            </td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table>` : `<div class="empty-state"><strong>В этой категории пока нет документов</strong><p>Проверьте, что база данных загружена корректно.</p></div>`}
+    ${docs.length ? `<table class="doc-list-table"><thead><tr><th>Наименование</th><th>Реквизиты</th><th>Статей</th><th style="width:40px"></th></tr></thead><tbody>
+      ${docs.map(d => {
+        const isPin = state.pinned.includes(d.slug);
+        return `<tr onclick="openDocBySlug(${jsArg(d.slug)})" style="cursor:pointer;">
+          <td><span class="doc-row-title">${esc(titleOf(d))}</span><div class="doc-row-meta">${esc(d.act_kind || d.type || 'Документ')}</div></td>
+          <td><div style="font-size:12px;color:var(--ink)">${esc(d.base_act || '—')}</div><div class="doc-row-meta">Ред. от ${esc(dateOf(d.redaction_date))}</div></td>
+          <td>${docsCount(d)}</td>
+          <td onclick="event.stopPropagation();togglePin(${jsArg(d.slug)})"><button class="row-pin-btn ${isPin ? 'pinned' : ''}">${isPin ? icons.pinFill : icons.pin}</button></td>
+        </tr>`;
+      }).join('')}
+    </tbody></table>` : `<div class="empty-state"><strong>В этой категории пока нет документов</strong><p>Проверьте, что база загружена корректно.</p></div>`}
   </section>`;
 }
 
 // --- ОТКРЫТИЕ ДОКУМЕНТА ---
 function safeJsonParse(str) {
   if (!str) return [];
-  let parsed;
-  try { parsed = JSON.parse(str); } catch (e) { console.warn('Невалидный JSON structure_json:', String(str).slice(0, 120)); return []; }
-  if (Array.isArray(parsed)) return parsed;
-  if (parsed && typeof parsed === 'object') {
-    if (Array.isArray(parsed.chapters)) return parsed.chapters;
-    if (Array.isArray(parsed.sections)) return parsed.sections;
-    if (Array.isArray(parsed.structure)) return parsed.structure;
-    if (Array.isArray(parsed.items)) return parsed.items;
+  let p;
+  try { p = JSON.parse(str); } catch { return []; }
+  if (Array.isArray(p)) return p;
+  if (p && typeof p === 'object') {
+    if (Array.isArray(p.chapters)) return p.chapters;
+    if (Array.isArray(p.sections)) return p.sections;
+    if (Array.isArray(p.structure)) return p.structure;
+    if (Array.isArray(p.items)) return p.items;
   }
   return [];
 }
 
 async function openDocBySlug(slug, num = null) {
   if (!db) return toast('База данных не загружена');
-  $('workspaceBody').innerHTML = `<div class="empty-state" style="margin-top:100px;text-align:center;"><strong>Загрузка документа…</strong><p>Пожалуйста, подождите</p></div>`;
+  $('workspaceBody').innerHTML = `<div class="empty-state" style="margin-top:100px;text-align:center;"><strong>Загрузка документа…</strong><p>Подождите</p></div>`;
   try {
-    const safeSlug = String(slug).replace(/'/g, "''");
-    const docRes = db.exec(`SELECT * FROM documents WHERE slug = '${safeSlug}'`);
-    if (!docRes.length || !docRes[0].values.length) throw new Error('Документ не найден');
+    const s = String(slug).replace(/'/g, "''");
+    const res = db.exec(`SELECT * FROM documents WHERE slug = '${s}'`);
+    if (!res.length || !res[0].values.length) throw new Error('Документ не найден');
+    const cols = res[0].columns, row = res[0].values[0];
+    const r = Object.fromEntries(cols.map((c, i) => [c, row[i]]));
 
-    const columns = docRes[0].columns;
-    const row = docRes[0].values[0];
-    const r = Object.fromEntries(columns.map((c, i) => [c, row[i]]));
-
-    const artsRes = db.exec(`SELECT number, heading, text, status FROM articles WHERE doc_slug = '${safeSlug}'`);
+    const artsRes = db.exec(`SELECT number, heading, text, status FROM articles WHERE doc_slug = '${s}'`);
     const articles = {};
-    if (artsRes.length) {
-      artsRes[0].values.forEach(a => {
-        articles[String(a[0])] = { number: String(a[0]), heading: a[1], text: a[2], status: a[3] };
-      });
-    }
+    if (artsRes.length) artsRes[0].values.forEach(a => {
+      articles[String(a[0])] = { number: String(a[0]), heading: a[1], text: a[2], status: a[3] };
+    });
 
     const fullDoc = {
-      slug: r.slug,
-      code: r.code,
-      type: r.type,
-      act_kind: r.act_kind,
-      act_number: r.act_number,
-      base_act: r.base_act,
-      redaction_date: r.redaction_date,
-      redaction_status: r.redaction_status,
+      slug: r.slug, code: r.code, type: r.type, act_kind: r.act_kind,
+      act_number: r.act_number, base_act: r.base_act,
+      redaction_date: r.redaction_date, redaction_status: r.redaction_status,
       source_url: r.source_url,
       articles_total: r.articles_total ?? Object.keys(articles).length,
       preamble: r.preamble ? String(r.preamble).split('\n').filter(Boolean) : [],
       structure: safeJsonParse(r.structure_json),
       articles
     };
-
     const idx = state.docs.findIndex(d => d.slug === slug);
-    if (idx >= 0) Object.assign(state.docs[idx], fullDoc);
-    else state.docs.push(fullDoc);
-
+    if (idx >= 0) Object.assign(state.docs[idx], fullDoc); else state.docs.push(fullDoc);
     openDoc(fullDoc, num);
   } catch (e) {
     console.error(e);
@@ -935,38 +768,20 @@ async function openDocBySlug(slug, num = null) {
 }
 
 function openDoc(doc, number = null) {
-  if (state.view !== 'reader') {
-    state.prevView = state.view;
-    state.prevCategory = state.category;
-  }
-  state.doc = doc;
-  renderLibrary();
-  state.view = 'reader';
-  setActiveNav('');
-  state.readMode = 'passport';
+  if (state.view !== 'reader') { state.prevView = state.view; state.prevCategory = state.category; }
+  state.doc = doc; renderLibrary();
+  state.view = 'reader'; setActiveNav(''); state.readMode = 'passport';
   state.docSearch = { query: '', matches: [], current: 0 };
 
-  if (number && doc.articles?.[String(number)]) {
-    state.article = String(number);
-    state.readMode = 'single';
-  } else {
-    state.article = null;
-    if (number && String(number) !== 'doc') {
-      setTimeout(() => toast(`Статья ${number} не найдена — открыт документ`), 100);
-    }
-  }
+  if (number && doc.articles?.[String(number)]) { state.article = String(number); state.readMode = 'single'; }
+  else { state.article = null; if (number && String(number) !== 'doc') setTimeout(() => toast(`Статья ${number} не найдена — открыт документ`), 100); }
 
-  renderReader();
-  closeMobile();
-
+  renderReader(); closeMobile();
   if (state.article) setHashSafely(`doc=${doc.slug}&art=${state.article}`);
   else setHashSafely(`doc=${doc.slug}`);
 
-  if (state.article && doc.articles[state.article]) {
-    recordHistory(doc, doc.articles[state.article], state.article);
-  } else {
-    recordHistory(doc, { heading: titleOf(doc), text: '' }, 'doc');
-  }
+  if (state.article && doc.articles[state.article]) recordHistory(doc, doc.articles[state.article], state.article);
+  else recordHistory(doc, { heading: titleOf(doc), text: '' }, 'doc');
 }
 
 function openArticle(number) {
@@ -974,19 +789,15 @@ function openArticle(number) {
   number = String(number);
   const art = state.doc.articles?.[number];
   if (!art) { toast(`Статья ${number} не найдена`); return; }
-  state.article = number;
-  state.readMode = 'single';
-  renderReader();
-  recordHistory(state.doc, art, number);
+  state.article = number; state.readMode = 'single';
+  renderReader(); recordHistory(state.doc, art, number);
   setHashSafely(`doc=${state.doc.slug}&art=${number}`);
 }
 
 // --- ЧИТАЛКА ---
 function renderReader() {
-  const body = $('workspaceBody');
   $('readerTools').hidden = false;
   if (!state.doc) { showView('home'); return; }
-
   const art = state.article ? state.doc.articles[state.article] : null;
   const nums = flattenStructure(state.doc.structure);
   const isFav = art && state.favorites.includes(recordKey(state.doc, state.article));
@@ -997,169 +808,102 @@ function renderReader() {
   setBreadcrumb([titleOf(state.doc), art ? `Статья ${state.article}` : 'Документ']);
 
   let articleHtml = '';
-
   if (state.readMode === 'full') {
-    let fullHtml = '';
-    const walk = (nodes, level = 0) => {
+    let html = '';
+    const walk = (nodes, lvl = 0) => {
       if (!nodes) return;
-      nodes.forEach(node => {
-        if (node.heading) {
-          const h = Math.min(6, level + 2);
-          fullHtml += `<h${h} style="margin-top:32px;margin-bottom:16px;font-size:${1.6 - level * 0.2}em;line-height:1.3;border-bottom:1px solid var(--line);padding-bottom:8px;">${esc(node.heading)}</h${h}>`;
-        }
-        if (node.unit === 'статья' && node.number) {
-          const artData = state.doc.articles[String(node.number)];
-          if (artData) {
-            fullHtml += `<div style="margin-top:24px;margin-bottom:8px;font-weight:700;font-size:1.1em;">${esc(artTitle(artData, node.number))}</div>`;
-            if (artData.text) fullHtml += `<div>${artData.text.split('\n').filter(Boolean).map(p => `<p style="margin-bottom:12px;">${esc(p)}</p>`).join('')}</div>`;
-            else fullHtml += `<p style="color:var(--muted);font-style:italic;">Текст отсутствует.</p>`;
+      nodes.forEach(n => {
+        if (n.heading) { const h = Math.min(6, lvl + 2); html += `<h${h} style="margin-top:32px;margin-bottom:16px;font-size:${1.6 - lvl * 0.2}em;border-bottom:1px solid var(--line);padding-bottom:8px;">${esc(n.heading)}</h${h}>`; }
+        if (n.unit === 'статья' && n.number) {
+          const ad = state.doc.articles[String(n.number)];
+          if (ad) {
+            html += `<div style="margin-top:24px;margin-bottom:8px;font-weight:700;font-size:1.1em;">${esc(artTitle(ad, n.number))}</div>`;
+            html += ad.text ? `<div>${ad.text.split('\n').filter(Boolean).map(p => `<p style="margin-bottom:12px;">${esc(p)}</p>`).join('')}</div>` : `<p style="color:var(--muted);font-style:italic;">Текст отсутствует.</p>`;
           }
         }
-        if (node.children) walk(node.children, level + 1);
+        if (n.children) walk(n.children, lvl + 1);
       });
     };
     walk(state.doc.structure);
-    articleHtml = `<div style="margin-bottom:20px"><button class="btn" onclick="state.readMode='passport';renderReader()">← К паспорту</button></div><div class="article-body" id="articleBody">${fullHtml}</div>`;
+    articleHtml = `<div style="margin-bottom:20px"><button class="btn" onclick="state.readMode='passport';renderReader()">← К паспорту</button></div><div class="article-body" id="articleBody">${html}</div>`;
   } else if (state.readMode === 'passport') {
-    const tocHtml = buildTocHtml(state.doc.structure);
-    let preambleHtml = '';
-    if (state.doc.preamble?.length) preambleHtml = `<div class="preamble-box">${state.doc.preamble.map(p => `<p>${esc(p)}</p>`).join('')}</div>`;
-    articleHtml = `
-      ${renderDocPassport()}
-      ${preambleHtml}
-      <div class="doc-toc-container">
-        <h2>Структура документа</h2>
-        <div class="toc-tree">${tocHtml || '<span style="color:var(--muted)">Структура не указана в базе</span>'}</div>
-      </div>`;
+    const toc = buildTocHtml(state.doc.structure);
+    const pre = state.doc.preamble?.length ? `<div class="preamble-box">${state.doc.preamble.map(p => `<p>${esc(p)}</p>`).join('')}</div>` : '';
+    articleHtml = `${renderDocPassport()}${pre}<div class="doc-toc-container"><h2>Структура документа</h2><div class="toc-tree">${toc || '<span style="color:var(--muted)">Структура не указана</span>'}</div></div>`;
   } else if (state.readMode === 'single') {
-    let passportArticleHtml = '';
+    let pn = '';
     if (art) {
       const st = (art.status || '').toLowerCase();
-      const isDead = st.includes('утратила');
-      const statusHtml = isDead ? `<span class="status-pill">Утратила силу</span>` : `<span class="status-pill ok">Действует</span>`;
-      passportArticleHtml = `
-        <div class="passport-norm">
-          <div class="article-kicker" style="margin-bottom:8px">Паспорт нормы</div>
-          <h3>${esc(artTitle(art, state.article))}</h3>
-          <div class="meta-grid">
-            <span><b>Документ:</b> ${esc(titleOf(state.doc))}</span>
-            ${state.doc.base_act ? `<span><b>Принят:</b> ${esc(state.doc.base_act)}</span>` : ''}
-            <span><b>Редакция:</b> ${esc(dateOf(state.doc.redaction_date))}</span>
-            <span><b>Статус:</b> ${statusHtml}</span>
-          </div>
-        </div>`;
+      const dead = st.includes('утратила');
+      pn = `<div class="passport-norm"><div class="article-kicker" style="margin-bottom:8px">Паспорт нормы</div><h3>${esc(artTitle(art, state.article))}</h3><div class="meta-grid"><span><b>Документ:</b> ${esc(titleOf(state.doc))}</span>${state.doc.base_act ? `<span><b>Принят:</b> ${esc(state.doc.base_act)}</span>` : ''}<span><b>Редакция:</b> ${esc(dateOf(state.doc.redaction_date))}</span><span><b>Статус:</b> ${dead ? '<span class="status-pill">Утратила силу</span>' : '<span class="status-pill ok">Действует</span>'}</span></div></div>`;
     }
-    articleHtml = `
-      <div style="margin-bottom:20px"><button class="btn" onclick="state.readMode='passport';renderReader()">← К структуре</button></div>
-      ${passportArticleHtml}
-      ${art ? `<div class="article-body" id="articleBody">${art.text ? art.text.split('\n').filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('') : '<p class="empty">В файле базы для этой статьи нет текста.</p>'}</div>` : ''}`;
+    articleHtml = `<div style="margin-bottom:20px"><button class="btn" onclick="state.readMode='passport';renderReader()">← К структуре</button></div>${pn}${art ? `<div class="article-body" id="articleBody">${art.text ? art.text.split('\n').filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('') : '<p class="empty">В базе для этой статьи нет текста.</p>'}</div>` : ''}`;
   }
 
-  const structureLinks = nums.map(n => `<a class="aside-link" data-jump="${esc(n)}">${esc(artTitle(state.doc.articles[n] || {}, n))}</a>`).join('');
+  const links = nums.map(n => `<a class="aside-link" data-jump="${esc(n)}">${esc(artTitle(state.doc.articles[n] || {}, n))}</a>`).join('');
+  $('workspaceBody').innerHTML = `<div class="reader-layout">
+    <article class="article">${articleHtml}</article>
+    <aside class="article-aside">
+      <div class="aside-card"><h3>Действия</h3>
+        ${state.readMode === 'passport' ? `<a class="aside-link" onclick="state.readMode='full';renderReader()">${icons.book} Текст целиком</a>` : ''}
+        <a class="aside-link" id="gotoAside">${icons.target} Переход к статье</a>
+        <a class="aside-link" onclick="showView('home')">${icons.home} Главная</a>
+      </div>
+      ${art ? `<div class="aside-card"><h3>Заметка</h3><textarea id="noteArea" class="note-area" placeholder="Текст заметки...">${esc(state.notes[recordKey(state.doc, state.article)] || '')}</textarea><button class="btn primary" id="saveNote" style="width:100%;margin-top:10px">${icons.check} Сохранить</button></div>` : ''}
+      <div class="aside-card"><h3>Навигация</h3><div style="max-height:300px;overflow:auto">${links || '<span class="aside-link" style="color:var(--muted)">Нет данных</span>'}</div></div>
+      <footer class="app-footer" style="border:none;padding:0;margin-top:20px;text-align:left;font-size:9px;">© Абдулмаликов С.Р., 2026</footer>
+    </aside>
+  </div>`;
 
-  body.innerHTML = `
-    <div class="reader-layout">
-      <article class="article">${articleHtml}</article>
-      <aside class="article-aside">
-        <div class="aside-card">
-          <h3>Действия</h3>
-          ${state.readMode === 'passport' ? `<a class="aside-link" onclick="state.readMode='full';renderReader()">${icons.book} Текст целиком</a>` : ''}
-          <a class="aside-link" id="gotoAside">${icons.target} Переход к статье</a>
-          <a class="aside-link" onclick="showView('home')">${icons.home} Главная</a>
-        </div>
-        ${art ? `
-        <div class="aside-card">
-          <h3>Заметка</h3>
-          <textarea id="noteArea" class="note-area" placeholder="Текст заметки...">${esc(state.notes[recordKey(state.doc, state.article)] || '')}</textarea>
-          <button class="btn primary" id="saveNote" style="width:100%;margin-top:10px">${icons.check} Сохранить</button>
-        </div>` : ''}
-        <div class="aside-card">
-          <h3>Навигация</h3>
-          <div style="max-height:300px;overflow:auto">${structureLinks || '<span class="aside-link" style="color:var(--muted)">Нет данных</span>'}</div>
-        </div>
-        <footer class="app-footer" style="border:none;padding:0;margin-top:20px;text-align:left;font-size:9px;">© Абдулмаликов С.Р., 2026</footer>
-      </aside>
-    </div>`;
-
-  body.querySelectorAll('[data-jump]').forEach(el => el.onclick = () => openArticle(el.dataset.jump));
+  document.querySelectorAll('[data-jump]').forEach(el => el.onclick = () => openArticle(el.dataset.jump));
   $('gotoAside').onclick = openGoto;
-  const saveNoteBtn = $('saveNote'); if (saveNoteBtn) saveNoteBtn.onclick = saveNote;
-
-  if (state.readMode === 'passport') {
-    body.querySelectorAll('.toc-node-header').forEach(el => {
-      el.onclick = () => {
-        el.classList.toggle('open');
-        const c = el.nextElementSibling;
-        if (c) c.classList.toggle('open');
-      };
-    });
-  }
-
+  const sn = $('saveNote'); if (sn) sn.onclick = saveNote;
+  if (state.readMode === 'passport') document.querySelectorAll('.toc-node-header').forEach(el => el.onclick = () => { el.classList.toggle('open'); el.nextElementSibling?.classList.toggle('open'); });
   $('articleBody')?.style.setProperty('--reader-size', state.font + 'px');
   document.documentElement.style.setProperty('--reader-size', state.font + 'px');
-
   if (state.docSearch.query) setTimeout(() => highlightSearchMatches(), 50);
 }
 
 function buildTocHtml(nodes) {
   if (!nodes) return '';
   let html = '';
-  nodes.forEach(node => {
-    const hasChildren = node.children && node.children.length > 0;
-    const isArticle = node.unit === 'статья' && node.number;
-    if (isArticle) {
-      html += `<div class="toc-article" onclick="openArticle(${jsArg(node.number)})">${esc(artTitle(state.doc.articles[String(node.number)] || {}, node.number))}</div>`;
-    } else if (hasChildren) {
-      const label = node.heading || node.title || 'Раздел';
-      html += `<div class="toc-node">
-        <div class="toc-node-header">${icons.chevronRight}<span>${esc(label)}</span></div>
-        <div class="toc-children">${buildTocHtml(node.children)}</div>
-      </div>`;
-    }
+  nodes.forEach(n => {
+    const has = n.children?.length;
+    if (n.unit === 'статья' && n.number) html += `<div class="toc-article" onclick="openArticle(${jsArg(n.number)})">${esc(artTitle(state.doc.articles[String(n.number)] || {}, n.number))}</div>`;
+    else if (has) html += `<div class="toc-node"><div class="toc-node-header">${icons.chevronRight}<span>${esc(n.heading || n.title || 'Раздел')}</span></div><div class="toc-children">${buildTocHtml(n.children)}</div></div>`;
   });
   return html;
 }
 
 function renderDocPassport() {
-  const doc = state.doc;
-  const isPin = state.pinned.includes(doc.slug);
-  return `
-    <div class="doc-passport">
-      <div class="article-kicker" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;">
-        <span>${esc(doc.act_kind || doc.type || 'Правовой документ')}</span>
-        <button class="btn" onclick="togglePin(${jsArg(doc.slug)})" style="padding:6px 12px;font-size:12px;border-radius:6px;">
-          ${isPin ? icons.pinFill : icons.pin} ${isPin ? 'Открепить' : 'Закрепить'}
-        </button>
-      </div>
-      <h2>${esc(titleOf(doc))}</h2>
-      <div class="doc-passport-meta">
-        ${doc.base_act ? `<span><b>Принят:</b> ${esc(doc.base_act)}</span>` : ''}
-        <span><b>Редакция:</b> ${esc(dateOf(doc.redaction_date))} <span class="status-pill ok" style="margin-left:4px">Действует</span></span>
-        <span><b>Статей:</b> ${docsCount(doc)}</span>
-        ${doc.act_number ? `<span><b>Номер:</b> ${esc(doc.act_number)}</span>` : ''}
-      </div>
-      <div class="doc-passport-actions">
-        <button class="btn primary" id="readWholeBtn">${icons.book} Читать весь текст</button>
-      </div>
-    </div>`;
+  const d = state.doc;
+  const isPin = state.pinned.includes(d.slug);
+  return `<div class="doc-passport">
+    <div class="article-kicker" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;">
+      <span>${esc(d.act_kind || d.type || 'Правовой документ')}</span>
+      <button class="btn" onclick="togglePin(${jsArg(d.slug)})" style="padding:6px 12px;font-size:12px;border-radius:6px;">${isPin ? icons.pinFill : icons.pin} ${isPin ? 'Открепить' : 'Закрепить'}</button>
+    </div>
+    <h2>${esc(titleOf(d))}</h2>
+    <div class="doc-passport-meta">
+      ${d.base_act ? `<span><b>Принят:</b> ${esc(d.base_act)}</span>` : ''}
+      <span><b>Редакция:</b> ${esc(dateOf(d.redaction_date))} <span class="status-pill ok" style="margin-left:4px">Действует</span></span>
+      <span><b>Статей:</b> ${docsCount(d)}</span>
+      ${d.act_number ? `<span><b>Номер:</b> ${esc(d.act_number)}</span>` : ''}
+    </div>
+    <div class="doc-passport-actions"><button class="btn primary" id="readWholeBtn">${icons.book} Читать весь текст</button></div>
+  </div>`;
 }
 
 function flattenStructure(nodes, out = []) {
-  (nodes || []).forEach(n => {
-    if (n.unit === 'статья' && n.number) out.push(String(n.number));
-    if (n.children) flattenStructure(n.children, out);
-  });
+  (nodes || []).forEach(n => { if (n.unit === 'статья' && n.number) out.push(String(n.number)); if (n.children) flattenStructure(n.children, out); });
   return out;
 }
 
 // --- ЖУРНАЛ ---
 function trimHistoryBySize() {
   if (state.history.length > HISTORY_MAX) state.history.length = HISTORY_MAX;
-  let json = JSON.stringify(state.history);
-  while (json.length > HISTORY_MAX_BYTES && state.history.length > 1) {
-    state.history.pop();
-    json = JSON.stringify(state.history);
-  }
+  let j = JSON.stringify(state.history);
+  while (j.length > HISTORY_MAX_BYTES && state.history.length > 1) { state.history.pop(); j = JSON.stringify(state.history); }
 }
 
 function recordHistory(doc, art, number) {
@@ -1168,14 +912,7 @@ function recordHistory(doc, art, number) {
   if (first && first.slug === doc.slug && String(first.number) === num) return;
   const isArticle = num !== 'doc';
   const snippet = isArticle ? (art.text || '').replace(/\s+/g, ' ').slice(0, 120) : (doc.base_act || doc.act_kind || doc.type || '');
-  const entry = {
-    slug: doc.slug,
-    docCode: titleOf(doc),
-    number: num,
-    title: isArticle ? artTitle(art, num) : titleOf(doc),
-    snippet,
-    ts: Date.now()
-  };
+  const entry = { slug: doc.slug, docCode: titleOf(doc), number: num, title: isArticle ? artTitle(art, num) : titleOf(doc), snippet, ts: Date.now() };
   state.history = state.history.filter(h => !(h.slug === entry.slug && String(h.number) === entry.number));
   state.history.unshift(entry);
   trimHistoryBySize();
@@ -1189,61 +926,38 @@ function exportHistory() {
   a.href = URL.createObjectURL(blob);
   const d = new Date();
   a.download = `pravo-history-${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}.json`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-  toast('Журнал сохранён в файл');
+  a.click(); URL.revokeObjectURL(a.href); toast('Журнал сохранён');
 }
 
 function importHistory(file) {
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
+  const r = new FileReader();
+  r.onload = () => {
     try {
-      const data = JSON.parse(reader.result);
-      if (!Array.isArray(data)) throw new Error('Ожидался массив записей');
-      const cleaned = data.filter(h => h && h.slug && h.ts).map(h => ({
-        slug: String(h.slug),
-        docCode: String(h.docCode || ''),
-        number: String(h.number ?? ''),
-        title: String(h.title || h.docCode || ''),
-        snippet: String(h.snippet || ''),
-        ts: Number(h.ts) || Date.now()
-      }));
+      const data = JSON.parse(r.result);
+      if (!Array.isArray(data)) throw new Error('Ожидался массив');
+      const cleaned = data.filter(h => h && h.slug && h.ts).map(h => ({ slug: String(h.slug), docCode: String(h.docCode || ''), number: String(h.number ?? ''), title: String(h.title || h.docCode || ''), snippet: String(h.snippet || ''), ts: Number(h.ts) || Date.now() }));
       if (!cleaned.length) throw new Error('Нет валидных записей');
-      const merged = [...cleaned, ...state.history];
-      const seen = new Set();
-      const result = [];
-      for (const h of merged) {
-        const k = h.slug + '::' + h.number;
-        if (seen.has(k)) continue;
-        seen.add(k);
-        result.push(h);
-      }
-      state.history = result;
-      trimHistoryBySize();
-      writeStore('pravo-history', state.history);
-      toast(`Импортировано записей: ${cleaned.length}`);
+      const seen = new Set(); const merged = [];
+      for (const h of [...cleaned, ...state.history]) { const k = h.slug + '::' + h.number; if (!seen.has(k)) { seen.add(k); merged.push(h); } }
+      state.history = merged; trimHistoryBySize(); writeStore('pravo-history', state.history);
+      toast(`Импортировано: ${cleaned.length}`);
       if (state.view === 'history') renderCollection('history');
-    } catch (e) {
-      toast('Ошибка импорта: ' + e.message);
-    }
+    } catch (e) { toast('Ошибка импорта: ' + e.message); }
   };
-  reader.readAsText(file);
+  r.readAsText(file);
 }
 
 function clearHistory() {
-  if (!confirm('Очистить всю историю просмотров?')) return;
-  state.history = [];
-  writeStore('pravo-history', []);
-  renderCollection('history');
-  toast('История очищена');
+  if (!confirm('Очистить историю?')) return;
+  state.history = []; writeStore('pravo-history', []); renderCollection('history'); toast('История очищена');
 }
 
 function toggleFavorite() {
   if (!state.doc || !state.article) return toast('Сначала откройте статью');
-  const key = recordKey(state.doc, state.article);
-  if (state.favorites.includes(key)) { state.favorites = state.favorites.filter(k => k !== key); toast('Удалено из избранного'); }
-  else { state.favorites.unshift(key); toast('Добавлено в избранное'); }
+  const k = recordKey(state.doc, state.article);
+  if (state.favorites.includes(k)) { state.favorites = state.favorites.filter(x => x !== k); toast('Удалено из избранного'); }
+  else { state.favorites.unshift(k); toast('Добавлено в избранное'); }
   writeStore('pravo-favs', state.favorites);
   $('favCount').textContent = state.favorites.length;
   renderReader();
@@ -1251,449 +965,339 @@ function toggleFavorite() {
 
 function saveNote() {
   if (!state.doc || !state.article) return;
-  const key = recordKey(state.doc, state.article);
-  const value = $('noteArea').value.trim();
-  if (value) state.notes[key] = value; else delete state.notes[key];
+  const k = recordKey(state.doc, state.article);
+  const v = $('noteArea').value.trim();
+  if (v) state.notes[k] = v; else delete state.notes[k];
   writeStore('pravo-notes', state.notes);
-  toast(value ? 'Заметка сохранена' : 'Заметка удалена');
+  toast(v ? 'Заметка сохранена' : 'Заметка удалена');
 }
 
 // --- КОЛЛЕКЦИИ ---
 function renderCollection(type) {
-  const body = $('workspaceBody');
   let records = [];
-
   if (type === 'favorites') records = state.favorites.map(getRecord).filter(Boolean);
   else if (type === 'history') records = state.history.slice();
   else records = Object.entries(state.notes).map(([k, note]) => { const r = getRecord(k); return r ? { ...r, note } : null; }).filter(Boolean);
 
   const title = type === 'favorites' ? 'Избранное' : type === 'history' ? 'История просмотров' : 'Мои заметки';
-  const desc = type === 'favorites' ? 'Сохранённые статьи и нормы.' : type === 'history' ? 'Журнал просмотренных документов и статей. Хранится локально на этом устройстве.' : 'Заметки к статьям.';
+  const desc = type === 'favorites' ? 'Сохранённые статьи.' : type === 'history' ? 'Журнал просмотров. Хранится локально.' : 'Заметки к статьям.';
 
-  const historyActions = type === 'history' && records.length ? `
-    <button class="btn" onclick="exportHistory()" title="Скачать журнал в JSON">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Скачать
-    </button>
-    <label class="btn" style="cursor:pointer" title="Загрузить журнал из JSON">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Загрузить
-      <input type="file" accept="application/json,.json" style="display:none" onchange="importHistory(this.files[0]); this.value='';">
-    </label>
+  const actions = type === 'history' && records.length ? `
+    <button class="btn" onclick="exportHistory()">Скачать</button>
+    <label class="btn" style="cursor:pointer">Загрузить<input type="file" accept=".json" style="display:none" onchange="importHistory(this.files[0]); this.value='';"></label>
     <button class="btn" onclick="clearHistory()" style="color:var(--danger);border-color:var(--danger)">Очистить</button>` : '';
 
-  const renderHistoryCard = h => {
-    const dateStr = h.ts ? new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(h.ts)) : '';
-    const isArticle = h.number && h.number !== 'doc' && h.number !== '';
-    const onclick = isArticle ? `openDocBySlug(${jsArg(h.slug)},${jsArg(h.number)})` : `openDocBySlug(${jsArg(h.slug)})`;
-    const snippet = h.snippet ? esc(h.snippet) + (h.snippet.length >= 120 ? '…' : '') : '';
-    return `<div class="result-card" onclick="${onclick}" style="cursor:pointer">
-      <div class="result-doc" style="display:flex;justify-content:space-between;align-items:center">
-        <span>${esc(h.docCode || '')}</span>
-        <span style="font-size:10px;color:var(--muted)">${dateStr}</span>
-      </div>
-      <h3 style="color:var(--accent)">${esc(h.title || h.docCode || '')}</h3>
-      ${snippet ? `<p style="color:var(--muted);font-size:13px;line-height:1.5;margin:0">${snippet}</p>` : ''}
-    </div>`;
-  };
+  const card = (onclick, head, title, body) => `<div class="result-card" onclick="${onclick}" style="cursor:pointer"><div class="result-doc">${head}</div><h3 style="color:var(--accent)">${title}</h3>${body}</div>`;
 
-  const renderFavCard = r => `
-    <div class="result-card" onclick="openDocBySlug(${jsArg(r.doc.slug)},${jsArg(r.number)})" style="cursor:pointer">
-      <div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div>
-      <h3 style="color:var(--accent)">${esc(artTitle(r.art, r.number))}</h3>
-      <p style="color:var(--muted);font-size:13px;margin:0">${esc((r.art.text || '').slice(0, 200))}${(r.art.text || '').length > 200 ? '…' : ''}</p>
-    </div>`;
+  const list = records.map(r => {
+    if (type === 'history') {
+      const isArt = r.number && r.number !== 'doc' && r.number !== '';
+      const oc = isArt ? `openDocBySlug(${jsArg(r.slug)},${jsArg(r.number)})` : `openDocBySlug(${jsArg(r.slug)})`;
+      return card(oc, `<span>${esc(r.docCode || '')}</span><span style="font-size:10px;color:var(--muted)">${new Date(r.ts).toLocaleString('ru-RU')}</span>`, esc(r.title || r.docCode || ''), r.snippet ? `<p style="color:var(--muted);font-size:13px;margin:0">${esc(r.snippet)}</p>` : '');
+    }
+    return card(`openDocBySlug(${jsArg(r.doc.slug)},${jsArg(r.number)})`, `${esc(titleOf(r.doc))} · Статья ${esc(r.number)}`, esc(artTitle(r.art, r.number)), `<p style="color:var(--muted);font-size:13px;margin:0">${esc(type === 'notes' ? r.note : (r.art.text || '').slice(0, 200))}</p>`);
+  }).join('');
 
-  const renderNoteCard = r => `
-    <div class="result-card" onclick="openDocBySlug(${jsArg(r.doc.slug)},${jsArg(r.number)})" style="cursor:pointer">
-      <div class="result-doc">${esc(titleOf(r.doc))} · Статья ${esc(r.number)}</div>
-      <h3 style="color:var(--accent)">${esc(artTitle(r.art, r.number))}</h3>
-      <p style="color:var(--muted);font-size:13px;margin:0">${esc(r.note)}</p>
-    </div>`;
-
-  body.innerHTML = `<section class="result-page">
-    <div class="result-heading">
-      <div><div class="eyebrow">Библиотека</div><h1>${title}</h1><p>${desc}</p></div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <span class="date-chip">${records.length} ${plural(records.length, ['запись', 'записи', 'записей'])}</span>
-        ${historyActions}
-      </div>
-    </div>
-    <div class="results">
-      ${records.length
-        ? (type === 'history' ? records.map(renderHistoryCard).join('') : type === 'favorites' ? records.map(renderFavCard).join('') : records.map(renderNoteCard).join(''))
-        : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`}
-    </div>
-    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович.</p></footer>
+  $('workspaceBody').innerHTML = `<section class="result-page">
+    <div class="result-heading"><div><div class="eyebrow">Библиотека</div><h1>${title}</h1><p>${desc}</p></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="date-chip">${records.length}</span>${actions}</div></div>
+    <div class="results">${records.length ? list : `<div class="empty-state"><strong>Пусто</strong><p>${desc}</p></div>`}</div>
+    <footer class="app-footer">© 2026 Абдулмаликов С.Р.</footer>
   </section>`;
 }
 
-function plural(n, forms) { const x = n % 100, y = n % 10; return forms[x > 10 && x < 20 ? 2 : y === 1 ? 0 : y >= 2 && y <= 4 ? 1 : 2]; }
-
 // --- ПОИСК ---
 function renderSearchHome() {
-  const body = $('workspaceBody');
-  body.innerHTML = `<section class="home" style="padding-top:20px;">
+  $('workspaceBody').innerHTML = `<section class="home" style="padding-top:20px;">
     <div class="welcome" style="margin-bottom:20px;"><div><h1 style="font-size:24px;margin-bottom:0;">Система поиска</h1></div></div>
     <div class="search-panel">
       <div class="search-tabs">
         <div class="search-tab active" onclick="switchSearchTab('quick', this)">Быстрый поиск</div>
-        <div class="search-tab" onclick="switchSearchTab('adv', this)">Поиск по реквизитам</div>
+        <div class="search-tab" onclick="switchSearchTab('adv', this)">По реквизитам</div>
       </div>
       <div class="search-content" id="tabQuick">
-        <div class="search-row">
-          <input type="text" id="quickSearchInput" placeholder="Введите запрос: ключевые слова, номер статьи или наименование документа" onkeydown="if(event.key==='Enter') doQuickSearch()">
-          <button class="btn primary" onclick="doQuickSearch()">Найти</button>
-        </div>
+        <div class="search-row"><input type="text" id="quickSearchInput" placeholder="Запрос: слово, номер статьи, название" onkeydown="if(event.key==='Enter')doQuickSearch()"><button class="btn primary" onclick="doQuickSearch()">Найти</button></div>
         <div class="search-filters">
           <label><input type="radio" name="quickScope" value="all" checked> Везде</label>
-          <label><input type="radio" name="quickScope" value="doc"> В названиях документов</label>
-          <label><input type="radio" name="quickScope" value="art"> В названиях статей</label>
-          <label><input type="radio" name="quickScope" value="text"> В тексте статей</label>
+          <label><input type="radio" name="quickScope" value="doc"> Документы</label>
+          <label><input type="radio" name="quickScope" value="art"> Статьи</label>
+          <label><input type="radio" name="quickScope" value="text"> Текст</label>
         </div>
       </div>
       <div class="search-content" id="tabAdv" style="display:none;">
         <div class="adv-search-form">
-          <div class="adv-field"><label>Текст документа</label><input type="text" id="advText" placeholder="Слово или фраза в тексте"></div>
-          <div class="adv-field"><label>Название документа</label><input type="text" id="advTitle" placeholder="Например: Гражданский кодекс"></div>
-          <div class="adv-field"><label>Номер</label><input type="text" id="advNumber" placeholder="Например: 51-ФЗ"></div>
+          <div class="adv-field"><label>Текст</label><input id="advText" placeholder="Слово или фраза"></div>
+          <div class="adv-field"><label>Название</label><input id="advTitle" placeholder="Гражданский кодекс"></div>
+          <div class="adv-field"><label>Номер</label><input id="advNumber" placeholder="51-ФЗ"></div>
           <div class="adv-field"><label>Дата</label><input type="date" id="advDate"></div>
-          <div class="adv-field"><label>Вид документа</label>
-            <select id="advType">
-              <option value="all">Все</option>
-              <option value="Конституция">Конституция</option>
-              <option value="Кодекс">Кодекс</option>
-              <option value="ФКЗ">ФКЗ</option>
-              <option value="ФЗ">ФЗ</option>
-              <option value="Закон">Закон</option>
-            </select>
-          </div>
-          <div class="adv-actions">
-            <button class="btn" style="background:var(--surface-2);border-color:var(--line);" onclick="clearAdvForm()">Очистить</button>
-            <button class="btn primary" onclick="doAdvSearch()">Найти документы</button>
-          </div>
+          <div class="adv-field"><label>Вид</label><select id="advType"><option value="all">Все</option><option>Конституция</option><option>Кодекс</option><option>ФКЗ</option><option>ФЗ</option><option>Закон</option></select></div>
+          <div class="adv-actions"><button class="btn" onclick="clearAdvForm()">Очистить</button><button class="btn primary" onclick="doAdvSearch()">Найти</button></div>
         </div>
       </div>
     </div>
   </section>`;
 }
-
 function switchSearchTab(tab, el) {
   document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   $('tabQuick').style.display = tab === 'quick' ? 'block' : 'none';
   $('tabAdv').style.display = tab === 'adv' ? 'block' : 'none';
 }
-
 function doQuickSearch() {
-  const q = $('quickSearchInput').value.trim();
-  if (!q) return toast('Введите запрос');
-  const scopeEl = document.querySelector('input[name="quickScope"]:checked');
-  state.query = q;
-  state.searchScope = scopeEl ? scopeEl.value : 'all';
+  const q = $('quickSearchInput').value.trim(); if (!q) return toast('Введите запрос');
+  state.query = q; state.searchScope = document.querySelector('input[name="quickScope"]:checked')?.value || 'all';
   showView('search-results');
 }
-
 function renderSearchResults() {
-  const body = $('workspaceBody');
-  const q = state.query;
-  const scope = state.searchScope || 'all';
-  const lowerQ = q.toLocaleLowerCase('ru');
-  const safe = lowerQ.replace(/'/g, "''");
-
-  let sqlQuery = '';
-  if (scope === 'doc') {
-    sqlQuery = `SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE lower(code) LIKE '%${safe}%'`;
-  } else if (scope === 'art') {
-    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.heading) LIKE '%${safe}%' LIMIT 250`;
-  } else if (scope === 'text') {
-    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${safe}%' LIMIT 250`;
-  } else {
-    sqlQuery = `SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.heading) LIKE '%${safe}%' OR lower(a.text) LIKE '%${safe}%' LIMIT 250`;
-  }
+  const q = state.query, scope = state.searchScope || 'all';
+  const safe = q.toLowerCase().replace(/'/g, "''");
+  let sql = '';
+  if (scope === 'doc') sql = `SELECT slug,code,type,act_kind,base_act,redaction_date FROM documents WHERE lower(code) LIKE '%${safe}%'`;
+  else if (scope === 'art') sql = `SELECT a.doc_slug,d.code,a.number,a.heading,a.text,a.status FROM articles a JOIN documents d ON a.doc_slug=d.slug WHERE lower(a.heading) LIKE '%${safe}%' LIMIT 250`;
+  else if (scope === 'text') sql = `SELECT a.doc_slug,d.code,a.number,a.heading,a.text,a.status FROM articles a JOIN documents d ON a.doc_slug=d.slug WHERE lower(a.text) LIKE '%${safe}%' LIMIT 250`;
+  else sql = `SELECT a.doc_slug,d.code,a.number,a.heading,a.text,a.status FROM articles a JOIN documents d ON a.doc_slug=d.slug WHERE lower(a.heading) LIKE '%${safe}%' OR lower(a.text) LIKE '%${safe}%' LIMIT 250`;
 
   let matches = [];
-  try {
-    const res = db.exec(sqlQuery);
-    if (res.length > 0) {
-      matches = res[0].values.map(row => {
-        if (scope === 'doc') return { isDoc: true, doc: { slug: row[0], code: row[1], type: row[2], act_kind: row[3], base_act: row[4], redaction_date: row[5] } };
-        return { isDoc: false, doc: { slug: row[0], code: row[1] }, number: row[2], art: { heading: row[3], text: row[4], status: row[5] } };
-      });
-    }
-  } catch (e) { console.error(e); }
+  try { const res = db.exec(sql); if (res.length) matches = res[0].values.map(row => scope === 'doc' ? { isDoc: true, doc: { slug: row[0], code: row[1], type: row[2], act_kind: row[3], base_act: row[4], redaction_date: row[5] } } : { isDoc: false, doc: { slug: row[0], code: row[1] }, number: row[2], art: { heading: row[3], text: row[4], status: row[5] } }); } catch (e) { console.error(e); }
 
-  body.innerHTML = `<section class="result-page">
-    <div class="result-heading">
-      <div>
-        <div class="eyebrow">Результаты поиска</div>
-        <h1>Найдено по запросу: «${esc(q)}»</h1>
-        <p>Область поиска: ${scope === 'doc' ? 'Названия документов' : scope === 'art' ? 'Названия статей' : scope === 'text' ? 'Текст статей' : 'Везде'} · Найдено: ${matches.length}${matches.length === 250 ? ' и более' : ''}</p>
-      </div>
-      <button class="btn" onclick="showView('search-home')">← Новый поиск</button>
-    </div>
-    <div class="results">
-      ${matches.length ? matches.map(m => {
-        if (m.isDoc) {
-          return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)})">
-            <div class="result-doc">${esc(m.doc.act_kind || m.doc.type || 'Документ')}</div>
-            <h3>${markText(m.doc.code, [q])}</h3>
-            <p>Редакция: ${esc(dateOf(m.doc.redaction_date))}</p>
-          </div>`;
-        }
-        const snippet = (m.art.text || '').replace(/\s+/g, ' ').slice(0, 360);
-        return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)},${jsArg(m.number)})">
-          <div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div>
-          <h3>${markText(artTitle(m.art, m.number), [q])}</h3>
-          <p>${markText(snippet, [q])}${(m.art.text || '').length > 360 ? '…' : ''}</p>
-        </div>`;
-      }).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong><p>Попробуйте изменить запрос или область поиска.</p></div>'}
-    </div>
-    <footer class="app-footer"><p>© 2026 Абдулмаликов Саид Рамазанович. Все права защищены.</p></footer>
+  $('workspaceBody').innerHTML = `<section class="result-page">
+    <div class="result-heading"><div><div class="eyebrow">Результаты</div><h1>«${esc(q)}»</h1><p>Найдено: ${matches.length}${matches.length === 250 ? ' и более' : ''}</p></div><button class="btn" onclick="showView('search-home')">← Новый поиск</button></div>
+    <div class="results">${matches.length ? matches.map(m => m.isDoc
+      ? `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)})"><div class="result-doc">${esc(m.doc.act_kind || m.doc.type || 'Документ')}</div><h3>${markText(m.doc.code, [q])}</h3><p>Ред. ${esc(dateOf(m.doc.redaction_date))}</p></div>`
+      : `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)},${jsArg(m.number)})"><div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div><h3>${markText(artTitle(m.art, m.number), [q])}</h3><p>${markText((m.art.text || '').replace(/\s+/g, ' ').slice(0, 360), [q])}</p></div>`
+    ).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong></div>'}</div>
   </section>`;
 }
-
-function clearAdvForm() {
-  $('advText').value = ''; $('advTitle').value = ''; $('advNumber').value = ''; $('advDate').value = ''; $('advType').value = 'all';
-}
-
+function clearAdvForm() { $('advText').value = ''; $('advTitle').value = ''; $('advNumber').value = ''; $('advDate').value = ''; $('advType').value = 'all'; }
 function doAdvSearch() {
-  const text = $('advText').value.toLowerCase().trim();
-  const title = $('advTitle').value.toLowerCase().trim();
-  const number = $('advNumber').value.toLowerCase().trim();
-  const date = $('advDate').value.trim();
-  const type = $('advType').value;
-
-  let sqlQuery = "SELECT slug, code, type, act_kind, base_act, redaction_date FROM documents WHERE 1=1";
-  if (title) sqlQuery += ` AND lower(code) LIKE '%${title.replace(/'/g, "''")}%'`;
-  if (number) sqlQuery += ` AND lower(act_number) LIKE '%${number.replace(/'/g, "''")}%'`;
-  if (date) sqlQuery += ` AND (act_date LIKE '%${date.replace(/'/g, "''")}%' OR redaction_date LIKE '%${date.replace(/'/g, "''")}%')`;
-  if (type !== 'all') sqlQuery += ` AND type = '${type.replace(/'/g, "''")}'`;
-
+  const text = $('advText').value.toLowerCase().trim(), title = $('advTitle').value.toLowerCase().trim(), number = $('advNumber').value.toLowerCase().trim(), date = $('advDate').value.trim(), type = $('advType').value;
+  let sql = "SELECT slug,code,type,act_kind,base_act,redaction_date FROM documents WHERE 1=1";
+  if (title) sql += ` AND lower(code) LIKE '%${title.replace(/'/g, "''")}%'`;
+  if (number) sql += ` AND lower(act_number) LIKE '%${number.replace(/'/g, "''")}%'`;
+  if (date) sql += ` AND (act_date LIKE '%${date}%' OR redaction_date LIKE '%${date}%')`;
+  if (type !== 'all') sql += ` AND type = '${type.replace(/'/g, "''")}'`;
   let docMatches = [];
-  try {
-    const res = db.exec(sqlQuery);
-    if (res.length > 0) docMatches = res[0].values.map(r => ({ slug: r[0], code: r[1], type: r[2], act_kind: r[3], base_act: r[4], redaction_date: r[5] }));
-  } catch (e) { console.error(e); }
-
+  try { const res = db.exec(sql); if (res.length) docMatches = res[0].values.map(r => ({ slug: r[0], code: r[1], type: r[2], act_kind: r[3], base_act: r[4], redaction_date: r[5] })); } catch (e) { console.error(e); }
   if (text) {
     let artMatches = [];
-    try {
-      const res = db.exec(`SELECT a.doc_slug, d.code, a.number, a.heading, a.text, a.status FROM articles a JOIN documents d ON a.doc_slug = d.slug WHERE lower(a.text) LIKE '%${text.replace(/'/g, "''")}%' LIMIT 250`);
-      if (res.length > 0) artMatches = res[0].values.map(r => ({ doc: { slug: r[0], code: r[1] }, number: r[2], art: { heading: r[3], text: r[4], status: r[5] } }));
-    } catch (e) { console.error(e); }
-    showAdvResults(text, artMatches, docMatches, true);
+    try { const res = db.exec(`SELECT a.doc_slug,d.code,a.number,a.heading,a.text,a.status FROM articles a JOIN documents d ON a.doc_slug=d.slug WHERE lower(a.text) LIKE '%${text.replace(/'/g, "''")}%' LIMIT 250`); if (res.length) artMatches = res[0].values.map(r => ({ doc: { slug: r[0], code: r[1] }, number: r[2], art: { heading: r[3], text: r[4], status: r[5] } })); } catch (e) { console.error(e); }
+    $('workspaceBody').innerHTML = `<section class="result-page"><div class="result-heading"><div><div class="eyebrow">По реквизитам + текст</div><h1>Статей: ${artMatches.length}</h1><p>«${esc(text)}»</p></div><button class="btn" onclick="showView('search-home')">← Новый поиск</button></div><div class="results">${artMatches.length ? artMatches.map(m => `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)},${jsArg(m.number)})"><div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div><h3>${markText(artTitle(m.art, m.number), [text])}</h3><p>${markText((m.art.text || '').slice(0, 360), [text])}</p></div>`).join('') : '<div class="empty-state"><strong>Ничего</strong></div>'}</div></section>`;
     return;
   }
-  showAdvResults('', [], docMatches, false);
+  $('workspaceBody').innerHTML = `<section class="result-page"><div class="result-heading"><div><div class="eyebrow">По реквизитам</div><h1>Документов: ${docMatches.length}</h1></div><button class="btn" onclick="showView('search-home')">← Новый поиск</button></div><div class="results">${docMatches.length ? docMatches.map(d => `<div class="result-card" onclick="openDocBySlug(${jsArg(d.slug)})"><div class="result-doc">${esc(d.act_kind || d.type || 'Документ')}</div><h3>${esc(d.code)}</h3><p>Ред. ${esc(dateOf(d.redaction_date))}</p></div>`).join('') : '<div class="empty-state"><strong>Ничего</strong></div>'}</div></section>`;
 }
-
-function showAdvResults(query, artMatches, docMatches, isTextSearch) {
-  const body = $('workspaceBody');
-  if (isTextSearch) {
-    body.innerHTML = `<section class="result-page">
-      <div class="result-heading">
-        <div><div class="eyebrow">Поиск по реквизитам (с текстом)</div><h1>Найдено статей: ${artMatches.length}</h1><p>Запрос: «${esc(query)}»</p></div>
-        <button class="btn" onclick="showView('search-home')">← Новый поиск</button>
-      </div>
-      <div class="results">
-        ${artMatches.length ? artMatches.map(m => {
-          const snippet = (m.art.text || '').replace(/\s+/g, ' ').slice(0, 360);
-          return `<div class="result-card" onclick="openDocBySlug(${jsArg(m.doc.slug)},${jsArg(m.number)})">
-            <div class="result-doc">${esc(m.doc.code)} · Статья ${esc(m.number)}</div>
-            <h3>${markText(artTitle(m.art, m.number), [query])}</h3>
-            <p>${markText(snippet, [query])}${(m.art.text || '').length > 360 ? '…' : ''}</p>
-          </div>`;
-        }).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong></div>'}
-      </div>
-    </section>`;
-  } else {
-    body.innerHTML = `<section class="result-page">
-      <div class="result-heading">
-        <div><div class="eyebrow">Поиск по реквизитам</div><h1>Найдено документов: ${docMatches.length}</h1></div>
-        <button class="btn" onclick="showView('search-home')">← Новый поиск</button>
-      </div>
-      <div class="results">
-        ${docMatches.length ? docMatches.map(d => `
-          <div class="result-card" onclick="openDocBySlug(${jsArg(d.slug)})">
-            <div class="result-doc">${esc(d.act_kind || d.type || 'Документ')}</div>
-            <h3>${esc(d.code)}</h3>
-            <p>Редакция: ${esc(dateOf(d.redaction_date))}</p>
-          </div>
-        `).join('') : '<div class="empty-state"><strong>Ничего не найдено</strong></div>'}
-      </div>
-    </section>`;
-  }
-}
-
 function markText(text, terms) {
   let html = esc(text);
-  for (const term of terms.filter(t => t.length)) {
-    const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'giu');
-    html = html.replace(re, '<mark>$1</mark>');
-  }
+  for (const t of terms.filter(x => x.length)) html = html.replace(new RegExp(`(${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'giu'), '<mark>$1</mark>');
   return html;
 }
 
 // --- О СИСТЕМЕ ---
 function renderAbout() {
-  const body = $('workspaceBody');
   const total = state.docs.length;
   const arts = state.docs.reduce((s, d) => s + (d.articles_total || 0), 0);
-
-  body.innerHTML = `<section class="about-page">
+  $('workspaceBody').innerHTML = `<section class="about-page">
     <div class="about-hero">
-      <div class="brand-mark" style="width:88px;height:88px;border-radius:22px;margin:0 auto 24px;background:var(--accent);display:grid;place-items:center;">
-        <img src="logo.png" alt="АИПС «РПА»" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'font-size:40px;color:#fff\\'>§</span>'">
-      </div>
-      <h1 style="font-size:34px;letter-spacing:-1px;margin:0 0 12px;font-weight:800">АИПС «РПА»</h1>
-      <p style="font-size:15px;color:var(--muted);line-height:1.7;max-width:540px;margin:0 auto">Автоматизированная информационно-правовая система для поиска, изучения и систематизации нормативных правовых актов Российской Федерации.</p>
+      <div class="brand-mark" style="width:88px;height:88px;border-radius:22px;margin:0 auto 24px;background:var(--accent);display:grid;place-items:center;"><img src="logo.png" alt="РПА" style="width:72px;height:72px;object-fit:cover;border-radius:14px;" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'font-size:40px;color:#fff\\'>§</span>'"></div>
+      <h1>АИПС «РПА»</h1>
+      <p>Автоматизированная информационно-правовая система для поиска и изучения нормативных правовых актов РФ.</p>
     </div>
-    <div class="about-card">
-      <h2>Источники и состав базы</h2>
-      <p>В основе системы — законодательство РФ: Конституция, ФКЗ, кодексы и федеральные законы. По состоянию на <strong>октябрь 2026 года</strong> база включает <strong>${total} нормативных правовых актов</strong> и <strong>${arts.toLocaleString('ru')} статей</strong>.</p>
-      <p>Источник данных — <a href="https://pravo.gov.ru" target="_blank" style="color:var(--accent)">pravo.gov.ru</a>.</p>
-    </div>
-    <div class="about-card">
-      <h2>Правовой статус</h2>
-      <p>Система носит <strong>справочный характер</strong> и не является официальным источником опубликования нормативных правовых актов.</p>
-    </div>
-    <div class="about-card">
-      <h2>Конфиденциальность</h2>
-      <p>Все данные (закладки, заметки, история) хранятся <strong>локально</strong>. База актов также хранится локально.</p>
-      <button class="btn" style="margin-top:12px;color:var(--danger);border-color:var(--danger);" onclick="clearAllData()">Очистить кэш и перезагрузить</button>
-    </div>
-    <div class="about-card">
-      <h2>Разработчик</h2>
-      <p class="author">Абдулмаликов Саид Рамазанович</p>
-      <p style="margin-top:8px">© 2026. Все права защищены.</p>
-    </div>
+    <div class="about-card"><h2>Состав базы</h2><p>По состоянию на <strong>октябрь 2026</strong>: <strong>${total} актов</strong> и <strong>${arts.toLocaleString('ru')} статей</strong>. Источник: pravo.gov.ru.</p></div>
+    <div class="about-card"><h2>Правовой статус</h2><p>Система носит справочный характер и не является официальным источником опубликования.</p></div>
+    <div class="about-card"><h2>Конфиденциальность</h2><p>Все данные хранятся локально. База актов также хранится локально.</p><button class="btn" style="margin-top:12px;color:var(--danger);border-color:var(--danger);" onclick="clearAllData()">Очистить кэш и перезагрузить</button></div>
+    <div class="about-card"><h2>Разработчик</h2><p class="author">Абдулмаликов Саид Рамазанович</p><p>© 2026. Все права защищены.</p></div>
   </section>`;
 }
-
 function clearAllData() {
-  if (!confirm('Удалить сохранённую базу и перезагрузить приложение?')) return;
+  if (!confirm('Удалить кэш и перезагрузить?')) return;
   localStorage.clear();
-  if ('serviceWorker' in navigator) {
-    caches.keys().then(names => Promise.all(names.map(n => caches.delete(n)))).finally(() => location.reload());
-  } else location.reload();
+  if ('serviceWorker' in navigator) caches.keys().then(n => Promise.all(n.map(x => caches.delete(x)))).finally(() => location.reload());
+  else location.reload();
 }
 
 // --- ПЕРЕХОД К СТАТЬЕ ---
 function openGoto() { if (!state.doc) return toast('Сначала откройте документ'); $('gotoModal').classList.add('show'); $('gotoInput').value = ''; $('gotoInput').focus(); }
 function closeGoto() { $('gotoModal').classList.remove('show'); }
-function confirmGoto() {
-  const n = $('gotoInput').value.trim().replace(/^статья\s*/i, '');
-  if (state.doc?.articles?.[n]) { closeGoto(); openArticle(n); }
-  else toast(`Статья ${n || '—'} не найдена`);
-}
+function confirmGoto() { const n = $('gotoInput').value.trim().replace(/^статья\s*/i, ''); if (state.doc?.articles?.[n]) { closeGoto(); openArticle(n); } else toast(`Статья ${n || '—'} не найдена`); }
 
 // --- ПОИСК В ТЕКСТЕ ---
 function openDocSearch() {
-  const panel = $('docSearchPanel');
-  if (panel.classList.contains('active')) {
-    panel.classList.remove('active');
-    $('docSearchInput').value = '';
-    state.docSearch = { query: '', matches: [], current: 0 };
-    $('searchCount').textContent = '';
-    removeSearchHighlights();
-    return;
-  }
-  panel.classList.add('active');
-  $('docSearchInput').value = '';
-  $('docSearchInput').focus();
-  $('searchCount').textContent = '';
+  const p = $('docSearchPanel');
+  if (p.classList.contains('active')) { p.classList.remove('active'); $('docSearchInput').value = ''; state.docSearch = { query: '', matches: [], current: 0 }; $('searchCount').textContent = ''; removeSearchHighlights(); return; }
+  p.classList.add('active'); $('docSearchInput').value = ''; $('docSearchInput').focus(); $('searchCount').textContent = '';
 }
-
 function performDocSearch() {
   const q = $('docSearchInput').value.trim();
   if (!q) { state.docSearch = { query: '', matches: [], current: 0 }; $('searchCount').textContent = ''; removeSearchHighlights(); return; }
-  const matches = [];
-  const container = $('articleBody') || $('workspaceBody');
-  if (!container) return;
-  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
-  let node; const lowerQ = q.toLowerCase();
+  const c = $('articleBody') || $('workspaceBody'); if (!c) return;
+  const matches = []; const lower = q.toLowerCase();
   removeSearchHighlights();
-  const textNodes = [];
-  while ((node = walker.nextNode())) {
-    if (node.parentElement.closest('mark')) continue;
-    if (node.textContent.toLowerCase().includes(lowerQ)) textNodes.push(node);
-  }
-  textNodes.forEach(textNode => {
-    const text = textNode.textContent; const parent = textNode.parentNode; const lowerText = text.toLowerCase();
-    let pos = 0; const frag = document.createDocumentFragment(); let lastPos = 0;
-    while ((pos = lowerText.indexOf(lowerQ, lastPos)) !== -1) {
-      if (pos > lastPos) frag.appendChild(document.createTextNode(text.slice(lastPos, pos)));
-      const mark = document.createElement('mark');
-      mark.textContent = text.slice(pos, pos + q.length);
-      mark.dataset.matchIndex = String(matches.length);
-      frag.appendChild(mark);
-      matches.push(mark);
-      lastPos = pos + q.length;
+  const walker = document.createTreeWalker(c, NodeFilter.SHOW_TEXT, null);
+  const nodes = []; let node;
+  while ((node = walker.nextNode())) { if (node.parentElement.closest('mark')) continue; if (node.textContent.toLowerCase().includes(lower)) nodes.push(node); }
+  nodes.forEach(tn => {
+    const text = tn.textContent, parent = tn.parentNode, lt = text.toLowerCase();
+    let pos = 0, last = 0; const frag = document.createDocumentFragment();
+    while ((pos = lt.indexOf(lower, last)) !== -1) {
+      if (pos > last) frag.appendChild(document.createTextNode(text.slice(last, pos)));
+      const m = document.createElement('mark'); m.textContent = text.slice(pos, pos + q.length); m.dataset.matchIndex = String(matches.length);
+      frag.appendChild(m); matches.push(m); last = pos + q.length;
     }
-    if (lastPos < text.length) frag.appendChild(document.createTextNode(text.slice(lastPos)));
-    parent.replaceChild(frag, textNode);
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    parent.replaceChild(frag, tn);
   });
   state.docSearch = { query: q, matches, current: -1 };
-  if (matches.length > 0) { state.docSearch.current = 0; scrollToMatch(0); updateSearchCount(); }
-  else $('searchCount').textContent = 'Нет совпадений';
+  if (matches.length) { state.docSearch.current = 0; scrollToMatch(0); } else $('searchCount').textContent = 'Нет совпадений';
 }
-
 function updateSearchCount() { const { matches, current } = state.docSearch; $('searchCount').textContent = matches.length ? `${current + 1} из ${matches.length}` : ''; }
-function scrollToMatch(idx) { const { matches } = state.docSearch; if (!matches[idx]) return; matches.forEach(m => m.classList.remove('active-match')); matches[idx].classList.add('active-match'); matches[idx].scrollIntoView({ behavior: 'smooth', block: 'center' }); state.docSearch.current = idx; updateSearchCount(); }
-function nextMatch() { const { matches, current } = state.docSearch; if (!matches.length) return; scrollToMatch((current + 1) % matches.length); }
-function prevMatch() { const { matches, current } = state.docSearch; if (!matches.length) return; scrollToMatch((current - 1 + matches.length) % matches.length); }
-function removeSearchHighlights() {
-  document.querySelectorAll('mark').forEach(m => {
-    const parent = m.parentNode;
-    if (parent) { parent.replaceChild(document.createTextNode(m.textContent), m); parent.normalize(); }
-  });
-}
-function highlightSearchMatches() {
-  if (!state.docSearch.query) return;
-  const oldQuery = state.docSearch.query;
-  $('docSearchInput').value = oldQuery;
-  setTimeout(() => { performDocSearch(); }, 50);
-}
+function scrollToMatch(i) { const { matches } = state.docSearch; if (!matches[i]) return; matches.forEach(m => m.classList.remove('active-match')); matches[i].classList.add('active-match'); matches[i].scrollIntoView({ behavior: 'smooth', block: 'center' }); state.docSearch.current = i; updateSearchCount(); }
+function nextMatch() { const { matches, current } = state.docSearch; if (matches.length) scrollToMatch((current + 1) % matches.length); }
+function prevMatch() { const { matches, current } = state.docSearch; if (matches.length) scrollToMatch((current - 1 + matches.length) % matches.length); }
+function removeSearchHighlights() { document.querySelectorAll('mark').forEach(m => { const p = m.parentNode; if (p) { p.replaceChild(document.createTextNode(m.textContent), m); p.normalize(); } }); }
+function highlightSearchMatches() { if (!state.docSearch.query) return; const q = state.docSearch.query; $('docSearchInput').value = q; setTimeout(performDocSearch, 50); }
 
 // --- ВОССТАНОВЛЕНИЕ ИЗ HASH ---
 async function restoreFromHash() {
   if (state._restoring) return;
   state._restoring = true;
   try {
-    const hash = window.location.hash.substring(1);
-    if (!hash) return;
-    const params = new URLSearchParams(hash);
-    const view = params.get('view');
-    const slug = params.get('doc');
-    const art = params.get('art');
-
+    const hash = window.location.hash.substring(1); if (!hash) return;
+    const p = new URLSearchParams(hash);
+    const view = p.get('view'), slug = p.get('doc'), art = p.get('art');
     if (slug && db) { await openDocBySlug(slug, art); return; }
-    if (view === 'category') showView('category', params.get('cat') || '');
+    if (view === 'category') showView('category', p.get('cat') || '');
     else if (view === 'favorites') showView('favorites');
     else if (view === 'history') showView('history');
     else if (view === 'notes') showView('notes');
     else if (view === 'about') showView('about');
     else if (view === 'search-home') showView('search-home');
     else showView('home');
-  } finally {
-    state._restoring = false;
-  }
+  } finally { state._restoring = false; }
 }
 
-// --- ИНИЦИАЛИЗАЦИЯ ---
+// ============================================================
+//  IndexedDB: храним каждую часть отдельной записью
+// ============================================================
+const IDB_NAME = 'PravoDB';
+const IDB_STORE = 'files';
+const IDB_VERSION = 1;
+
+function idbOpen() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(IDB_NAME, IDB_VERSION);
+    req.onupgradeneeded = e => { const d = e.target.result; if (!d.objectStoreNames.contains(IDB_STORE)) d.createObjectStore(IDB_STORE); };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error || new Error('IndexedDB open failed'));
+  });
+}
+
+function idbGet(idb, key) {
+  return new Promise((resolve, reject) => {
+    try {
+      const tx = idb.transaction(IDB_STORE, 'readonly');
+      const r = tx.objectStore(IDB_STORE).get(key);
+      r.onsuccess = () => resolve(r.result);
+      r.onerror = () => reject(r.error);
+    } catch (e) { reject(e); }
+  });
+}
+
+function idbPut(idb, key, value) {
+  return new Promise((resolve, reject) => {
+    let tx;
+    try { tx = idb.transaction(IDB_STORE, 'readwrite'); } catch (e) { return reject(e); }
+    tx.oncomplete = () => resolve();
+    tx.onerror = ev => reject(ev.target.error || new Error('IDB put error'));
+    tx.onabort = ev => reject(ev.target.error || new Error('IDB tx aborted'));
+    try { tx.objectStore(IDB_STORE).put(value, key); } catch (e) { reject(e); }
+  });
+}
+
+function idbDelete(idb, key) {
+  return new Promise((resolve, reject) => {
+    let tx;
+    try { tx = idb.transaction(IDB_STORE, 'readwrite'); } catch (e) { return reject(e); }
+    tx.oncomplete = () => resolve();
+    tx.onerror = ev => reject(ev.target.error);
+    try { tx.objectStore(IDB_STORE).delete(key); } catch (e) { reject(e); }
+  });
+}
+
+function idbAllKeys(idb) {
+  return new Promise((resolve, reject) => {
+    try {
+      const tx = idb.transaction(IDB_STORE, 'readonly');
+      const r = tx.objectStore(IDB_STORE).getAllKeys();
+      r.onsuccess = () => resolve(r.result || []);
+      r.onerror = () => reject(r.error);
+    } catch (e) { reject(e); }
+  });
+}
+
+// ============================================================
+//  Загрузка частей базы
+// ============================================================
+const TOTAL_PARTS = 5;
+const PART_KEY = i => `laws.db.part.${String(i).padStart(3, '0')}`;
+const PART_URL = i => `./laws.db.${String(i).padStart(3, '0')}`;
+
+async function tryLoadFromIDB(idb) {
+  try {
+    const chunks = [];
+    for (let i = 1; i <= TOTAL_PARTS; i++) {
+      const part = await idbGet(idb, PART_KEY(i));
+      if (!part || !part.byteLength) return null;
+      chunks.push(new Uint8Array(part));
+    }
+    const total = chunks.reduce((a, c) => a + c.length, 0);
+    if (!total) return null;
+    const out = new Uint8Array(total);
+    let off = 0;
+    for (const c of chunks) { out.set(c, off); off += c.length; }
+    return out;
+  } catch (e) { console.warn('[РПА] IDB read failed:', e); return null; }
+}
+
+async function downloadAndSaveParts(idb) {
+  const chunks = [];
+  for (let i = 1; i <= TOTAL_PARTS; i++) {
+    $('dbStatus').textContent = `Скачивание базы (${i} из ${TOTAL_PARTS})...`;
+    const res = await fetch(PART_URL(i), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status} при загрузке ${PART_URL(i)}`);
+    const buf = await res.arrayBuffer();
+    chunks.push(new Uint8Array(buf));
+    try {
+      await idbPut(idb, PART_KEY(i), buf);
+    } catch (e) {
+      console.warn(`[РПА] Не удалось сохранить часть ${i} в IndexedDB:`, e);
+    }
+  }
+  const total = chunks.reduce((a, c) => a + c.length, 0);
+  const out = new Uint8Array(total);
+  let off = 0;
+  for (const c of chunks) { out.set(c, off); off += c.length; }
+  return out;
+}
+
+// ============================================================
+//  Инициализация приложения
+// ============================================================
 async function init() {
   if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
   try {
     const theme = localStorage.getItem('pravo-theme');
-    if (theme) {
-      document.documentElement.dataset.theme = theme;
-      if (theme === 'dark') $('themeIcon').outerHTML = icons.sun;
-    }
+    if (theme) { document.documentElement.dataset.theme = theme; if (theme === 'dark') $('themeIcon').outerHTML = icons.sun; }
   } catch {}
   document.documentElement.style.setProperty('--reader-size', state.font + 'px');
   $('favCount').textContent = state.favorites.length;
 
   $('libSearchInput').addEventListener('input', e => { state.libSearch = e.target.value; renderLibrary(); });
-  $('themeBtn').onclick = toggleTheme;
+  $('themeBtn').onclick = () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('pravo-theme', next); } catch {}
+    $('themeIcon').outerHTML = next === 'dark' ? icons.sun : icons.moon;
+  };
   $('brandHome').onclick = () => { setHashSafely(''); showView('home'); };
   document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => showView(b.dataset.view));
   $('menuBtn').onclick = () => { $('sidebar').classList.toggle('open'); $('mobileBackdrop').classList.toggle('show'); };
@@ -1706,10 +1310,9 @@ async function init() {
   $('favoriteBtn').onclick = toggleFavorite;
   $('printBtn').onclick = () => window.print();
   $('noteBtn').onclick = () => { const a = $('noteArea'); if (a) { a.focus(); a.scrollIntoView({ behavior: 'smooth' }); } };
-
   $('docSearchBtn').onclick = openDocSearch;
   $('docSearchInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); if (state.docSearch.matches.length > 0 && state.docSearch.query === e.target.value.trim()) nextMatch(); else performDocSearch(); }
+    if (e.key === 'Enter') { e.preventDefault(); if (state.docSearch.matches.length && state.docSearch.query === e.target.value.trim()) nextMatch(); else performDocSearch(); }
     if (e.key === 'Escape') openDocSearch();
   });
   $('docSearchInput').addEventListener('input', () => {
@@ -1721,23 +1324,19 @@ async function init() {
   $('searchPrev').onclick = prevMatch;
   $('searchClose').onclick = () => { $('docSearchPanel').classList.remove('active'); $('docSearchInput').value = ''; state.docSearch = { query: '', matches: [], current: 0 }; $('searchCount').textContent = ''; removeSearchHighlights(); };
 
-  const btt = $('backToTop'); const wsBody = $('workspaceBody');
-  wsBody.addEventListener('scroll', () => btt.classList.toggle('show', wsBody.scrollTop > 300));
-  btt.onclick = () => wsBody.scrollTo({ top: 0, behavior: 'smooth' });
+  const btt = $('backToTop');
+  $('workspaceBody').addEventListener('scroll', () => btt.classList.toggle('show', $('workspaceBody').scrollTop > 300));
+  btt.onclick = () => $('workspaceBody').scrollTo({ top: 0, behavior: 'smooth' });
 
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); $('libSearchInput').focus(); }
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'g') { e.preventDefault(); openGoto(); }
-    if (e.key === 'Escape') {
-      if ($('gotoModal').classList.contains('show')) closeGoto();
-      else if (state.docSearch.query) $('searchClose').click();
-    }
+    if (e.key === 'Escape') { if ($('gotoModal').classList.contains('show')) closeGoto(); else if (state.docSearch.query) $('searchClose').click(); }
   });
 
   window.addEventListener('hashchange', () => {
     if (!db || state._suppressHashChange || state._restoring) return;
-    if (window.location.hash) restoreFromHash();
-    else showView('home');
+    if (window.location.hash) restoreFromHash(); else showView('home');
   });
 
   try { if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js').catch(() => {}); } catch {}
@@ -1745,117 +1344,71 @@ async function init() {
   // SQL.js
   $('dbStatus').textContent = 'Инициализация SQLite...';
   try {
-    SQL = await initSqlJs({ locateFile: file => `./${file}` });
+    SQL = await initSqlJs({ locateFile: f => `./${f}` });
   } catch (e) {
     $('dbStatus').textContent = 'Ошибка SQL.js';
-    $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось загрузить SQL.js</strong><p>Файл sql-wasm.js не найден. ${esc(e.message)}</p></div></section>`;
+    $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось загрузить SQL.js</strong><p>${esc(e.message)}</p></div></section>`;
     return;
   }
 
-  // IndexedDB
-  $('dbStatus').textContent = 'Загрузка базы данных...';
+  // База: пробуем IndexedDB, иначе скачиваем части
+  $('dbStatus').textContent = 'Загрузка базы...';
+  let idb = null;
+  try { idb = await idbOpen(); } catch (e) { console.warn('[РПА] IndexedDB недоступен:', e); }
+
   let binaryData = null;
-  try {
-    binaryData = await new Promise(resolve => {
-      const req = indexedDB.open('PravoDB', 1);
-      req.onupgradeneeded = e => { if (!e.target.result.objectStoreNames.contains('files')) e.target.result.createObjectStore('files'); };
-      req.onsuccess = e => {
-        const idb = e.target.result;
-        if (!idb.objectStoreNames.contains('files')) return resolve(null);
-        const tx = idb.transaction('files', 'readonly');
-        const getReq = tx.objectStore('files').get('laws.db');
-        getReq.onsuccess = () => resolve(getReq.result);
-        getReq.onerror = () => resolve(null);
-      };
-      req.onerror = () => resolve(null);
-    });
-  } catch {}
+  if (idb) binaryData = await tryLoadFromIDB(idb);
 
   if (!binaryData) {
-    const TOTAL_PARTS = 5;
-    const chunks = [];
     try {
-      for (let i = 1; i <= TOTAL_PARTS; i++) {
-        const partNum = String(i).padStart(3, '0');
-        $('dbStatus').textContent = `Скачивание базы (${i} из ${TOTAL_PARTS})...`;
-        const res = await fetch(`./laws.db.${partNum}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status} для части ${partNum}`);
-        chunks.push(new Uint8Array(await res.arrayBuffer()));
-      }
-      const total = chunks.reduce((a, c) => a + c.length, 0);
-      binaryData = new Uint8Array(total);
-      let off = 0;
-      for (const c of chunks) { binaryData.set(c, off); off += c.length; }
-
-      $('dbStatus').textContent = 'Сохранение базы для офлайн-режима...';
-      try {
-        await new Promise((resolve, reject) => {
-          const req = indexedDB.open('PravoDB', 1);
-          req.onupgradeneeded = e => {
-            const idb = e.target.result;
-            if (!idb.objectStoreNames.contains('files')) idb.createObjectStore('files');
-          };
-          req.onerror = e => reject(e.target.error || new Error('IndexedDB open failed'));
-          req.onsuccess = e => {
-            const idb = e.target.result;
-            let tx;
-            try { tx = idb.transaction('files', 'readwrite'); } catch (err) { idb.close(); return reject(err); }
-            tx.oncomplete = () => { idb.close(); resolve(); };
-            tx.onerror = ev => console.error('IDB put error', ev.target.error);
-            tx.onabort = ev => { idb.close(); reject(ev.target.error || new Error('Транзакция прервана')); };
-            try { tx.objectStore('files').put(binaryData, 'laws.db'); } catch (err) { idb.close(); reject(err); }
-          };
-        });
-      } catch (saveErr) {
-        console.warn('Не удалось сохранить базу в IndexedDB:', saveErr);
-        toast('База загружена, но не сохранилась для офлайна');
-      }
+      binaryData = idb ? await downloadAndSaveParts(idb) : await (async () => {
+        const chunks = [];
+        for (let i = 1; i <= TOTAL_PARTS; i++) {
+          $('dbStatus').textContent = `Скачивание (${i} из ${TOTAL_PARTS})...`;
+          const res = await fetch(PART_URL(i), { cache: 'no-store' });
+          if (!res.ok) throw new Error(`HTTP ${res.status} для ${PART_URL(i)}`);
+          chunks.push(new Uint8Array(await res.arrayBuffer()));
+        }
+        const total = chunks.reduce((a, c) => a + c.length, 0);
+        const out = new Uint8Array(total);
+        let off = 0;
+        for (const c of chunks) { out.set(c, off); off += c.length; }
+        return out;
+      })();
     } catch (err) {
       $('dbStatus').textContent = 'Ошибка загрузки';
-      $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось скачать базу данных</strong><p>${esc(err.message)}</p></div></section>`;
+      $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Не удалось загрузить базу данных</strong><p>${esc(err.message)}</p><p style="margin-top:12px">Убедитесь, что файлы <code>laws.db.001</code> … <code>laws.db.005</code> лежат рядом с <code>index.html</code>.</p></div></section>`;
       return;
     }
   }
 
   try {
     db = new SQL.Database(binaryData);
-    const docsRes = db.exec(`
+    const res = db.exec(`
       SELECT d.slug, d.code, d.type, d.act_kind, d.base_act, d.redaction_date,
              (SELECT COUNT(*) FROM articles a WHERE a.doc_slug = d.slug) AS articles_total
       FROM documents d
     `);
-    state.docs = docsRes.length ? docsRes[0].values.map(row => ({
+    state.docs = res.length ? res[0].values.map(row => ({
       slug: row[0], code: row[1], type: row[2], act_kind: row[3],
       base_act: row[4], redaction_date: row[5], articles_total: row[6]
     })) : [];
 
-    // Диагностика: реальные типы в базе
-    console.log('[РПА] Типы документов в базе:', Array.from(new Set(state.docs.map(d => d.type))));
-    console.log('[РПА] Нормализованные типы:', state.docs.reduce((acc, d) => { const t = normalizeType(d); acc[t] = (acc[t] || 0) + 1; return acc; }, {}));
+    console.log('[РПА] Типы в базе:', Array.from(new Set(state.docs.map(d => d.type))));
+    console.log('[РПА] Нормализовано:', state.docs.reduce((a, d) => { const t = normalizeType(d); a[t] = (a[t] || 0) + 1; return a; }, {}));
 
-    const konst = state.docs.find(isKonst);
-    if (konst && !state.pinned.includes(konst.slug)) {
-      state.pinned.push(konst.slug);
-      writeStore('pravo-pinned', state.pinned);
-    }
+    const k = state.docs.find(isKonst);
+    if (k && !state.pinned.includes(k.slug)) { state.pinned.push(k.slug); writeStore('pravo-pinned', state.pinned); }
 
     $('dbStatus').textContent = 'Источник: pravo.gov.ru';
     renderLibrary();
 
-    if (window.location.hash) await restoreFromHash();
-    else showView('home');
+    if (window.location.hash) await restoreFromHash(); else showView('home');
   } catch (e) {
     console.error(e);
     $('dbStatus').textContent = 'Ошибка SQLite';
     $('workspaceBody').innerHTML = `<section class="home"><div class="empty-state"><strong>Ошибка базы данных</strong><p>${esc(e.message)}</p></div></section>`;
   }
-}
-
-function toggleTheme() {
-  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = next;
-  try { localStorage.setItem('pravo-theme', next); } catch {}
-  $('themeIcon').outerHTML = next === 'dark' ? icons.sun : icons.moon;
 }
 
 init();
